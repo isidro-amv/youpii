@@ -1,0 +1,37 @@
+#wrapper{
+    background-color: #f8f8f8;
+}
+#page-wrapper{
+    margin-left: 250px;
+    padding-left: 10px;
+    border-left: solid 1px #e7e7e7;
+    background-color: #fff;
+}
+.page-header{
+    margin: 20px 0;
+}
+
+.panel-green {
+    border-color: #5cb85c;
+    .panel-heading {
+        border-color: #5cb85c;
+        color: #fff;
+        background-color: #5cb85c;
+    }
+}
+.panel-yellow {
+    border-color: #f0ad4e;
+    .panel-heading {
+      border-color: #f0ad4e;
+      color: #fff;
+      background-color: #f0ad4e;
+    }
+}
+.panel-red {
+    border-color: #d9534f;
+    .panel-heading {
+        border-color: #d9534f;
+        color: #fff;
+        background-color: #d9534f;
+    }
+}

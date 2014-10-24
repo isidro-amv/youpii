@@ -1,0 +1,200 @@
+#wrapper
+  div(ng-include='"components/navbar/navbar.html"')
+  #page-wrapper(ng-controller="EditUserCtrl").form-user
+    .row
+        .col-lg-12.page-header
+            h1 Nuevo Usuario
+            div.btn.btn-warning.new(ng-click="delete()") Eliminar Usuario
+          //
+             /.col-lg-12
+    .row
+        .col-lg-12
+            .panel.panel-default
+              #status-title.panel-heading
+                | {{ status || 'Registro'}}
+              .panel-body
+                .row
+                  form.form(name='form', ng-submit='update(form)', novalidate='', enctype="multipart/form-data")
+                    .col-lg-6
+                      input( type='hidden' ng-model="user._id" name='_id')
+                      input( type='hidden', name="password" ng-model='user.password')
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Nombre Empresa
+                        input.form-control(placeholder="Ejemplo: Youpii promos", type='text',
+                        name='name', ng-model='user.name', required='')
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.businessName.$valid && submitted,\
+                        "has-error": form.businessName.$invalid && submitted }')
+                        label Razón social
+                        input.form-control(placeholder='Ejemplo: Promocion Youpii S.A. de C.V.', type='text',
+                        name='businessName', ng-model='user.businessName', required='')
+                        p.help-block(ng-show='form.businessName.$error.required && submitted')
+                          | Error de validación de campo
+
+
+                      .form-group(ng-class='{ "has-success": form.url.$valid && submitted,\
+                        "has-error": form.url.$invalid && submitted }')
+                        label URL de Empresa
+                        input.form-control(placeholder='Ejemplo: el-nombre-de-mi-empresa', type='text',
+                        name='url', ng-model='user.url', required='')
+                        p.help-block(ng-show='form.url.$error.required && submitted')
+                          | Error de validación de campo
+                        p.help-block(ng-show='form.url.$error.mongoose')
+                          | {{ errors.url }}
+
+                      h1 contacto
+
+                      .form-group(ng-class='{ "has-success": form.email.$valid && submitted,\
+                        "has-error": form.email.$invalid && submitted }')
+                        label Email
+                        input.form-control(placeholder='Ejemplo: mi_empresa@fake.com', type='email',
+                        name='email', ng-model='user.email', required='', mongoose-error='')
+                        p.help-block(ng-show='form.email.$error.email && submitted')
+                          | Doesn't look like a valid email.
+                        p.help-block(ng-show='form.email.$error.required && submitted')
+                          | What's your email address?
+                        p.help-block(ng-show='form.email.$error.mongoose')
+                          | {{ errors.email }}
+
+                      .form-group(ng-class='{ "has-success": form.tel.$valid && submitted,\
+                        "has-error": form.tel.$invalid && submitted }')
+                        label Telefono
+                        input.form-control(placeholder='Ejemplo: (329)1020102, (233)2344521', type='text',
+                        name='tel', ng-model='user.tel')
+                        p.help-block(ng-show='form.tel.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.cel.$valid && submitted,\
+                        "has-error": form.cel.$invalid && submitted }')
+                        label Celular
+                        input.form-control(placeholder='Ejemplo: (329)1020102, (233)2344521', type='text',
+                        name='cel', ng-model='user.cel')
+
+
+                      .form-group(ng-class='{ "has-success": form.dir.$valid && submitted,\
+                        "has-error": form.dir.$invalid && submitted }')
+                        label Dirección
+                        textarea.form-control(rows='3', placeholder='Ejemplo: Juan de la Barrera, Colonia: Buena vista', name='dir', ng-model='user.dir')
+                        p.help-block(ng-show='form.dir.$error.required && submitted')
+                          | Error de validación de campo
+
+
+                      .form-group(ng-class='{ "has-success": form.city.$valid && submitted,\
+                        "has-error": form.city.$invalid && submitted }')
+                        label Ciudad
+                        select.form-control(ng-model="user.city", name="city", placeholder="Ciudad",required='' )
+                          option(value="1") Puerto Vallarta, Jalisco
+                          option(value="2") Ŕivera Nayarit, Nayarit
+                          option(value="3") Zapopan, Jalisco
+
+                      .form-group(ng-class='{ "has-success": form.loc.$valid && submitted,\
+                        "has-error": form.loc.$invalid && submitted }')
+                        label Coordenadas
+                        input.form-control(placeholder='Ejemplo: 20.640620, -105.222771', type='text',
+                        name='loc', ng-model='user.loc', required='')
+                        p.help-block(ng-show='form.dir.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.logo.$valid && submitted,\
+                        "has-error": form.logo.$invalid && submitted }')
+                        label Logo
+                        img.logo(src="{{user.logo.pathSmall}}" width="80%")
+                        label Reemplazar
+                        input.form-control(type='file', name="logo", ng-model="user.logo")
+                        p.help-block(ng-show='form.logo.$error.required && submitted')
+                          | Error de validación de campo
+                    .col-lg-6
+                      h1 Persona de contacto
+
+                      .form-group(ng-class='{ "has-success": form.contact[name].$valid && submitted,\
+                        "has-error": form.contact[name].$invalid && submitted }')
+                        label Nombre
+                        input.form-control(placeholder='Ejemplo: Paco Perez Piñón', type='text',
+                        name='contact[name]', ng-model='user.contact.name', required='')
+                        p.help-block(ng-show='form.contact[name].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.contact[tel].$valid && submitted,\
+                        "has-error": form.contact[tel].$invalid && submitted }')
+                        label Tel
+                        input.form-control(placeholder='Ejemplo: (329)1020102', type='text',
+                        name='contact[tel]', ng-model='user.contact.tel')
+                        p.help-block(ng-show='form.contact[tel].$error.required && submitted')
+                          | Error de validación de campo
+
+
+                      h1 Imágenes
+                      .form-group(ng-class='{ "has-success": form.pic.$valid && submitted,\
+                        "has-error": form.pic.$invalid && submitted }')
+
+                        div.pic(ng-repeat="pic in user.pic")
+                          img(src="{{pic.path}}" width="50%")
+
+                        label Reemplazarás todas las imágenes al subir nuevos archivos
+                        input.form-control(type='file', name="pic", ng-model="user.pic")
+                        input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
+                        name='pic[desc]', ng-model='user.pic1.desc')
+
+                        input.form-control(type='file', name="pic", ng-model="user.pic")
+                        input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
+                        name='pic[desc]', ng-model='user.pic2.desc')
+
+                        input.form-control(type='file', name="pic", ng-model="user.pic")
+                        input.form-control(placeholder='Ejemplo: La entrada a la tienda doña chona', type='text',
+                        name='pic[desc]', ng-model='user.pic3.desc')
+
+                        input.form-control(type='file', name="pic", ng-model="user.pic")
+                        input.form-control(placeholder='Ejemplo: Restaurante Doña Chona', type='text',
+                        name='pic[desc]', ng-model='user.pic4.desc')
+
+                        input.form-control(type='file', name="pic", ng-model="user.pic")
+                        input.form-control(placeholder='Ejemplo: Nuestros Chefs', type='text',
+                        name='pic[desc]', ng-model='user.pic5.desc')
+
+                        input.form-control(type='file', name="pic", ng-model="user.pic")
+                        input.form-control(placeholder='Ejemplo: Comida Doña Chona', type='text',
+                        name='pic[desc]', ng-model='user.pic6.desc')
+                        p.help-block(ng-show='form.pic.$error.required && submitted')
+                            | Error de validación de campo
+
+                      h1 Social
+
+                      .form-group(ng-class='{ "has-success": form.urlWebsite.$valid && submitted,\
+                        "has-error": form.urlWebsite.$invalid && submitted }')
+                        label Website
+                        input.form-control(type="text", name="urlWebsite" placeholder='Ejemplo: www.mi-empresa.com' ng-model='user.urlWebsite')
+                        p.help-block(ng-show='form.urlWebsite.$error.required && submitted')
+                            | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.social[facebook].$valid && submitted,\
+                        "has-error": form.social[facebook].$invalid && submitted }')
+                        label Facebook
+                        input.form-control(type="text", name="facebook" placeholder='Ejemplo: www.facebook.com/mi_empresa' ng-model='user.social.facebook' )
+                        p.help-block(ng-show='form.social[facebook].$error.required && submitted')
+                            | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.social[twitter].$valid && submitted,\
+                        "has-error": form.social[twitter].$invalid && submitted }')
+                        label Twitter
+                        input.form-control(type="text", name="social[twitter]" placeholder='Ejemplo: www.twitter.com/mi_empresa' ng-model='user.social.twitter')
+                        p.help-block(ng-show='form.social[twitter].$error.required && submitted')
+                            | Error de validación de campo
+
+
+                      button.btn.btn-warning(type='reset') Reset Button
+                      button.btn.btn-primary(type='submit') Submit Button
+
+                  //
+                     /.col-lg-6 (nested)
+                //
+                   /.row (nested)
+              //
+                 /.panel-body
+            //
+               /.panel
+          //
+             /.col-lg-12
+

@@ -1,0 +1,49 @@
+#wrapper
+  div(ng-include='"components/navbar/navbar.html"')
+  #page-wrapper(ng-controller="UsersCtrl")
+    .row
+      .col-lg-12.page-header
+          h1 Usuarios
+          a.btn.btn-primary.new(href='/new-user') Nuevo Usuario
+        //
+           /.col-lg-12
+    .row
+        .col-lg-12
+            .panel.panel-default
+              .panel-heading
+                | Usuarios Más recientes - Total: {{ users.length }}
+              //
+                 /.panel-heading
+              .panel-body
+                .table-responsive
+                  table.table.table-striped.table-bordered
+                    thead
+                      tr(role='row')
+                        th Código
+                        th Nombre
+                        th Encargado
+                        th Telefono
+                        th Email
+                        th Editar
+                    tbody
+                      tr.gradeA.odd(ng-repeat="user in users")
+                        td.sorting_1 {{ user._id }}
+                        td {{ user.name }}
+                        td {{ user.contact.name }}
+                        td
+                          .div(ng-repeat="i in user.tel")
+                            {{ i }}
+                        td.center {{ user.email }}
+                        td.center
+                          a.btn.btn-large.btn-primary.btn-xs(href="/user/{{ user._id }}")
+                            <i class="fa fa-angle-right fa-fw"></i>
+                  .row
+                //
+                   /.table-responsive
+              //
+                 /.panel-body
+            //
+               /.panel
+          //
+             /.col-lg-12
+

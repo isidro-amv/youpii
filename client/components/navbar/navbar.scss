@@ -1,0 +1,34 @@
+.sidebar{
+  z-index: 1;
+  position: absolute;
+  width: 250px;
+  margin-top: 51px;
+}
+
+.sidebar ul li{
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.sidebar .sidebar-search {
+  padding: 15px;
+}
+
+#side-menu .fa{
+  margin-right: 5px;
+}
+
+nav .dropdown{
+  margin: 0 4px;
+  margin-top: 5px;
+  display: inline-block;
+}
+
+.navbar-right .dropdown-menu{
+  min-width: 350px;
+}
+.navbar-right .dropdown-user {
+  min-width: 160px;
+}
+.fa {
+  margin-left: 5px;
+}

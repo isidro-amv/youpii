@@ -1,0 +1,139 @@
+#wrapper
+  div(ng-include='"components/navbar/navbar.html"')
+  #page-wrapper
+    .row
+      .col-lg-12
+          h1.page-header Ciudades
+        //
+           /.col-lg-12
+    .row
+        .col-lg-12
+            .panel.panel-default
+              .panel-heading
+                | DataTables Advanced Tables
+              //
+                 /.panel-heading
+              .panel-body
+                .table-responsive
+                  #dataTables-example_wrapper.dataTables_wrapper.form-inline(role='grid')
+                    .row
+                      .col-sm-6
+                        #dataTables-example_length.dataTables_length
+                          label
+                            select.form-control.input-sm(name='dataTables-example_length', aria-controls='dataTables-example')
+                              option(value='10') 10
+                              option(value='25') 25
+                              option(value='50') 50
+                              option(value='100') 100
+                            | records per page
+                      .col-sm-6
+                        #dataTables-example_filter.dataTables_filter
+                          label
+                            | Search:
+                            input.form-control.input-sm(type='search', aria-controls='dataTables-example')
+                    table#dataTables-example.table.table-striped.table-bordered.table-hover.dataTable.no-footer(aria-describedby='dataTables-example_info')
+                      thead
+                        tr(role='row')
+                          th.sorting_asc(tabindex='0', aria-controls='dataTables-example', rowspan='1', colspan='1', aria-sort='ascending', aria-label='Rendering engine: activate to sort column ascending', style='width: 180px;') Rendering engine
+                          th.sorting(tabindex='0', aria-controls='dataTables-example', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending', style='width: 236px;') Browser
+                          th.sorting(tabindex='0', aria-controls='dataTables-example', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending', style='width: 216px;') Platform(s)
+                          th.sorting(tabindex='0', aria-controls='dataTables-example', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending', style='width: 153px;') Engine version
+                          th.sorting(tabindex='0', aria-controls='dataTables-example', rowspan='1', colspan='1', aria-label='CSS grade: activate to sort column ascending', style='width: 110px;') CSS grade
+                      tbody
+                        tr.gradeA.odd
+                          td.sorting_1 Gecko
+                          td. Firefox 1.0
+                          td. Win 98+ / OSX.2+
+                          td.center 1.7
+                          td.center A
+                        tr.gradeA.even
+                          td.sorting_1 Gecko
+                          td. Firefox 1.5
+                          td. Win 98+ / OSX.2+
+                          td.center 1.8
+                          td.center A
+                        tr.gradeA.odd
+                          td.sorting_1 Gecko
+                          td. Firefox 2.0
+                          td. Win 98+ / OSX.2+
+                          td.center 1.8
+                          td.center A
+                        tr.gradeA.even
+                          td.sorting_1 Gecko
+                          td. Firefox 3.0
+                          td. Win 2k+ / OSX.3+
+                          td.center 1.9
+                          td.center A
+                        tr.gradeA.odd
+                          td.sorting_1 Gecko
+                          td. Camino 1.0
+                          td. OSX.2+
+                          td.center 1.8
+                          td.center A
+                        tr.gradeA.even
+                          td.sorting_1 Gecko
+                          td. Camino 1.5
+                          td. OSX.3+
+                          td.center 1.8
+                          td.center A
+                        tr.gradeA.odd
+                          td.sorting_1 Gecko
+                          td. Netscape 7.2
+                          td. Win 95+ / Mac OS 8.6-9.2
+                          td.center 1.7
+                          td.center A
+                        tr.gradeA.even
+                          td.sorting_1 Gecko
+                          td. Netscape Browser 8
+                          td. Win 98SE+
+                          td.center 1.7
+                          td.center A
+                        tr.gradeA.odd
+                          td.sorting_1 Gecko
+                          td. Netscape Navigator 9
+                          td. Win 98+ / OSX.2+
+                          td.center 1.8
+                          td.center A
+                        tr.gradeA.even
+                          td.sorting_1 Gecko
+                          td. Mozilla 1.0
+                          td. Win 95+ / OSX.1+
+                          td.center 1
+                          td.center A
+                    .row
+                      .col-sm-6
+                        #dataTables-example_info.dataTables_info(role='alert', aria-live='polite', aria-relevant='all') Showing 1 to 10 of 57 entries
+                      .col-sm-6
+                        #dataTables-example_paginate.dataTables_paginate.paging_simple_numbers
+                          ul.pagination
+                            li#dataTables-example_previous.paginate_button.previous.disabled(aria-controls='dataTables-example', tabindex='0')
+                              a(href='#') Previous
+                            li.paginate_button.active(aria-controls='dataTables-example', tabindex='0')
+                              a(href='#') 1
+                            li.paginate_button(aria-controls='dataTables-example', tabindex='0')
+                              a(href='#') 2
+                            li.paginate_button(aria-controls='dataTables-example', tabindex='0')
+                              a(href='#') 3
+                            li.paginate_button(aria-controls='dataTables-example', tabindex='0')
+                              a(href='#') 4
+                            li.paginate_button(aria-controls='dataTables-example', tabindex='0')
+                              a(href='#') 5
+                            li.paginate_button(aria-controls='dataTables-example', tabindex='0')
+                              a(href='#') 6
+                            li#dataTables-example_next.paginate_button.next(aria-controls='dataTables-example', tabindex='0')
+                              a(href='#') Next
+                //
+                   /.table-responsive
+                .well
+                  h4 DataTables Usage Information
+                  p
+                    | DataTables is a very flexible, advanced tables plugin for jQuery. In SB Admin, we are using a specialized version of DataTables built for Bootstrap 3. We have also customized the table headings to use Font Awesome icons in place of images. For complete documentation on DataTables, visit their website at
+                    a(target='_blank', href='https://datatables.net/') https://datatables.net/
+                    | .
+                  a.btn.btn-default.btn-lg.btn-block(target='_blank', href='https://datatables.net/') View DataTables Documentation
+              //
+                 /.panel-body
+            //
+               /.panel
+          //
+             /.col-lg-12
