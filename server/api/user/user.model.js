@@ -24,11 +24,13 @@ var UserSchema = new Schema({
     encoding: String,
     mimetype: String,
     extension:String,
-    size:     String ,
-    pathBig:  String,
-    pathNormal:String, // normal http location
-    pathSmall:String, // Large http location
-    pathThumb:String, // Large http location
+    size:     String,
+    paths :{
+      big:    String,
+      normal: String,
+      small:  String,
+      thumb:  String
+    },
     kind:     String  },
   pic:[{
     name:     String,
@@ -37,12 +39,13 @@ var UserSchema = new Schema({
     mimetype: String,
     extension:String,
     size:     String ,
-    path:     String,
-    pathBig:   String, // original http location
-    pathLarge:   String, // original http location
-    pathNormal:   String, // normal http location
-    pathSmall:   String, // Large http location
-    pathSlim:   String, // original http location
+    paths:{
+      big: String,
+      large: String,
+      normal: String,
+      small: String,
+      slim: String
+    },
     kind:     String  }],
   dateCreate: { type: Date, default: Date.now },
   email: { type: String, lowercase: true },
@@ -95,12 +98,7 @@ UserSchema
       'cel': this.cel,
       'loc': this.loc,
       'city': this.city,
-      'logo':{
-        'name': this.logo.name,
-        'pathSmall': this.logo.path, // temp
-        'pathNormal': this.logo.pathNormal,
-        'pathOriginal': this.logo.pathOriginal
-      },
+      'logo': this.logo,
       'pic': this.pic,
       'dateCreate': this.dateCreate,
       'email': this.email,

@@ -6,5 +6,5 @@ public
 client/bower_components
 dist
 /server/config/local.env.js
-/server/components/s3/index.js
+/server/components/s3/config.js
 /server/uploads

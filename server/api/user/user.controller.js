@@ -4,12 +4,9 @@ var User = require('./user.model')
   , passport = require('passport')
   , config = require('../../config/environment')
   , images = require(config.root+'/server/components/images')
-  , s3 = require('s3')
-  , s3Options = require(config.root+'/server/components/s3')
-  , clientS3 = s3.createClient(s3Options.options)
-  , jwt = require('jsonwebtoken')
-  , fs = require('fs')
-  , gm = require('gm').subClass({ imageMagick: true });
+  , s3 = require(config.root+'/server/components/s3')
+  , jwt = require('jsonwebtoken');
+
 
 var validationError = function(res, err) {
   return res.json(422, err);
@@ -42,51 +39,8 @@ exports.create = function (req, res, next) {
 
   if (req.files) {
     if (req.files.logo) {
-      req.body.logo = req.files.logo;
+      req.body.logo = s3.uploadFile(req.files.logo,'logo');
       req.body.logo.desc = req.body.name;
-
-      /*
-      // Delete Objects
-      uploader[12] = clientS3.deleteObjects({
-        Bucket: s3Options.bucket,
-        Delete: {
-          Objects:[{
-            Key: '164cffaed0cca859e0b2cee60206194a-no.jpg'
-          }]
-        }
-      },function (err,data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else     console.log(data);           // successful response
-      });*/
-
-      Object.keys(images.logo).forEach(function( el, i){
-        images.logo[el].dir = addSufixText(req.body.logo.path, images.logo[el].sufix);
-
-        gm(req.body.logo.path)
-        .resize(images.logo[el].width,images.logo[el].width)
-        .write(images.logo[el].dir, function (err) {
-          if (!err) {
-            /*uploader[i] = clientS3.uploadFile({
-              localFile: images.logo[el].dir,
-              s3Params: {
-                ACL: 'public-read',
-                Bucket: s3Options.bucket,
-                Key: images.logo[el].dir.split('/').slice(-1)[0]
-              },
-            });
-            uploader[i].on('end', function(err,i) {
-              console.log("done uploading",err,i);
-            });*/
-          }else{
-            console.log(err);
-          }
-        });
-      });
-      delete req.body.path;
-      req.body.logo.pathBig = generateS3Url(req.body.name,images.logo.big.sufix);
-      req.body.logo.pathNormal = generateS3Url(req.body.name,images.logo.normal.sufix);
-      req.body.logo.pathSmall = generateS3Url(req.body.name,images.logo.small.sufix);
-      req.body.logo.paththumb = generateS3Url(req.body.name,images.logo.thumb.sufix);
     }
 
     // asigna la descripción a un array de imágenes
@@ -95,7 +49,7 @@ exports.create = function (req, res, next) {
         picDesc = req.body.pic.desc;
       }
       req.body.pic = req.files.pic;
-      if( Object.prototype.toString.call( req.body.pic ) !== '[object Array]' ) {
+      if(!(req.body.pic instanceof Array)) {
         req.body.pic = [req.body.pic];
       }
       if ( typeof picDesc == 'string') {
@@ -106,42 +60,7 @@ exports.create = function (req, res, next) {
           req.body.pic[i].desc = picDesc[i];
         }
       }
-
-      Object.keys(images.gallery).forEach(function (key, i) {
-        Object.keys(req.body.pic).forEach(function (i2) {
-          images.gallery[key].dir = addSufixText(req.body.pic[i2].path, images.gallery[key].sufix);
-          gm(req.body.pic[i2].path)
-            .resize(images.gallery[key].width,images.gallery[key].height, '^')
-            .gravity('Center')
-            .crop(images.gallery[key].width,images.gallery[key].height)
-            .write(images.gallery[key].dir, function (err) {
-              if (!err) {
-                /*uploader2[i] = clientS3.uploadFile({
-                  localFile: images.gallery[key].dir,
-                  s3Params: {
-                    ACL: 'public-read',
-                    Bucket: s3Options.bucket,
-                    Key: images.gallery[key].dir.split('/').slice(-1)[0]
-                  },
-                });
-                uploader2[i].on('end', function(err,i) {
-                  console.log("done uploading",err,i);
-                });*/
-              }else{
-                console.log(err);
-              }
-            });
-          });
-      });
-
-      Object.keys(req.body.pic).forEach(function (i) {
-        delete req.body.pic[i].path;
-        req.body.pic[i].pathBig = generateS3Url(req.body.pic[i].name,images.gallery.big.sufix);
-        req.body.pic[i].pathNormal = generateS3Url(req.body.pic[i].name,images.gallery.normal.sufix);
-        req.body.pic[i].pathLarge = generateS3Url(req.body.pic[i].name,images.gallery.large.sufix);
-        req.body.pic[i].pathSlim = generateS3Url(req.body.pic[i].name,images.gallery.slim.sufix);
-      });
-      console.log(images.gallery);
+      req.body.pic = s3.uploadFile(req.body.pic,'gallery');
     }
   };
 
@@ -219,18 +138,19 @@ exports.update = function(req, res, next) {
     if (req.files) {
 
       if (req.files.logo) {
-        user.logo = req.files.logo;
+        s3.deleteFiles(user.logo);
         user.logo.desc = req.body.name;
+        user.logo = s3.uploadFile(req.files.logo,'logo');
       }
 
       // asigna la descripción a un array de imágenes
       if (req.files.pic) {
+        s3.deleteFiles(user.pic);
         if (req.body.pic) {
           picDesc = req.body.pic.desc;
         }
 
-        user.pic = req.files.pic;
-        if( Object.prototype.toString.call( user.pic ) !== '[object Array]' ) {
+        if( !(user.pic instanceof Array) ) {
           user.pic = [user.pic];
         }
         if ( typeof picDesc == 'string') {
@@ -241,6 +161,7 @@ exports.update = function(req, res, next) {
             user.pic[i].desc = picDesc[i];
           }
         }
+        user.pic = s3.uploadFile(req.files.pic,'gallery');
       }
     }
 
@@ -294,13 +215,8 @@ exports.authCallback = function(req, res, next) {
   res.redirect('/');
 };
 
-
 function addSufixText (str,sufix) {
   var splitName = str.split('.');
   splitName[splitName.length-2] = splitName[splitName.length-2]+sufix;
   return splitName.join('.');
-}
-
-function generateS3Url (name, sufix) {
-  return s3Options.url+s3Options.bucket+'/'+addSufixText(name,sufix);
-}
+};

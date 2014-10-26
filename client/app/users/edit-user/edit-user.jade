@@ -101,7 +101,7 @@
                       .form-group(ng-class='{ "has-success": form.logo.$valid && submitted,\
                         "has-error": form.logo.$invalid && submitted }')
                         label Logo
-                        img.logo(src="{{user.logo.pathSmall}}" width="80%")
+                        img.logo(src="{{user.logo.paths.small}}" )
                         label Reemplazar
                         input.form-control(type='file', name="logo", ng-model="user.logo")
                         p.help-block(ng-show='form.logo.$error.required && submitted')
@@ -134,26 +134,32 @@
                           img(src="{{pic.path}}" width="50%")
 
                         label Reemplazarás todas las imágenes al subir nuevos archivos
+                        img.logo(src="{{user.pic[0].paths.slim}}" )
                         input.form-control(type='file', name="pic", ng-model="user.pic")
                         input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
                         name='pic[desc]', ng-model='user.pic1.desc')
 
+                        img.logo(src="{{user.pic[1].paths.slim}}" )
                         input.form-control(type='file', name="pic", ng-model="user.pic")
                         input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
                         name='pic[desc]', ng-model='user.pic2.desc')
 
+                        img.logo(src="{{user.pic[2].paths.slim}}" )
                         input.form-control(type='file', name="pic", ng-model="user.pic")
                         input.form-control(placeholder='Ejemplo: La entrada a la tienda doña chona', type='text',
                         name='pic[desc]', ng-model='user.pic3.desc')
 
+                        img.logo(src="{{user.pic[3].paths.slim}}" )
                         input.form-control(type='file', name="pic", ng-model="user.pic")
                         input.form-control(placeholder='Ejemplo: Restaurante Doña Chona', type='text',
                         name='pic[desc]', ng-model='user.pic4.desc')
 
+                        img.logo(src="{{user.pic[4].paths.slim}}" )
                         input.form-control(type='file', name="pic", ng-model="user.pic")
                         input.form-control(placeholder='Ejemplo: Nuestros Chefs', type='text',
                         name='pic[desc]', ng-model='user.pic5.desc')
 
+                        img.logo(src="{{user.pic[5].paths.slim}}" )
                         input.form-control(type='file', name="pic", ng-model="user.pic")
                         input.form-control(placeholder='Ejemplo: Comida Doña Chona', type='text',
                         name='pic[desc]', ng-model='user.pic6.desc')
