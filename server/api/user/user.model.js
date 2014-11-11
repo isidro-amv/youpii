@@ -17,14 +17,10 @@ var UserSchema = new Schema({
   cel: [String],
   dir: [String],
   loc: {type: [Number], index: '2d'},
-  city: String, // debería ser in id de city schema
+  city: { type: Schema.Types.ObjectId, ref: 'City' }, // debería ser in id de city schema
   logo:{
     name:     String,
     desc:     String,
-    encoding: String,
-    mimetype: String,
-    extension:String,
-    size:     String,
     paths :{
       big:    String,
       normal: String,
@@ -32,19 +28,16 @@ var UserSchema = new Schema({
       thumb:  String
     },
     kind:     String  },
-  pic:[{
+  images:[{
+    _id:      Schema.Types.ObjectId,
     name:     String,
-    desc:     String,
-    encoding: String,
-    mimetype: String,
-    extension:String,
-    size:     String ,
+    desc:     String, // TODO: cambiar a multilenguaje
     paths:{
       big: String,
       large: String,
       normal: String,
       small: String,
-      slim: String
+      slim: String // personalizada
     },
     kind:     String  }],
   dateCreate: { type: Date, default: Date.now },

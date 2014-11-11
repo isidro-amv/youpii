@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: NewSectionCtrl', function () {
+describe('Controller: EditHomepageCtrl', function () {
 
   // load the controller's module
   beforeEach(module('youpiiBApp'));
 
-  var NewSectionCtrl, scope;
+  var EditHomepageCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    NewSectionCtrl = $controller('NewSectionCtrl', {
+    EditHomepageCtrl = $controller('EditHomepageCtrl', {
       $scope: scope
     });
   }));

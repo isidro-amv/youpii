@@ -9,7 +9,7 @@ angular.module('youpiiBApp')
         controller: 'CitiesCtrl'
       })
       .state('edit-city', {
-        url: 'city/:id',
+        url: '/city/:id',
         templateUrl: 'app/cities/edit-city/edit-city.html',
         controller: 'EditCityCtrl'
       })

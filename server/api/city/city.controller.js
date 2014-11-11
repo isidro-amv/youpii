@@ -22,6 +22,11 @@ exports.show = function(req, res) {
 
 // Creates a new city in the DB.
 exports.create = function(req, res) {
+
+  if (req.body.loc) {
+    req.body.loc = req.body.loc.split(',');
+  }
+
   City.create(req.body, function(err, city) {
     if(err) { return handleError(res, err); }
     return res.json(201, city);

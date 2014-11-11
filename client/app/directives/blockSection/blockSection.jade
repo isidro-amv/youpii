@@ -1,0 +1,107 @@
+.col-lg-6
+  .panel.panel-default
+    .panel-heading
+    .panel-body
+      form.form(name='formBlock', novalidate='', enctype="multipart/form-data")
+        input(name="sectionId" ng-model="block._id" type="hidden")
+
+        select.form-control( name='kind', ng-model='block.kind', required='')
+          option( value="0" selected="") ---- Seleccionar una opción --------
+          option(value="generic") Nueva Imagen
+          option(value="promo") Seleccionar Promoción
+        p.help-block(ng-show='formBlock["kind"].$error.required && submitted[$index]')
+          | Error de validación de campo
+
+
+        div(ng-show="block.kind == 'promo' ")
+          .form-group(ng-class='{ "has-success": formformBlock.promo_id.$valid && submitted[$index],\
+            "has-error": formBlock.promo_id.$invalid && submitted[$index] }')
+            label Id Promoción
+            input.form-control(placeholder="Ejemplo: id Promoción", type='text', name='promo_id', ng-model='block.promo_id', ng-required="block.kind == 'promo'")
+            p.help-block(ng-show='formBlock.dimension.$error.required && submitted[$index]')
+              | Error de validación de campo
+
+        div(ng-show="block.kind == 'generic'")
+          .form-group(ng-class='{ "has-success": formBlock["url[en]"].$valid && submitted[$index],\
+            "has-error": formBlock["url[en]"].$invalid && submitted[$index] }')
+            label Link inglés
+            input.form-control(placeholder="Ejemplo: en/sport/el-deportivo", type='text',
+            name='url[en]', ng-model='block.url.en', ng-required="block.kind == 'generic'")
+            p.help-block(ng-show='formBlock["url[en]"].$error.required && submitted[$index]')
+              | Error de validación de campo
+
+          .form-group(ng-class='{ "has-success": formBlock["url[es]"].$valid && submitted[$index],\
+            "has-error": formBlock["url[es]"].$invalid && submitted[$index] }')
+            label Link Español
+            input.form-control(placeholder="Ejemplo: es/deportes/el-deportivo", type='text',
+            name='url[es]', ng-model='block.url.es', ng-required="block.kind == 'generic'")
+            p.help-block(ng-show='formBlock["url[es]"].$error.required && submitted[$index]')
+              | Error de validación de campo
+
+          .form-group(ng-class='{ "has-success": formBlock["promo[en]"].$valid && submitted[$index],\
+            "has-error": formBlock["promo[en]"].$invalid && submitted[$index] }')
+            label Promo inglés
+            input.form-control(placeholder="Ejemplo: Entrada Gratis", type='text',
+            name='promo[en]', ng-model='block.promo.en', ng-required="block.kind == 'generic'")
+            p.help-block(ng-show='formBlock["promo[en]"].$error.required && submitted[$index]')
+              | Error de validación de campo
+
+          .form-group(ng-class='{ "has-success": formBlock["promo[es]"].$valid && submitted[$index],\
+            "has-error": formBlock["promo[es]"].$invalid && submitted[$index] }')
+            label Promo Español
+            input.form-control(placeholder="Ejemplo: No cover", type='text',
+            name='promo[es]', ng-model='block.promo.es', ng-required="block.kind == 'generic'")
+            p.help-block(ng-show='formBlock["promo[es]"].$error.required && submitted[$index]')
+              | Error de validación de campo
+
+          label Imagen
+          a( href="{{ block.image.paths.normal }}" target="_blank") {{ block.image.paths.normal}}
+          .form-group(ng-class='{ "has-success": formBlock.$valid && submitted[$index],\
+            "has-error": formBlock.$invalid && submitted[$index] }')
+            input.form-control(type='file', name="image", valid-file="", ng-required="block.kind == 'generic'", ng-model="block.image.file.path.normal"  )
+            .form-group(ng-class='{ "has-success": formBlock.$valid && submitted[$index],\
+            "has-error": formBlock.$invalid && submitted[$index] }')
+            p.help-block(ng-show='formBlock.$error.required && submitted[$index]')
+                | Error de validación de campo
+
+        .form-group(ng-class='{ "has-success": formBlock.dimension.$valid && submitted[$index],\
+          "has-error": formBlock.dimension.$invalid && submitted[$index] }')
+          label Dimensión
+          select.form-control(type='text', name='dimension', ng-model='block.dimension', required='' )
+            option(value="0") ----------  Selecciona tamaño ---------
+            option(value="large") Largo
+            option(value="mobile") Normal
+          p.help-block(ng-show='formBlock.dimension.$error.required && submitted[$index]')
+            | Error de validación de campo
+
+        .form-group(ng-class='{ "has-success": formBlock["title[en]"].$valid && submitted[$index],\
+          "has-error": formBlock["title[en]"].$invalid && submitted[$index] }')
+          label Title inglés
+          input.form-control(placeholder="Ejemplo: My block title", type='text',
+          name='title[en]', ng-model='block.title.en', required="")
+          p.help-block(ng-show='formBlock["title[en]"].$error.required && submitted[$index]')
+            | Error de validación de campo
+
+        .form-group(ng-class='{ "has-success": formBlock["title[es]"].$valid && submitted[$index],\
+          "has-error": formBlock["title[es]"].$invalid && submitted[$index] }')
+          label Título Español
+          input.form-control(placeholder="Ejemplo: My block title", type='text',
+          name='title[es]', ng-model='block.title.es', required="")
+          p.help-block(ng-show='formBlock["title[es]"].$error.required && submitted[$index]')
+            | Error de validación de campo
+
+        .form-group(ng-class='{ "has-success": formBlock["order"].$valid && submitted[$index],\
+          "has-error": formBlock["order"].$invalid && submitted[$index] }')
+            label Posición
+            input.form-control(placeholder="Ejemplo: 0", type='text', name='order', ng-model='block.order', required='')
+            p.help-block(ng-show='formBlock["order"].$error.required && submitted[$index]')
+              | Error de validación de campo
+
+        input.btn.btn-primary( type="submit" ng-click='updateBlock(formBlock,$parent.$index ,$index)'
+          value="actualizar" ng-show=" block._id ")
+        input.btn.btn-warning( type="submit" ng-click='deleteBlock($parent.$index, $index)'
+          value="eliminar" ng-show=" block._id ")
+        input.btn.btn-warning( type="submit" ng-click='createBlock(formBlock, $parent.$index,$index)'
+          value="Crear" ng-show=" !block._id ")
+  //
+     /.col-lg-6 (nested)

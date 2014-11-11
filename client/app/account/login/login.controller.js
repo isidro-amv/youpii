@@ -2,7 +2,9 @@
 
 angular.module('youpiiBApp')
   .controller('LoginCtrl', function ($scope, Auth, $location, $window) {
-    $scope.user = {};
+    $scope.user = {
+      email: 'admin@admin.com'
+    };
     $scope.errors = {};
 
     $scope.login = function(form) {

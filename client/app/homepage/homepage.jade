@@ -1,4 +1,25 @@
 #wrapper
   div(ng-include='"components/navbar/navbar.html"')
-  #page-wrapper
-    | homepage
+  #page-wrapper.promos(ng-controller="HomepageCtrl")
+    .row
+      .col-lg-12.page-header
+          h1 Promociones
+          a.btn.btn-primary.new(href='/homepage-edit') Edtar Homepage
+        //
+           /.col-lg-12
+    .row
+        .col-lg-12
+            .panel.panel-default
+              .panel-heading
+                | Promociones Más recientes - Total: {{ promos.length }}
+              //
+                 /.panel-heading
+              .panel-body
+
+              //
+                 /.panel-body
+            //
+               /.panel
+          //
+             /.col-lg-12
+

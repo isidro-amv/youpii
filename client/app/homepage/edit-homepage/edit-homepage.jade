@@ -1,0 +1,26 @@
+#wrapper
+  div(ng-include='"components/navbar/navbar.html"')
+  #page-wrapper.form-homepage(ng-controller="EditHomepageCtrl")
+    .row
+        .col-lg-12.page-header
+            h1 Editar Homepage
+            div.btn.btn-primary.new(ng-click="addSection()") Agregar Sección
+          //
+             /.col-lg-12
+    .row
+        .col-lg-12
+            .panel.panel-default
+              .panel-heading
+                .title Header Sliders
+                buttom.btn.btn-primary.btn-xs(ng-click="addSlider()") Nuevo Slider
+              .panel-body#sliders
+                main-slider(index="{{ $index }}", ng-repeat="slider in sliders")
+                //
+                   /.row (nested)
+            .home-section
+              home-section(index="{{ $index }}" ng-repeat="section in sections")
+            //
+               /.panel
+          //
+             /.col-lg-12
+

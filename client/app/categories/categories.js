@@ -9,7 +9,7 @@ angular.module('youpiiBApp')
         controller: 'CategoriesCtrl'
       })
       .state('edit-category', {
-        url: 'category:id',
+        url: '/category/:id',
         templateUrl: 'app/categories/edit-category/edit-category.html',
         controller: 'EditCategoryCtrl'
       })

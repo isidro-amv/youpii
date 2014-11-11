@@ -5,7 +5,8 @@ var User = require('./user.model')
   , config = require('../../config/environment')
   , images = require(config.root+'/server/components/images')
   , s3 = require(config.root+'/server/components/s3')
-  , jwt = require('jsonwebtoken');
+  , jwt = require('jsonwebtoken')
+  , _ = require('lodash');
 
 
 var validationError = function(res, err) {
@@ -30,7 +31,7 @@ exports.create = function (req, res, next) {
 
   console.log(req.files);
   console.log(req.body);
-  var picDesc = [];
+  var imageDesc = [];
   var splitName = '';
   var uploader = [], uploader2 = [];
 
@@ -44,23 +45,23 @@ exports.create = function (req, res, next) {
     }
 
     // asigna la descripción a un array de imágenes
-    if (req.files.pic) {
-      if (req.body.pic) {
-        picDesc = req.body.pic.desc;
+    if (req.files.images) {
+      if (req.body.images) {
+        imageDesc = req.body.images.desc;
       }
-      req.body.pic = req.files.pic;
-      if(!(req.body.pic instanceof Array)) {
-        req.body.pic = [req.body.pic];
+      req.body.images = req.files.images;
+      if(!(req.body.images instanceof Array)) {
+        req.body.images = [req.body.images];
       }
-      if ( typeof picDesc == 'string') {
-        picDesc = [picDesc];
+      if ( !(imageDesc instanceof Array) ) {
+        imageDesc = [imageDesc];
       }
-      for (var i = picDesc.length - 1; i >= 0; i--) {
-        if (req.body.pic[i]) {
-          req.body.pic[i].desc = picDesc[i];
+      for (var i = imageDesc.length - 1; i >= 0; i--) {
+        if (req.body.images[i]) {
+          req.body.images[i].desc = imageDesc[i];
         }
       }
-      req.body.pic = s3.uploadFile(req.body.pic,'gallery');
+      req.body.images = s3.uploadFile(req.body.images,'gallery');
     }
   };
 
@@ -96,6 +97,8 @@ exports.show = function (req, res, next) {
  */
 exports.destroy = function(req, res) {
   User.findByIdAndRemove(req.params.id, function(err, user) {
+    s3.deleteFiles(user.logo);
+    s3.deleteFiles(user.images);
     if(err) return res.send(500, err);
     return res.send(204);
   });
@@ -106,7 +109,7 @@ exports.destroy = function(req, res) {
  */
 exports.update = function(req, res, next) {
   var userId = req.params.id;
-  var picDesc = [];
+  var imageDesc = [];
   User.findById(userId, function (err, user) {
 
 
@@ -123,7 +126,7 @@ exports.update = function(req, res, next) {
     user.dir = req.body.dir || user.dir;
     user.city = req.body.city || user.city;
     user.logo = req.body.logo || user.logo;
-    user.pic = req.body.pic || user.pic;
+    user.images = req.body.images || user.images;
     user.email = req.body.email || user.email;
     user.urlWebsite = req.body.urlWebsite || user.urlWebsite;
     if (req.body.social) {
@@ -144,24 +147,22 @@ exports.update = function(req, res, next) {
       }
 
       // asigna la descripción a un array de imágenes
-      if (req.files.pic) {
-        s3.deleteFiles(user.pic);
-        if (req.body.pic) {
-          picDesc = req.body.pic.desc;
-        }
+      if (req.files.images) {
+        s3.deleteFiles(user.images);
+        imageDesc = req.body.images.desc || '';
 
-        if( !(user.pic instanceof Array) ) {
-          user.pic = [user.pic];
+        if( !(user.images instanceof Array) ) {
+          user.images = [user.images];
         }
-        if ( typeof picDesc == 'string') {
-          picDesc = [picDesc];
+        if ( !(imageDesc instanceof Array)) {
+          imageDesc = [imageDesc];
         }
-        for (var i = picDesc.length - 1; i >= 0; i--) {
-          if (user.pic[i]) {
-            user.pic[i].desc = picDesc[i];
+        for (var i = imageDesc.length - 1; i >= 0; i--) {
+          if (user.images[i]) {
+            user.images[i].desc = imageDesc[i];
           }
         }
-        user.pic = s3.uploadFile(req.files.pic,'gallery');
+        user.images = s3.uploadFile(req.files.images,'gallery');
       }
     }
 

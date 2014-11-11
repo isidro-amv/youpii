@@ -8,9 +8,15 @@ var CategorySchema = new Schema({
     es: String,
     en: String
   },
-  leve: Number,
+  url: {
+    es: String,
+    en: String
+  },
   parent: Array,
-  info: String,
+  info:{
+    es: String,
+    en: String
+  },
   active: Boolean
 });
 

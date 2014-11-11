@@ -1,0 +1,72 @@
+.col-lg-6
+  .panel.panel-default
+    .panel-heading
+      | Slider
+    .panel-body
+      form.form.slider(name='form' novalidate='', index="{{ $index }}" enctype="multipart/form-data")
+
+        input( name="_id" type="hidden" value="{{ slider._id }}")
+        .form-group(ng-class='{ "has-success": form["title[es]"].$valid && submitted[$index],\
+          "has-error": form["title[es]"].$invalid && submitted[$index] }')
+          label Título español
+          textarea.form-control(placeholder="Ejemplo: Título de mi slider", type='text', name='title[es]', ng-model='slider.title.es', required='')
+          p.help-block(ng-show='form["title[es]"].$error.required && submitted[$index]')
+            | Error de validación de campo
+
+        .form-group(ng-class='{ "has-success": form["title[en]"].$valid && submitted[$index],\
+          "has-error": form["title[en]"].$invalid && submitted[$index] }')
+          label Título inglés
+          textarea.form-control(placeholder="Ejemplo: My slider title", type='text',
+          name='title[en]', ng-model='slider.title.en', required='')
+          p.help-block(ng-show='form["title[en]"].$error.required && submitted[$index]')
+            | Error de validación de campo
+
+
+        label Slider largo (como le gusta al dena)
+        a( href="{{ slider.images.mainimage.paths.normal}}" target="_blank") {{ slider.images.mainimage.paths.normal}}
+        .form-group(ng-class='{ "has-success": form.mainimage.$valid && submitted[$index],\
+          "has-error": form.mainimage.$invalid && submitted[$index] }')
+          input.form-control(type='file', name="mainimage", ng-model="slider.file[0]")
+          .form-group(ng-class='{ "has-success": form.mainimage.$valid && submitted[$index],\
+          "has-error": form.mainimage.$invalid && submitted[$index] }')
+          p.help-block(ng-show='form.mainimage.$error.required && submitted[$index]')
+              | Error de validación de campo
+
+        label Slider mobile
+        a( href="{{slider.images.image.paths.normal}}" target="_blank") {{ slider.images.image.paths.normal}}
+        .form-group(ng-class='{ "has-success": form.image.$valid && submitted[$index],\
+          "has-error": form.image.$invalid && submitted[$index] }')
+          input.form-control(type='file', name="image", ng-model="slider.file[1]" )
+          .form-group(ng-class='{ "has-success": form.image.$valid && submitted[$index],\
+          "has-error": form.image.$invalid && submitted[$index] }')
+          p.help-block(ng-show='form.image.$error.required && submitted[$index]')
+              | Error de validación de campo
+
+
+        .form-group(ng-class='{ "has-success": form["desc[en]"].$valid && submitted[$index],\
+          "has-error": form["desc[en]"].$invalid && submitted[$index] }')
+          label Description inglés
+          input.form-control(placeholder="Ejemplo: Image Description", type='text',
+          name='desc[en]', ng-model='slider.images.image.desc.en', required='')
+          p.help-block(ng-show='form["desc[en]"].$error.required && submitted[$index]')
+            | Error de validación de campo
+
+        .form-group(ng-class='{ "has-success": form["desc[es]"].$valid && submitted[$index],\
+          "has-error": form["desc[es]"].$invalid && submitted[$index] }')
+          label Descripción Español
+          input.form-control(placeholder="Ejemplo: Descripción de imagen", type='text',
+          name='desc[es]', ng-model='slider.images.image.desc.es', required='')
+          p.help-block(ng-show='form["desc[es]"].$error.required && submitted[$index]')
+            | Error de validación de campo
+
+
+        input.btn.btn-primary( type="submit" ng-click='updateSlider(form,$index)'
+          value="actualizar" ng-show=" slider._id ")
+        input.btn.btn-warning( type="submit" ng-click='deleteSlider($index)'
+          value="eliminar" ng-show=" slider._id ")
+        input.btn.btn-warning( type="submit" ng-click='createSlider(form,$index)'
+          value="Crear" ng-show=" !slider._id ")
+
+
+  //
+     /.col-lg-6 (nested)

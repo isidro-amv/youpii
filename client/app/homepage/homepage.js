@@ -8,14 +8,9 @@ angular.module('youpiiBApp')
         templateUrl: 'app/homepage/homepage.html',
         controller: 'HomepageCtrl'
       })
-      .state('edit-section', {
-        url: 'homepage-section/:id',
-        templateUrl: 'app/homepage/edit-section/edit-section.html',
-        controller: 'EditSectionCtrl'
-      })
-      .state('new-section', {
-        url: '/new-section',
-        templateUrl: 'app/homepage/new-section/new-section.html',
-        controller: 'NewSectionCtrl'
+      .state('edit-homepage', {
+        url: '/homepage-edit',
+        templateUrl: 'app/homepage/edit-homepage/edit-homepage.html',
+        controller: 'EditHomepageCtrl'
       });
   });

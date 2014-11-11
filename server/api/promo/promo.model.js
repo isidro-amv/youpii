@@ -29,16 +29,41 @@ var PromoSchema = new Schema({
     en: String,
     es: String
   },
-  image:[{
+  restriction:{
+    en: String,
+    es: String
+  },
+  url:{
+    en: String,
+    es: String,
+  },
+  imagemain:{
     name:     String,
-    encoding: String,
-    mimetype: String,
-    extension:String,
-    size:     String ,
-    path:     String,
-    pathOriginal:   String, // original http location
-    pathNormal:   String, // normal http location
-    pathLarge:   String, // Large http location
+    desc: {
+      en: String,
+      es: String
+    }, // TODO cambiar a multilenguaje
+    paths:{
+      big: String,
+      large: String,
+      normal: String,
+      small: String,
+      slim: String
+    },
+    kind:     String  },
+  images:[{
+    _id:      Schema.Types.ObjectId,
+    name:     String,
+    desc:     {
+      en: String,
+      es: String
+    }, // TODO cambiar a multilenguaje
+    paths:{
+      big: String,
+      large: String,
+      normal: String,
+      small: String
+    },
     kind:     String  }],
   price: Number,
   dateRegistered: { type: Date, default: Date.now },
@@ -46,9 +71,11 @@ var PromoSchema = new Schema({
   dateLimit: { type: Date, default: promoFuncts.setLimitTime },
   dateStart: { type: Date, default: Date.now },
   dateEnd: { type: Date },
-  countLikes: { type: Number },
-  recordLikes : [ String ],
-  category:  { type: Schema.Types.ObjectId, ref: 'Category' },
+  likes: {
+    count: Number,
+    record: String
+  },
+  category:  [{ type: Schema.Types.ObjectId, ref: 'Category' }],
   owner: { type: Schema.Types.ObjectId, ref: 'User' },
   currency: { type: String, enum: ['MXN','USD'], default: 'MXN' },
   active: Boolean

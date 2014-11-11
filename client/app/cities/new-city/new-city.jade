@@ -1,2 +1,61 @@
-.col-md-12
-    | This is the new-city view.
+#wrapper
+  div(ng-include='"components/navbar/navbar.html"')
+  #page-wrapper.form-city(ng-controller="NewCityCtrl")
+    .row
+        .col-lg-12.page-header
+            h1 Nueva Ciudad
+          //
+             /.col-lg-12
+    .row
+        .col-lg-12
+            .panel.panel-default
+              .panel-heading
+                | Registro
+              .panel-body
+                .row
+                  form.form(name='form', ng-submit='register(form)', novalidate='', enctype="multipart/form-data")
+                    .col-lg-6
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Nombre de ciudad
+                        input.form-control(placeholder="Ejemplo: Puerto Valllarta", type='text',
+                        name='name', ng-model='city.name', required='')
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.state.$valid && submitted,\
+                        "has-error": form.state.$invalid && submitted }')
+                        label Nombre de estado
+                        input.form-control(placeholder="Ejemplo: Jalisco", type='text',
+                        name='state', ng-model='city.state', required='')
+                        p.help-block(ng-show='form.state.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.url.$valid && submitted,\
+                        "has-error": form.url.$invalid && submitted }')
+                        label URL
+                        input.form-control(placeholder="Ejemplo: puerto_vallarta", type='text',
+                        name='url', ng-model='city.url', required='')
+                        p.help-block(ng-show='form.url.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.loc.$valid && submitted,\
+                        "has-error": form.loc.$invalid && submitted }')
+                        label Nombre de ciudad
+                        input.form-control(placeholder="Ejemplo: 20.640620, -105.222771", type='text',
+                        name='loc', ng-model='city.loc', required='')
+                        p.help-block(ng-show='form.loc.$error.required && submitted')
+                          | Error de validación de campo
+
+                      button.btn.btn-warning(type='reset') Reset Button
+                      button.btn.btn-primary(type='submit') Submit Button
+                //
+                   /.row (nested)
+              //
+                 /.panel-body
+            //
+               /.panel
+          //
+             /.col-lg-12
+

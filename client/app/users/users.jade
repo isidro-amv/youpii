@@ -31,8 +31,7 @@
                         td {{ user.name }}
                         td {{ user.contact.name }}
                         td
-                          .div(ng-repeat="i in user.tel")
-                            {{ i }}
+                          .div(ng-repeat="i in user.tel") {{ i }}
                         td.center {{ user.email }}
                         td.center
                           a.btn.btn-large.btn-primary.btn-xs(href="/user/{{ user._id }}")

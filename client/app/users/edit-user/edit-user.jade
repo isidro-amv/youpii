@@ -127,43 +127,43 @@
 
 
                       h1 Imágenes
-                      .form-group(ng-class='{ "has-success": form.pic.$valid && submitted,\
-                        "has-error": form.pic.$invalid && submitted }')
+                      .form-group(ng-class='{ "has-success": form.images.$valid && submitted,\
+                        "has-error": form.images.$invalid && submitted }')
 
-                        div.pic(ng-repeat="pic in user.pic")
-                          img(src="{{pic.path}}" width="50%")
+                        div.pic(ng-repeat="images in user.images")
+                          img(src="{{images.path}}" width="50%")
 
                         label Reemplazarás todas las imágenes al subir nuevos archivos
-                        img.logo(src="{{user.pic[0].paths.slim}}" )
-                        input.form-control(type='file', name="pic", ng-model="user.pic")
+                        img.logo(src="{{user.images[0].paths.slim}}" )
+                        input.form-control(type='file', name="images", ng-model="user.images")
                         input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
-                        name='pic[desc]', ng-model='user.pic1.desc')
+                        name='images[desc]', ng-model='user.images1.desc')
 
-                        img.logo(src="{{user.pic[1].paths.slim}}" )
-                        input.form-control(type='file', name="pic", ng-model="user.pic")
+                        img.logo(src="{{user.images[1].paths.slim}}" )
+                        input.form-control(type='file', name="images", ng-model="user.images")
                         input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
-                        name='pic[desc]', ng-model='user.pic2.desc')
+                        name='images[desc]', ng-model='user.images2.desc')
 
-                        img.logo(src="{{user.pic[2].paths.slim}}" )
-                        input.form-control(type='file', name="pic", ng-model="user.pic")
+                        img.logo(src="{{user.images[2].paths.slim}}" )
+                        input.form-control(type='file', name="images", ng-model="user.images")
                         input.form-control(placeholder='Ejemplo: La entrada a la tienda doña chona', type='text',
-                        name='pic[desc]', ng-model='user.pic3.desc')
+                        name='images[desc]', ng-model='user.images3.desc')
 
-                        img.logo(src="{{user.pic[3].paths.slim}}" )
-                        input.form-control(type='file', name="pic", ng-model="user.pic")
+                        img.logo(src="{{user.images[3].paths.slim}}" )
+                        input.form-control(type='file', name="images", ng-model="user.images")
                         input.form-control(placeholder='Ejemplo: Restaurante Doña Chona', type='text',
-                        name='pic[desc]', ng-model='user.pic4.desc')
+                        name='images[desc]', ng-model='user.images4.desc')
 
-                        img.logo(src="{{user.pic[4].paths.slim}}" )
-                        input.form-control(type='file', name="pic", ng-model="user.pic")
+                        img.logo(src="{{user.images[4].paths.slim}}" )
+                        input.form-control(type='file', name="images", ng-model="user.images")
                         input.form-control(placeholder='Ejemplo: Nuestros Chefs', type='text',
-                        name='pic[desc]', ng-model='user.pic5.desc')
+                        name='images[desc]', ng-model='user.images5.desc')
 
-                        img.logo(src="{{user.pic[5].paths.slim}}" )
-                        input.form-control(type='file', name="pic", ng-model="user.pic")
+                        img.logo(src="{{user.images[5].paths.slim}}" )
+                        input.form-control(type='file', name="images", ng-model="user.images")
                         input.form-control(placeholder='Ejemplo: Comida Doña Chona', type='text',
-                        name='pic[desc]', ng-model='user.pic6.desc')
-                        p.help-block(ng-show='form.pic.$error.required && submitted')
+                        name='images[desc]', ng-model='user.images6.desc')
+                        p.help-block(ng-show='form.images.$error.required && submitted')
                             | Error de validación de campo
 
                       h1 Social

@@ -1,0 +1,206 @@
+'use strict';
+
+angular.module('youpiiBApp')
+  .controller('EditHomepageCtrl', function ($scope, $compile, $http, $location, $window, App) {
+    var urlModel = "website";
+    $scope.sliders = [];
+    $scope.sections = [];
+    $scope.submitted = [];
+
+    $http.get(App.host+'website/').
+      success(function(data) {
+        $scope.sliders = data.sliders;
+        $scope.sections = data.sections;
+      }).
+      error(function(data) {
+        alert('Error al recuperar detalles del sitio');
+      });
+
+
+    $scope.addSlider = function () {
+      $scope.sliders.push([]);
+      // var i = $scope.sliders.length -1;
+      // angular.element('#sliders').append($compile('<add-block index="'+i+'" >Hola</add-block>')($scope));
+    }
+
+    $scope.createSlider = function (form,index) {
+      $scope.submitted[index] = true;
+      if (form.$valid) {
+        var params = {
+          form: new FormData($("#sliders [index='"+index+"']").find('form')[0]),
+          url: urlModel+"/slider",
+          method: "POST"
+        };
+        App.sendRequest(params, function (data) {
+          $window.alert('Slider creado');
+          $scope.sliders = data.sliders;
+        }, function (err) {
+          $window.alert('Error al crear Slider');
+        });
+      }
+    }
+
+    $scope.updateSlider = function (form, index) {
+
+      $scope.submitted[index] = true;
+
+      if (form.$valid) {
+        var form = $("#sliders [index='"+index+"']").find('form')[0];
+        var params = {
+          form: new FormData(form),
+          url: urlModel+"/slider/"+form._id.value,
+          method: "PUT"
+        };
+        App.sendRequest(params, function (data) {
+          $window.alert('Slider Actualizado');
+          $scope.sliders = data.sliders;
+          console.log(data.sliders);
+        }, function (err) {
+          $window.alert('Error al actualizar Slider');
+        });
+      }
+    }
+
+    $scope.deleteSlider = function (index) {
+      console.log("index",index);
+      var form = $("#sliders [index='"+index+"']").find('form')[0];
+      var params = {
+        form: null,
+        url: urlModel+"/slider/"+form._id.value,
+        method: "DELETE"
+      };
+      App.sendRequest(params, function (data) {
+        $window.alert('Slider Eliminado');
+        $scope.sliders.splice(index,1);
+        $scope.$apply();
+      }, function (err) {
+        $window.alert('Error al eliminar Slider');
+      });
+    }
+
+    // Home section
+    $scope.addSection = function () {
+      $scope.sections.push([]);
+    }
+    $scope.createSection = function (form, index) {
+      console.log(form,index);
+      $scope.submitted[index] = true;
+      if (form.$valid) {
+        var params = {
+          form: new FormData($(".home-section [index='"+index+"']").find('form')[0]),
+          url: urlModel+"/section",
+          method: "POST"
+        };
+        App.sendRequest(params, function (data) {
+          $window.alert('Sección creada');
+          $scope.sections = data.sections;
+        }, function (err) {
+          $window.alert('Error al crear Section');
+        });
+      }
+    }
+    $scope.updateSection = function (form, index) {
+
+      $scope.submitted[index] = true;
+
+      if (form.$valid) {
+        var form = $(".home-section [index='"+index+"']").find('form')[0];
+        var params = {
+          form: new FormData(form),
+          url: urlModel+"/section/"+form._id.value,
+          method: "PUT"
+        };
+        App.sendRequest(params, function (data) {
+          $window.alert('Section Actualizado');
+          $scope.sections = data.sections;
+          console.log(data.sections);
+        }, function (err) {
+          $window.alert('Error al actualizar Section');
+        });
+      }
+    }
+    $scope.deleteSection = function (index) {
+      console.log("index",index);
+      var form = $(".home-section [index='"+index+"']").find('form')[0];
+      var params = {
+        form: null,
+        url: urlModel+"/section/"+form._id.value,
+        method: "DELETE"
+      };
+      App.sendRequest(params, function (data) {
+        $window.alert('Section Eliminado');
+        $scope.sections.splice(index,1);
+        $scope.$apply();
+      }, function (err) {
+        $window.alert('Error al eliminar section');
+      });
+    }
+
+    $scope.addBlock = function (sectionId) {
+      var block = {
+        kind: 0,
+        dimension: 0
+      };
+      $scope.sections[sectionId].blocks.push(block);
+    }
+    $scope.createBlock = function (form, sectionIndex, index) {
+
+      var section = $(".home-section [index='"+sectionIndex+"']");
+      var formBlock = section.find(".block-section [index='"+index+"']").find('form')[0];
+      $scope.submitted[index] = true;
+      if (form.$valid) {
+        var params = {
+          form: new FormData(formBlock),
+          url: urlModel+"/block/"+$scope.sections[sectionIndex]._id,
+          method: "POST"
+        };
+        App.sendRequest(params, function (data) {
+          $window.alert('Block creado');
+          console.log(data);
+        }, function (err) {
+          $window.alert('Error al crear Block');
+        });
+      }
+    }
+    $scope.updateBlock = function (form, sectionIndex, index) {
+
+      $scope.submitted[index] = true;
+      var sectionId = $scope.sections[sectionIndex]._id;
+      var blockId = $scope.sections[sectionIndex].blocks[index]._id;
+      var section = $(".home-section [index='"+sectionIndex+"']");
+      var formBlock = section.find(".block-section [index='"+index+"']").find('form')[0];
+
+      if (form.$valid) {
+        var params = {
+          form: new FormData(formBlock),
+          url: urlModel+"/block/"+sectionId+'/'+blockId,
+          method: "PUT"
+        };
+        App.sendRequest(params, function (data) {
+          $window.alert('Bloque Actualizado');
+          //$scope.sections = data.sections;
+          console.log(data.sections);
+        }, function (err) {
+          $window.alert('Error al actualizar Bloque');
+        });
+      }
+    }
+    $scope.deleteBlock = function (sectionIndex, index) {
+      var sectionId = $scope.sections[sectionIndex]._id;
+      var blockId = $scope.sections[sectionIndex].blocks[index]._id
+
+      var params = {
+        form: null,
+        url: urlModel+"/block/"+sectionId+"/"+blockId,
+        method: "DELETE"
+      };
+      App.sendRequest(params, function (data) {
+        $window.alert('Bloque Eliminado');
+        $scope.sections[sectionIndex].blocks.splice(index,1);
+        $scope.$apply();
+      }, function (err) {
+        $window.alert('Error al eliminar Bloque');
+      });
+    }
+
+  });

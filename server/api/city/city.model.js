@@ -5,6 +5,9 @@ var mongoose = require('mongoose'),
 
 var CitySchema = new Schema({
   name: String,
+  state: String,
+  url: String,
+  loc: {type: [Number], index: '2d'},
   info: String,
   active: Boolean
 });
