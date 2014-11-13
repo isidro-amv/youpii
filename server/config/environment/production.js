@@ -14,6 +14,7 @@ module.exports = {
             8080,
 
   // MongoDB connection options
+  // Connection URL: mongodb://$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/
   mongo: {
     uri:    process.env.MONGOLAB_URI ||
             process.env.MONGOHQ_URL ||

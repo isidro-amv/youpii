@@ -26,7 +26,8 @@ var all = {
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
-    session: 'youpii-b-secret'
+    // session: 'youpii-b-secret'
+    session: 'N45J4DqvJDWR9k4'
   },
 
   // List of user roles

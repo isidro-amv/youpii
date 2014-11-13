@@ -7,7 +7,7 @@
 
 module.exports = {
   DOMAIN:           'http://localhost:9000',
-  SESSION_SECRET:   'youpiib-secret',
+  SESSION_SECRET:   'N45J4DqvJDWR9k4',
 
   FACEBOOK_ID:      'app-id',
   FACEBOOK_SECRET:  'secret',

@@ -1,6 +1,6 @@
 {
-  "name": "youpii-b",
-  "version": "0.0.0",
+  "name": "youpii",
+  "version": "0.0.1",
   "main": "server/app.js",
   "dependencies": {
     "express": "~4.0.0",
@@ -21,7 +21,10 @@
     "passport-local": "~0.1.6",
     "passport-facebook": "latest",
     "composable-middleware": "^0.3.0",
-    "connect-mongo": "^0.4.1"
+    "connect-mongo": "^0.4.1",
+    "s3":"~4.3.1",
+    "gm":"~1.17.0",
+    "multer": "~0.1.6"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
