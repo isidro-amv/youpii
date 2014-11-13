@@ -115,8 +115,10 @@ exports.update = function(req, res) {
         s3.deleteFiles(promo.imagemain);
         promo.imagemain = s3.uploadFile(req.files.imagemain,'gallery');
         promo.imagemain.desc = req.body.imagemaindesc || '';
+        if (req.files.imagemainCrop) {
+          promo.imagemain.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
+        }
       }
-
     }
 
     if (err) { return handleError(res, err); }

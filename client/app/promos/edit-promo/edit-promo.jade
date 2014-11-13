@@ -57,7 +57,7 @@
                         label Descripción
                         textarea.form-control(placeholder="Ejemplo: 2x1", type='text',
                         name='description[es]', ng-model='promo.description.es', required='')
-                        p.help-block(ng-show='form.["description[es]"].$error.required && submitted')
+                        p.help-block(ng-show='form["description[es]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["description[en]"].$valid && submitted,\
@@ -171,11 +171,22 @@
                       img( src="{{ promo.imagemain.paths.small }}")
                       .form-group(ng-class='{ "has-success": form.imagemain.$valid && submitted,\
                         "has-error": form.imagemain.$invalid && submitted }')
-                        input.form-control(type='file', name="imagemain")
-                        .form-group(ng-class='{ "has-success": form.imagemaindesc.$valid && submitted,\
-                        "has-error": form.imagemaindesc.$invalid && submitted }')
+                        input.fileInput.form-control(type='file', name="imagemain", cropImg="imagemain")
+                        .cropArea Imagen Original
+                          img-crop(image='imagemain', result-image="imagemainCropped" area-type="rectangle" result-image-size="{w: 260, h: 280}")
+                        div Imagen Delgada:
+                        .cropped
+                          img(ng-src='{{imagemainCropped}}')
+                        .form-group(ng-class='{ "has-success": form["imagemaindesc[en]"].$valid && submitted,\
+                        "has-error": form["imagemaindesc[en]"].$invalid && submitted }')
+                          input.form-control(placeholder='Ejemplo: Mrs. taco chola', type='text',
+                          name='imagemaindesc[en]', ng-model='promo.imagemain.desc.en', required="")
+                        .form-group(ng-class='{ "has-success": form["imagemaindesc[es]"].$valid && submitted,\
+                        "has-error": form["imagemaindesc[es]"].$invalid && submitted }')
                           input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
-                          name='imagemaindesc', ng-model='promo.imagemain.desc')
+                          name='imagemaindesc[es]', ng-model='promo.imagemain.desc.en', required="")
+                        p.help-block(ng-show='form.imagemain.$error.required && submitted')
+                            | Error de validación de campo
 
                         p.help-block(ng-show='form.imagemain.$error.required && submitted')
                             | Error de validación de campo

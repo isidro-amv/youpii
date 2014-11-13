@@ -8,11 +8,6 @@ angular.module('youpiiBApp')
 
     // Inicializa el resultado del crop
     $scope.imagemainCropped='';
-    $scope.imageCrop0 = '';
-    $scope.imageCrop1 = '';
-    $scope.imageCrop2 = '';
-    $scope.imageCrop3 = '';
-    $scope.imageCrop4 = '';
 
     User.query(function (data) {
       $scope.users = data;

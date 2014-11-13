@@ -3,6 +3,7 @@
 angular.module('youpiiBApp')
   .controller('EditPromoCtrl', function ($scope, $location, Promo, User, Category, App) {
     $scope.status = '';
+    $scope.imagemainCropped='';
     $scope.promo = [];
     $scope.categories = [];
     $scope.users = [];
@@ -34,6 +35,7 @@ angular.module('youpiiBApp')
       console.log(form);
       if(form.$valid) {
         var formData = new FormData($('.form')[0]);
+        formData.append("imagemainCrop", App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
         App.sendRequest({
           method: 'PUT',
           form: formData,
@@ -55,4 +57,16 @@ angular.module('youpiiBApp')
         });
       }
     }
+
+    angular.element('.fileInput').on('change',function(evt) {
+      var img = this.getAttribute('cropImg');
+      var file=evt.currentTarget.files[0];
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        $scope.$apply(function($scope){
+          $scope[img]=evt.target.result;
+        });
+      };
+      reader.readAsDataURL(file);
+    });
   });

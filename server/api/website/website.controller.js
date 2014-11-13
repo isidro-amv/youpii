@@ -238,6 +238,9 @@ exports.createBlock = function(req, res) {
     if (req.files && req.files.image) {
       req.files.image = s3.uploadFile(req.files.image,'gallery');
       req.files.image.desc = req.body.title || '';
+      if (req.files.imagemainCrop) {
+        req.files.image.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
+      }
       delete req.files.image.path;
       req.body.image = req.files.image;
     }
@@ -303,6 +306,9 @@ exports.updateBlock = function(req, res) {
         s3.deleteFiles(block.image);
         req.body.image = s3.uploadFile(req.files.image,'gallery');
         req.body.image.desc = req.body.title || '';
+        if (req.files.imagemainCrop) {
+          req.body.image.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
+        }
         delete req.body.image.path;
       }
       updateFunc(website, indexS, indexB, req.body);
