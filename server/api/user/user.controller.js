@@ -1,12 +1,12 @@
 'use strict';
 
-var User = require('./user.model')
-  , passport = require('passport')
-  , config = require('../../config/environment')
-  , images = require(config.root+'/server/components/images')
-  , s3 = require(config.root+'/server/components/s3')
-  , jwt = require('jsonwebtoken')
-  , _ = require('lodash');
+var User = require('./user.model');
+var passport = require('passport');
+var config = require('../../config/environment');
+var images = require(config.root+'/server/components/images');
+var s3 = require(config.root+'/server/components/s3');
+var jwt = require('jsonwebtoken');
+var _ = require('lodash');
 
 
 var validationError = function(res, err) {
@@ -36,7 +36,7 @@ exports.create = function (req, res, next) {
   var uploader = [], uploader2 = [];
 
 
-  if (req.body.loc) { req.body.loc = req.body.loc.split(',') };
+  if (req.body.loc) { req.body.loc = req.body.loc.split(',') }
 
   if (req.files) {
     if (req.files.logo) {
@@ -63,7 +63,7 @@ exports.create = function (req, res, next) {
       }
       req.body.images = s3.uploadFile(req.body.images,'gallery');
     }
-  };
+  }
 
   var newUser = new User(req.body);
 
@@ -108,6 +108,7 @@ exports.destroy = function(req, res) {
  * Update user info
  */
 exports.update = function(req, res, next) {
+  // hay una sospecha de los updates de array no funcionan
   var userId = req.params.id;
   var imageDesc = [];
   User.findById(userId, function (err, user) {
@@ -220,4 +221,4 @@ function addSufixText (str,sufix) {
   var splitName = str.split('.');
   splitName[splitName.length-2] = splitName[splitName.length-2]+sufix;
   return splitName.join('.');
-};
+}

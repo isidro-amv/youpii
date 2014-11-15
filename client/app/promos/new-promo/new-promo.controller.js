@@ -1,16 +1,20 @@
 
 angular.module('youpiiBApp')
-  .controller('NewPromoCtrl', function ($scope, Promo, User, Category, $location, Auth, App) {
+  .controller('NewPromoCtrl', function ($scope, Pack, Promo, User, Category, $location, Auth, App) {
     $scope.promo = {};
     $scope.errors = {};
     $scope.categories = [];
     $scope.users = [];
+    $scope.packs = [];
 
     // Inicializa el resultado del crop
     $scope.imagemainCropped='';
 
     User.query(function (data) {
       $scope.users = data;
+    });
+    Pack.query(function (data) {
+      $scope.packs = data;
     });
     Category.query(function (data) {
       $scope.categories = data;

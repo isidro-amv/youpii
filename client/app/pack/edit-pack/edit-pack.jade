@@ -1,0 +1,90 @@
+#wrapper
+  div(ng-include='"components/navbar/navbar.html"')
+  #page-wrapper.form-pack(ng-controller="EditPackCtrl")
+    .row
+        .col-lg-12.page-header
+            h1 Editar paquete
+            div.btn.btn-warning.new(ng-click="delete()") Eliminar Paquete
+          //
+             /.col-lg-12
+    .row
+        .col-lg-12
+            .panel.panel-default
+              .panel-heading
+                | Registro
+              .panel-body
+                .row
+                  form.form(name='form', ng-submit='update(form)', novalidate='', enctype="multipart/form-data")
+                    .col-lg-6
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Nombre del paquete
+                        input.form-control(placeholder="Ejemplo: El Sr. Carlos Slim", type='text',
+                        name='name', ng-model='pack.name', required='')
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.ownerField[$index].$valid && submitted,\
+                        "has-error": form.ownerField[$index].$invalid && submitted }' ng-repeat="owner in pack.owners")
+                        label Empresa {{pack.owners[$index]}}
+                        select.form-control(type='text', name='owners', ng-model='pack.owners[$index]', required='', ng-options="user._id as user.name for user in users")
+                          option(value="") --- selecciona empresa ----
+                        p.help-block(ng-show='form.ownerField[$index].$error.required && submitted')
+                          | Error de validación de campo
+                        .btn.btn-warning(ng-click="deleteOwner($index)") Eliminar
+                      .btn.btn-primary(ng-click="addOwner()") Nueva empresa
+
+                      .form-group(ng-class='{ "has-success": form.quantity.$valid && submitted,\
+                        "has-error": form.quantity.$invalid && submitted }')
+                        label Cantidad
+                        input.form-control(placeholder="24", type='number',
+                        name='quantity', ng-model='pack.quantity', required='')
+                        p.help-block(ng-show='form.quantity.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.price.$valid && submitted,\
+                        "has-error": form.price.$invalid && submitted }')
+                        label Precio
+                        input.form-control(placeholder="Ejemplo: $500", type='number',
+                        name='price', ng-model='pack.price', required='')
+                        p.help-block(ng-show='form.price.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.dateStart.$valid && submitted,\
+                        "has-error": form.dateStart.$invalid && submitted }')
+                        label Fecha de inicio
+                        input.form-control(placeholder="Ejemplo: 2014-08-10", type='date',
+                        name='dateStart', ng-model='pack.dateStart', required='')
+                        p.help-block(ng-show='form.dateStart.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.months.$valid && submitted,\
+                        "has-error": form.months.$invalid && submitted }')
+                        label Meses
+                        input.form-control(placeholder="Ejemplo: 12", type='number',
+                        name='months', ng-model='pack.months', required='')
+                        p.help-block(ng-show='form.months.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.info.$valid && submitted,\
+                        "has-error": form.info.$invalid && submitted }')
+                        label Información
+                        textarea.form-control(placeholder="Ejemplo: Este paquete se tienne que renobar con aprovación del generente",
+                        name='info', ng-model='pack.info', required='')
+                        p.help-block(ng-show='form.info.$error.required && submitted')
+                          | Error de validación de campo
+
+
+
+                      button.btn.btn-warning(type='reset') Reset Button
+                      button.btn.btn-primary(type='submit') Submit Button
+                //
+                   /.row (nested)
+              //
+                 /.panel-body
+            //
+               /.panel
+          //
+             /.col-lg-12
+

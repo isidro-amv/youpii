@@ -1,8 +1,8 @@
 /**
  * Image sizes
  */
-var  config = require('../../config/environment')
-  ,  s3Config = require(config.root+'/server/components/s3/config.js')
+var  config = require('../../config/environment');
+var  s3Config = require(config.root+'/server/components/s3/config.js');
 
 
 module.exports.logo = {
@@ -97,21 +97,21 @@ module.exports.setSizePaths = function (images,type) {
       images[i].paths.normal = this.generateS3Url(images[i].name,this.logo.normal.sufix);
       images[i].paths.small = this.generateS3Url(images[i].name,this.logo.small.sufix);
       images[i].paths.thumb = this.generateS3Url(images[i].name,this.logo.thumb.sufix);
-    };
+    }
     if (type==='gallery') {
       images[i].paths.big = this.generateS3Url(images[i].name,this.gallery.big.sufix);
       images[i].paths.normal = this.generateS3Url(images[i].name,this.gallery.normal.sufix);
       images[i].paths.small = this.generateS3Url(images[i].name,this.gallery.small.sufix);
       images[i].paths.large = this.generateS3Url(images[i].name,this.gallery.large.sufix);
     }
-    if (type=='largeSlider') {
+    if (type==='largeSlider') {
       images[i].paths.normal = this.generateS3Url(images[i].name,this.largeSlider.normal.sufix);
       images[i].paths.small = this.generateS3Url(images[i].name,this.largeSlider.small.sufix);
     }
-    if (type=='mobileSlider') {
+    if (type==='mobileSlider') {
       images[i].paths.normal = this.generateS3Url(images[i].name,this.mobileSlider.normal.sufix);
     }
-  };
+  }
   return (isArray ? images : images[0]);
 }
 

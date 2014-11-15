@@ -77,6 +77,7 @@ exports.create = function(req, res) {
 
 // Updates an existing promo in the DB.
 exports.update = function(req, res) {
+  // hay una sospecha de los updates de array no funcionan
   console.log("hola mundo");
   console.log("body->", req.body);
   console.log("files->",req.files);

@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 var WebsiteSchema = new Schema({
   title: String,
   sliders: [{
-    _id: { type: Schema.Types.ObjectId , default: new mongoose.Types.ObjectId},
+    _id: { type: Schema.Types.ObjectId , default: new mongoose.Types.ObjectId()},
     title: {
       en: String,
       es: String
@@ -17,7 +17,7 @@ var WebsiteSchema = new Schema({
     images: Schema.Types.Mixed // Type:image [mainimage, image]
   }],
   sections:[{
-    _id: { type: Schema.Types.ObjectId , default: new mongoose.Types.ObjectId},
+    _id: { type: Schema.Types.ObjectId , default: new mongoose.Types.ObjectId()},
     order: Number,
     title:{
       en: String,
@@ -28,7 +28,7 @@ var WebsiteSchema = new Schema({
       es: String
     },
     blocks:[{
-      _id: { type: Schema.Types.ObjectId , default: new mongoose.Types.ObjectId},
+      _id: { type: Schema.Types.ObjectId , default: new mongoose.Types.ObjectId()},
       promo_id: { type: Schema.Types.ObjectId, ref: 'Promo' },
       order: Number,
       title:{
@@ -100,19 +100,19 @@ WebsiteSchema.methods = {
   getBlock: function (sectionIndex, blockIndex) {
     var block = this.sections[sectionIndex].blocks[blockIndex];
 
-    if (block.kind == 'promo') {
+    if (block.kind === 'promo') {
       Promo.findById(block.promo_id, function (err, promo) {
-        if (err) { return handleError(res, err); }
+        if (err) { return false }
         if(!promo) {
           console.log("No se ha encontrado una promoción");
-          return res.send(404);
+          return false;
         }
         block.promo = promo.promo;
         block.url = promo.url;
         block.image = promo.imagemain
         return block;
       });
-    } else if(block.kind == 'generic'){
+    } else if(block.kind === 'generic'){
       return block;
     } else{
       console.log("block kind is not defined ->", block.kind);

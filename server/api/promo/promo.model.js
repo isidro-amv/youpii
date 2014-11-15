@@ -5,17 +5,6 @@ var mongoose = require('mongoose'),
     Category = require(__dirname + '/../category/category.model.js'),
     User = require(__dirname + '/../user/user.model.js');
 
-/**
- * Functions
- */
-var promoFuncts = {
-  setLimitTime: function () {
-    var x = 12; //or whatever offset
-    var currentDate = new Date(); // new Date
-    return currentDate.setMonth(currentDate.getMonth() + x);
-  }
-}
-
 var PromoSchema = new Schema({
   title: {
     en: String,
@@ -67,14 +56,14 @@ var PromoSchema = new Schema({
     kind:     String  }],
   price: Number,
   dateRegistered: { type: Date, default: Date.now },
-  dateRenews: [ Date ],
-  dateLimit: { type: Date, default: promoFuncts.setLimitTime },
+  dateLimit: { type: Date },
   dateStart: { type: Date, default: Date.now },
   dateEnd: { type: Date },
   likes: {
     count: Number,
     record: String
   },
+  pack: { type: Schema.Types.ObjectId, ref: 'Pack' },
   category:  [{ type: Schema.Types.ObjectId, ref: 'Category' }],
   owner: { type: Schema.Types.ObjectId, ref: 'User' },
   currency: { type: String, enum: ['MXN','USD'], default: 'MXN' },

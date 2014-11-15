@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('youpiiBApp')
-  .controller('EditPromoCtrl', function ($scope, $location, Promo, User, Category, App) {
+  .controller('EditPromoCtrl', function ($scope, Pack, $location, Promo, User, Category, App) {
     $scope.status = '';
     $scope.imagemainCropped='';
     $scope.promo = [];
@@ -18,6 +18,10 @@ angular.module('youpiiBApp')
 
     Promo.get({id:$scope.promoId}, function (data) {
       $scope.promo = data;
+    });
+
+    Pack.query(function (data) {
+      $scope.packs = data;
     });
 
     $scope.delete = function () {

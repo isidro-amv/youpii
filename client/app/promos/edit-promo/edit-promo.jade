@@ -94,6 +94,15 @@
                         p.help-block(ng-show='form.owner.$error.required && submitted')
                           | Error de validación de campo
 
+                      .form-group(ng-class='{ "has-success": form.pack.$valid && submitted,\
+                        "has-error": form.pack.$invalid && submitted }')
+                        label Paquete
+                        select.form-control(type='text', name='pack', ng-model='promo.pack', required='')
+                          option(value="") --- selecciona empresa ----
+                          option(value="{{pack._id}}" ng-repeat="pack in packs | orderBy:'name'") {{ pack.name }}
+                        p.help-block(ng-show='form.pack.$error.required && submitted')
+                          | Error de validación de campo
+
                       .form-group(ng-class='{ "has-success": form["category[0]"].$valid && submitted,\
                         "has-error": form["category[0]"].$invalid && submitted }')
                         label Categorías

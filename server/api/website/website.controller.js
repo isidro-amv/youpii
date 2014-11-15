@@ -60,6 +60,7 @@ exports.createSlider = function(req, res) {
 
 // Updates an existing website in the DB.
 exports.updateSlider = function(req, res) {
+  // hay una sospecha de los updates de array no funcionan
   console.log("Update Slider", req.params);
   console.log("body",req.body);
   console.log("Files",req.files);
@@ -70,7 +71,7 @@ exports.updateSlider = function(req, res) {
   Website.findOne(function (err, website) {
 
     var indexS = website.getSectionIndexBy({section:'sliders',id:id});
-    if(indexS === false) { return res.send(404); };
+    if(indexS === false) { return res.send(404); }
 
     if (req.files) {
       if (req.files.mainimage) {
@@ -114,10 +115,10 @@ exports.destroySlider = function(req, res) {
     // eliminar imágenes de S3
     if (website.sliders[indexS].images.mainimage) {
       s3.deleteFiles(website.sliders[indexS].images.mainimage);
-    };
+    }
     if (website.sliders[indexS].images.image) {
       s3.deleteFiles(website.sliders[indexS].images.image);
-    };
+    }
 
     var deleted = website.sliders.splice(indexS,1);
 
@@ -150,6 +151,7 @@ exports.createSection = function(req, res) {
 
 // Updates an existing website in the DB.
 exports.updateSection = function(req, res) {
+  // hay una sospecha de los updates de array no funcionan
   console.log("Update Section", req.params);
   console.log("body",req.body);
   console.log("Files",req.files);
@@ -223,7 +225,7 @@ exports.createBlock = function(req, res) {
     });
   };
 
-  if (req.body.kind == 'promo') {
+  if (req.body.kind === 'promo') {
     Promo.findById(req.body.promo_id, function (err, promo) {
       if (err) { return handleError(res, err); }
       if(!promo) {
@@ -234,7 +236,7 @@ exports.createBlock = function(req, res) {
     });
   }
 
-  if (req.body.kind == 'generic') {
+  if (req.body.kind === 'generic') {
     if (req.files && req.files.image) {
       req.files.image = s3.uploadFile(req.files.image,'gallery');
       req.files.image.desc = req.body.title || '';
@@ -252,6 +254,7 @@ exports.createBlock = function(req, res) {
 
 // Updates an existing website in the DB.
 exports.updateBlock = function(req, res) {
+  // hay una sospecha de los updates de array no funcionan
   console.log("Update Section Block", req.params);
   console.log("body",req.body);
   console.log("Files",req.files);
@@ -285,9 +288,9 @@ exports.updateBlock = function(req, res) {
     block = website.sections[indexS].blocks[indexB];
 
     if(req.body._id) { delete req.body._id; }
-    if (req.body.kind == 'promo') {
+    if (req.body.kind === 'promo') {
       // si el block era 'generic' eliminar imágenes
-      if (block.kind == 'generic') {
+      if (block.kind === 'generic') {
         s3.deleteFiles(block.image);
       }
       Promo.findById(req.body.promo_id, function (err, promo) {
@@ -301,7 +304,7 @@ exports.updateBlock = function(req, res) {
         updateFunc(website, indexS, indexB, req.body);
       });
     }
-    if (req.body.kind == 'generic') {
+    if (req.body.kind === 'generic') {
       if (req.files && req.files.image) {
         s3.deleteFiles(block.image);
         req.body.image = s3.uploadFile(req.files.image,'gallery');

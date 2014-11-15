@@ -1,14 +1,27 @@
 var s3 = require('s3');
-var config = require('./config.js')
-var images = require('../images')
+var config = require('./config.js');
+var images = require('../images');
 var clientS3 =  s3.createClient(config.options);
-var fs = require('fs')
+var fs = require('fs');
 var gm = require('gm').subClass({ imageMagick: true });
-
+var uploadFile = function (file,name,cb) {
+var uploader = clientS3.uploadFile({
+    localFile: file,
+    s3Params: {
+      ACL: 'public-read',
+      Bucket: config.bucket,
+      Key: name
+    },
+  });
+  uploader.on('end', function(err) {
+    console.log("done uploading",err);
+    if (cb) cb();
+  });
+};
 
 module.exports.uploadFile = function (files, type, cb) {
-  var format
-   ,  isArray = true;
+  var format;
+  var isArray = true;
 
   // si no encuentra el tipo dentro del formato de imagenes debería retornar los archivos
   if (type === 'gallery'){
@@ -72,7 +85,7 @@ module.exports.oneUploadFile = function (file, obj,cb) {
 
 module.exports.deleteFiles = function (images,name,cb) {
 
-  var objects = [], isArray= true, name;
+  var objects = [], isArray= true;
 
   if ( !(images instanceof Array) ) {
     images = [images]
@@ -88,14 +101,14 @@ module.exports.deleteFiles = function (images,name,cb) {
     }
     images[i].paths = JSON.parse(JSON.stringify(images[i].paths));
     for(var k in images[i].paths){
-      if( typeof images[i].paths[k] == 'string'  ){
+      if( typeof images[i].paths[k] === 'string'  ){
         console.log('deleted-->',images[i].paths[k]);
         name = images[i].paths[k].split('/').slice(-1)[0];
         images[i].paths[k] = '';
         objects.push({Key: name});
       }
     }
-  };
+  }
   if (objects.length > 0) {
     var uploader = clientS3.deleteObjects({
       Bucket: config.bucket,
@@ -110,19 +123,4 @@ module.exports.deleteFiles = function (images,name,cb) {
   }
 
   return (isArray ? images : images[0]);
-}
-
-var uploadFile = function (file,name,cb) {
- var uploader = clientS3.uploadFile({
-    localFile: file,
-    s3Params: {
-      ACL: 'public-read',
-      Bucket: config.bucket,
-      Key: name
-    },
-  });
-  uploader.on('end', function(err) {
-    console.log("done uploading",err);
-    if (cb) cb();
-  });
 }
