@@ -66,7 +66,6 @@ exports.create = function (req, res, next) {
   }
 
   var newUser = new User(req.body);
-
   newUser.provider = 'local';
   newUser.role = 'user';
   newUser.save(function(err, user) {
