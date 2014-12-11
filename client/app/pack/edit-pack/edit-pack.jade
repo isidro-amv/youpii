@@ -55,7 +55,7 @@
                         "has-error": form.dateStart.$invalid && submitted }')
                         label Fecha de inicio
                         input.form-control(placeholder="Ejemplo: 2014-08-10", type='date',
-                        name='dateStart', ng-model='pack.dateStart', required='')
+                        name='dateStart', ng-model='pack.dateRegistered', required='')
                         p.help-block(ng-show='form.dateStart.$error.required && submitted')
                           | Error de validación de campo
 

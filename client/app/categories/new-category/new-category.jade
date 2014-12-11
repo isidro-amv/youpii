@@ -16,28 +16,28 @@
                   form.form(name='form', ng-submit='register(form)', novalidate='', enctype="multipart/form-data")
                     .col-lg-6
 
-                      .form-group(ng-class='{ "has-success": form.name[es].$valid && submitted,\
-                        "has-error": form.name[es].$invalid && submitted }')
-                        label Nombre de categoría
-                        input.form-control(placeholder="Ejemplo: Restaurantes", type='text',
-                        name='name[es]', ng-model='category.name.es', required='')
-                        p.help-block(ng-show='form.name[es].$error.required && submitted')
-                          | Error de validación de campo
-
                       .form-group(ng-class='{ "has-success": form.name[en].$valid && submitted,\
                         "has-error": form.name[en].$invalid && submitted }')
-                        label Category Name
+                        label Nombre de categoría - Inglés
                         input.form-control(placeholder="Ejemplo: Restaurant", type='text',
                         name='name[en]', ng-model='category.name.en', required='')
                         p.help-block(ng-show='form.name[en].$error.required && submitted')
                           | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form.url.es.$valid && submitted,\
-                        "has-error": form.url.es.$invalid && submitted }')
-                        label Url Español
-                        input.form-control(placeholder="Ejemplo: Jalisco", type='text',
-                        name='url[es]', ng-model='category.url.es', required='')
-                        p.help-block(ng-show='form.url.es.$error.required && submitted')
+                      .form-group(ng-class='{ "has-success": form.name[es].$valid && submitted,\
+                        "has-error": form.name[es].$invalid && submitted }')
+                        label Nombre de categoría - Español
+                        input.form-control(placeholder="Ejemplo: Restaurantes", type='text',
+                        name='name[es]', ng-model='category.name.es', required='')
+                        p.help-block(ng-show='form.name[es].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.iconClass.$valid && submitted,\
+                        "has-error": form.iconClass.$invalid && submitted }')
+                        label Clase del ícono: http://fortawesome.github.io/Font-Awesome/icons/
+                        input.form-control(placeholder="Ejemplo: Restaurantes", type='text',
+                        name='iconClass', ng-model='category.iconClass', required='')
+                        p.help-block(ng-show='form.iconClass.$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form.url.en.$valid && submitted,\
@@ -48,31 +48,40 @@
                         p.help-block(ng-show='form.url.en.$error.required && submitted')
                           | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form.parent.$valid && submitted,\
-                        "has-error": form.parent.$invalid && submitted }')
-                        label Padre
-                        select.form-control(placeholder="Ejemplo: id category", type='text',
-                        name='parent', ng-model='category.parent', required='')
-                          option(value="1231243") test1
-                          option(value="123123") test2
-                        p.help-block(ng-show='form.parent.$error.required && submitted')
+                      .form-group(ng-class='{ "has-success": form.url.es.$valid && submitted,\
+                        "has-error": form.url.es.$invalid && submitted }')
+                        label Url Español
+                        input.form-control(placeholder="Ejemplo: Jalisco", type='text',
+                        name='url[es]', ng-model='category.url.es', required='')
+                        p.help-block(ng-show='form.url.es.$error.required && submitted')
                           | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form.info.es.$valid && submitted,\
-                        "has-error": form.info.es.$invalid && submitted }')
-                        label Info Español
-                        input.form-control(placeholder="Ejemplo: Jalisco", type='text',
-                        name='info[es]', ng-model='category.info.es', required='')
-                        p.help-block(ng-show='form.info.es.$error.required && submitted')
+                      .form-group(ng-class='{ "has-success": form.parent.$valid && submitted,\
+                        "has-error": form.parent.$invalid && submitted }')
+                        label Categoría Padre
+                        select.form-control(placeholder="Ejemplo: id category", type='text',
+                        name='parent', ng-model='category.parent', ng-options="category.name.en for category in categories track by category._id")
+                          option(value="") Sin Padre
+                        p.help-block(ng-show='form.parent.$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form.info.en.$valid && submitted,\
                         "has-error": form.info.en.$invalid && submitted }')
                         label Info English
-                        input.form-control(placeholder="Ejemplo: Jalisco", type='text',
+                        input.form-control(placeholder="Ejemplo: Check the catalogs, brochures, offers and stores Department Stores", type='text',
                         name='info.en', ng-model='category.info.en', required='')
                         p.help-block(ng-show='form.info.en.$error.required && submitted')
                           | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.info.es.$valid && submitted,\
+                        "has-error": form.info.es.$invalid && submitted }')
+                        label Info Español
+                        input.form-control(placeholder="Ejemplo: Consulta los catálogos, folletos, ofertas y tiendas de Tiendas Departamentales", type='text',
+                        name='info[es]', ng-model='category.info.es', required='')
+                        p.help-block(ng-show='form.info.es.$error.required && submitted')
+                          | Error de validación de campo
+
+
 
 
                       button.btn.btn-warning(type='reset') Reset Button

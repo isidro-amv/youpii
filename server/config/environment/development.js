@@ -8,5 +8,5 @@ module.exports = {
     uri: 'mongodb://localhost/youpiib-dev'
   },
 
-  seedDB: true
+  seedDB: false
 };

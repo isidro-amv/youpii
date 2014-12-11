@@ -11,6 +11,49 @@ exports.index = function(req, res) {
   });
 };
 
+// Obtiene las categorías organizadas por padres e hijos
+exports.indexFiltered = function(req, res) {
+  var categoriesFiltered = {};
+
+  Category.find(function (err, categories) {
+    if(err) { return handleError(res, err); }
+
+    var parents = [];
+    var childs = categories;
+
+    // genera los elementos padres e hijos
+    for(var k in categories) {
+      if (_.isEmpty(categories[k].parent)) {
+        categories[k].childs = [];
+        parents.push(categories[k]);
+        childs.splice(k, 1);
+      }
+    }
+
+    // asigna los hijos a los padres (un hijo puede tener múltiples padres)
+    for(var k in childs){
+      if (childs[k].parent && childs[k].parent.length >0) {
+        for (var i = childs[k].parent.length - 1; i >= 0; i--) {
+          for (var i2 = parents.length - 1; i2 >= 0; i2--) {
+            if (parents[i2]._id.equals(childs[k].parent[i])) {
+              parents[i2].childs.push(childs[k]);
+            }
+          }
+        }
+      }
+    }
+
+    // fix porque mongoose ignora varios elementos
+    var result = [];
+    for (var i = parents.length - 1; i >= 0; i--) {
+      var index = result.push({}) -1;
+      result[index] = _.clone(parents[i])._doc;
+      result[index].childs = parents[i].childs;
+    }
+    return res.json(200, result);
+  });
+};
+
 // Get a single category
 exports.show = function(req, res) {
   Category.findById(req.params.id, function (err, category) {

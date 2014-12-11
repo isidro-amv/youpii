@@ -1,9 +1,13 @@
 'use strict';
 
 angular.module('youpiiBApp')
-  .controller('NewUserCtrl', function ($scope, User,  $location, Auth) {
+  .controller('NewUserCtrl', function ($scope, User,  $location, Auth, City) {
     $scope.user = {};
     $scope.errors = {};
+
+    City.query(function (data) {
+      $scope.cities = data;
+    });
 
     $scope.user = {
       name: "Test",
@@ -13,7 +17,7 @@ angular.module('youpiiBApp')
         name: 'Paco Perez Piñón',
         tel: '(329)1020102'
       },
-      loc: '20.640620, -105.222771',
+      coords: '20.640620, -105.222771',
       tel: '(329)1020102, (233)2344521',
       cel: '(329)1020102, (233)2344521',
       dir: 'Juan de la Barrera, Colonia: Buena vista',

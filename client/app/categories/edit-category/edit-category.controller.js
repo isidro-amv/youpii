@@ -8,6 +8,9 @@ angular.module('youpiiBApp')
     Category.get({id:$scope.categoryId}, function (data) {
       $scope.category = data;
     });
+    Category.query(function (data) {
+      $scope.categories = data;
+    });
 
     $scope.delete = function () {
       var msg = '¿Realmente quieres eliminar esta categoría?';
@@ -18,6 +21,7 @@ angular.module('youpiiBApp')
     };
 
     $scope.update = function (form) {
+      $scope.submitted = true;
        if(form.$valid) {
         $scope.category.$update(function () {
           alert('categoría actualizada!');

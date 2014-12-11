@@ -36,7 +36,7 @@ exports.create = function (req, res, next) {
   var uploader = [], uploader2 = [];
 
 
-  if (req.body.loc) { req.body.loc = req.body.loc.split(',') }
+  if (req.body.coords) { req.body.coords = req.body.coords.split(',') }
 
   if (req.files) {
     if (req.files.logo) {
@@ -113,9 +113,9 @@ exports.update = function(req, res, next) {
   var imageDesc = [];
   User.findById(userId, function (err, user) {
 
-
+    console.log(req.body);
     // Update info
-    user.name = req.body.name || user.name;
+    /*user.name = req.body.name || user.name;
     user.url = req.body.url || user.url;
     user.businessName = req.body.businessName || user.businessName;
     if (req.body.contact) {
@@ -135,21 +135,30 @@ exports.update = function(req, res, next) {
       user.social.pinterest = req.body.social.pinterest || user.social.pinterest;
       user.social.twitter = req.body.social.twitter || user.social.twitter;
       user.social.instagram = req.body.social.instagram || user.social.instagram;
+    }*/
+
+    if (req.body.coords ) {
+      req.body.coords = req.body.coords.split(',');
     }
-    if (req.body.loc ) {
-      user.loc = req.body.loc.split(',');
-    }
+    var user = _.merge(user, req.body);
+    console.log(user);
     if (req.files) {
 
       if (req.files.logo) {
-        s3.deleteFiles(user.logo);
+        console.log("logo",user.logo);
+        console.log("logo isEmpty",_.isEmpty(user.logo));
+        console.log("logo is vacio",user.logo==null);
+        console.log("logo is or",user.logo || 'pato');
+        console.log("logo is or",user.logo == 'null');
+
+        if (user.logo != 'null') { s3.deleteFiles(user.logo); }
         user.logo.desc = req.body.name;
         user.logo = s3.uploadFile(req.files.logo,'logo');
       }
 
       // asigna la descripción a un array de imágenes
       if (req.files.images) {
-        s3.deleteFiles(user.images);
+        if (user.images != 'null') { s3.deleteFiles(user.images); }
         imageDesc = req.body.images.desc || '';
 
         if( !(user.images instanceof Array) ) {
@@ -200,6 +209,7 @@ exports.changePassword = function(req, res, next) {
  * Get my info
  */
 exports.me = function(req, res, next) {
+  console.log("user",req.user._id);
   var userId = req.user._id;
   User.findOne({
     _id: userId
@@ -216,9 +226,3 @@ exports.me = function(req, res, next) {
 exports.authCallback = function(req, res, next) {
   res.redirect('/');
 };
-
-function addSufixText (str,sufix) {
-  var splitName = str.split('.');
-  splitName[splitName.length-2] = splitName[splitName.length-2]+sufix;
-  return splitName.join('.');
-}

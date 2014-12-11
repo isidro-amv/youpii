@@ -6,21 +6,38 @@ var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 var UserSchema = new Schema({
-  name: String,
-  url: String,
-  businessName: String,
+  name: { type:String, required: true, unique: true },
+  url: { type:String, required: true, unique: true },
+  businessName: { type:String, required: true, unique: true },
+  genericId: { type: String, required: true, unique: true},
   contact:{
     name: String,
     tel: [String]
   },
+  description:{
+    en: String,
+    es: String
+  },
+  info:{
+    en: String,
+    es: String
+  },
   tel: [String],
   cel: [String],
-  dir: [String],
-  loc: {type: [Number], index: '2d'},
-  city: { type: Schema.Types.ObjectId, ref: 'City' }, // debería ser in id de city schema
+  dir: [{
+    en: String,
+    es: String
+  }],
+  hours: String,
+  loc: { type: Number, required: false },
+  coords: {type: [Number], index: '2d', required: true},
+  city: { type: Schema.Types.ObjectId, ref: 'City' },
   logo:{
     name:     String,
-    desc:     String,
+    desc:{
+      en: String,
+      es: String
+    },
     paths :{
       big:    String,
       normal: String,
@@ -31,7 +48,10 @@ var UserSchema = new Schema({
   images:[{
     _id:      Schema.Types.ObjectId,
     name:     String,
-    desc:     String, // TODO: cambiar a multilenguaje
+    desc:{
+      en: String,
+      es: String
+    },
     paths:{
       big: String,
       large: String,
@@ -53,12 +73,15 @@ var UserSchema = new Schema({
     twitter: String,
     instagram: String
   },
+  promos: [{ type: Schema.Types.ObjectId, ref: 'Promo' }],
   hashedPassword: String,
   provider: String,
   salt: String,
   facebook: {},
   github: {}
 });
+
+UserSchema.index({ coords: '2d' });
 
 /**
  * Virtuals
@@ -89,7 +112,7 @@ UserSchema
       },
       'tel': this.tel,
       'cel': this.cel,
-      'loc': this.loc,
+      'coords': this.coords,
       'city': this.city,
       'logo': this.logo,
       'pic': this.pic,

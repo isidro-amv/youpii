@@ -6,6 +6,7 @@ var controller = require('./category.controller');
 var router = express.Router();
 
 router.get('/', controller.index);
+router.get('/filtered', controller.indexFiltered);
 router.get('/:id', controller.show);
 router.post('/', controller.create);
 router.put('/:id', controller.update);

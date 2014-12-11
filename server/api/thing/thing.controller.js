@@ -29,6 +29,18 @@ exports.show = function(req, res) {
   });
 };
 
+// Get a single thing
+exports.saveWords = function(req, res) {
+  if (!req.params.words) { return res.send(404); }
+
+  var obj = { info: req.params.words };
+
+  Thing.create(obj, function(err, thing) {
+    if(err) { return handleError(res, err); }
+    return res.json(201, thing);
+  });
+};
+
 // Creates a new thing in the DB.
 exports.create = function(req, res) {
   Thing.create(req.body, function(err, thing) {

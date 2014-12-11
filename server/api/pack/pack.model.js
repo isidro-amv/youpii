@@ -13,7 +13,9 @@ var PackSchema = new Schema({
   price: Number,
   dateRegistered: { type: Date, default: Date.now },
   dateStart: { type: Date, default: Date.now },
+  // cantidad de meses comprados
   months: Number,
+  // una breve descripción
   info: String,
   active: Boolean
 });

@@ -1,9 +1,13 @@
 'use strict';
 
 var _ = require('lodash');
+var config = require('../../config/environment');
 var Promo = require('./promo.model');
-var config = require('../../config/environment')
-var s3 = require(config.root+'/server/components/s3')
+var User = require(config.root+'/server/api/user/user.model');
+var City = require(config.root+'/server/api/city/city.model');
+var Category = require(config.root+'/server/api/category/category.model');
+var s3 = require(config.root+'/server/components/s3');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 // Get list of promos
 exports.index = function(req, res) {
@@ -22,6 +26,168 @@ exports.show = function(req, res) {
   });
 };
 
+// Get a single by unique url name
+exports.showByUrl = function(req, res) {
+  if (!req.params.lang || !req.params.url) {
+    return res.send(404);
+  }
+
+  var url = req.params.url;
+  var query = 'url.'+req.params.lang;
+  var obj = {}; obj[query] = url;
+  Promo.findOne(obj, function (err, promos) {
+    if(err) { return handleError(res, err); }
+    if(!promos) { return res.send(404); }
+    return res.json(promos);
+  });
+};
+
+// Get 3 items of related promotions by owner or category
+exports.showBySimilar = function(req, res) {
+  if (!req.params.id) {
+    return res.send(404);
+  }
+
+  Promo.findById(req.params.id, function (err, promo) {
+    if(err) { return handleError(res, err); }
+    if(!promo) { return res.send(404); }
+    // busca promociones que tenga el mismo dueño pero diferente id
+    Promo.find({$and:[{ owner: promo.owner },{_id: {'$ne': promo.category }}]}).limit(3).exec( function (err, promos) {
+      // si no hay promociones o la cantidad es menor a 3
+      if (!promos || promos.length < 3) {
+        // busca promociones que tengan la misma categoría pero diferente id
+        Promo.find({category: promo.category})
+        .where('_id').ne(promo._id)
+        .limit(3).exec(function (err, promos) {
+          return res.json(promos); });
+      }else{
+        return res.json(promos);
+      }
+    });
+  });
+};
+
+// Get items if the promo have title or promo with the parameters words
+// TODO: hacer funcionar el paginado de search (por ahora se solicita la página 0)
+exports.showByTitle = function(req, res) {
+
+  // la url requiere parametro de lenguaje pero no se neccesita
+  if (!req.params.words || !req.params.lang) {
+    return res.send(404);
+  }
+  // ejecutar el siguiente comando para versiones anteriores de mongodb 2.4
+  // db.adminCommand( { setParameter : 1, textSearchEnabled : true } )
+
+  var findScore = {'score':{'$meta':'textScore'}};
+  Promo.find({ $text: { $search: req.params.words } },findScore,{skip: 0, limit: 50 },function (err,search) {
+    if(err) { return handleError(res, err); }
+    if(!search) { return res.send(404); }
+    return res.json(search);
+  })
+}
+
+// Get items if the promo have title or promo with the parameters words
+exports.showByVoted = function(req, res) {
+  var page = req.params.page;
+  Promo.find({},null,{skip: 0, limit: 50, sort: { average: -1 }},function (err,search) {
+    if(err) { return handleError(res, err); }
+    if(!search) { return res.send(404); }
+    return res.json(search);
+  })
+}
+
+// Get the latest items visibles to the users
+exports.showByLatest = function(req, res) {
+  var page = req.params.page;
+
+  Promo.find({},null,{skip: 0, limit: 50, sort: { dateStart: -1 }},function (err,search) {
+    if(err) { return handleError(res, err); }
+    if(!search) { return res.send(404); }
+    return res.json(search);
+  })
+}
+
+// Get the latest items visibles to the users
+exports.showByNear = function(req, res) {
+
+  var page = req.params.page;
+  var coords = req.params.coords.split(',');
+
+  if (coords.length !== 2) return res.send(404);
+  coords[0] = parseFloat(coords[0]);
+  coords[1] = parseFloat(coords[1]);
+  if (!coords[0] || !coords[1]) return res.send(404);
+  console.log(coords);
+
+  User.find({ coords : { '$near' : coords } })
+  .skip(0).populate('promos').limit(50).exec(function (err,users) {
+    var promos = [];
+    if(err) { return handleError(res, err); }
+    if(!users) { return res.send(404); }
+
+    for (var i = users.length - 1; i >= 0; i--) {
+      for (var i = users[i].promos.length - 1; i >= 0; i--) {
+        promos.push(users[i].promos[i]);
+      };
+    };
+    return res.json(promos);
+  })
+}
+
+// Get the latest items visibles to the users
+exports.showByCity = function(req, res) {
+  var url = req.params.url;
+  console.log(url);
+  City.findOne({url:url}).exec(function (err, city) {
+    if(err) { return handleError(res, err); }
+    if(!city) { return res.send(404); };
+    console.log("city",city);
+    User.find({city:city._id}).populate('promos').skip(0).limit(50).exec(function (err,search) {
+      if(err) { return handleError(res, err); }
+      if(!search) { return res.send(404); }
+      return res.json(search);
+    })
+  })
+}
+
+// Get the latest items visibles to the users
+exports.showByCategory = function(req, res) {
+  var urlCategory = req.params.category;
+
+  Category.findOne({$or:[{'url.es':urlCategory},{'url.en':urlCategory}]}).exec(function (err, category) {
+    if(err) { return handleError(res, err); }
+    if(!category) { return res.send(404); };
+
+    Promo.find({category:{ $in: [category._id]}}).skip(0).limit(50).exec(function (err,search) {
+      if(err) { return handleError(res, err); }
+      if(!search) { return res.send(404); }
+      return res.json(search);
+    })
+  })
+}
+
+// Get the latest items visibles to the users
+exports.showByCityAndCategory = function(req, res) {
+
+  var urlCity = req.params.urlCity;
+  var urlCategory = req.params.urlCategory;
+
+  City.findOne({url:urlCity}).exec(function (err, city) {
+    if(err) { return handleError(res, err); }
+    if(!city) { return res.send(404); };
+    console.log("city",city);
+    Category.findOne({$or:[{'url.es':urlCategory},{'url.en':urlCategory}]}).exec(function (err, category) {
+      console.log("category",category);
+      User.find({city:city._id}).populate({path:'promos', match:{ category:{ $in: [category._id]} }})
+      .skip(0).limit(50).exec(function (err,search) {
+        if(err) { return handleError(res, err); }
+        if(!search) { return res.send(404); }
+        return res.json(search);
+      });
+    })
+  })
+}
+
 // Creates a new promo in the DB.
 exports.create = function(req, res) {
   console.log("promo-body",req.body);
@@ -35,6 +201,13 @@ exports.create = function(req, res) {
       req.body.category = [req.body.category];
     }
   }
+
+  if (req.body.tags) {
+    if (req.body.tags.en) { req.body.tags.en = req.body.tags.en.split(','); };
+    if (req.body.tags.es) { req.body.tags.es = req.body.tags.es.split(','); };
+  }
+
+  req.body.homeDelivery = req.body.homeDelivery || false;
 
   if (req.files) {
 
@@ -83,6 +256,14 @@ exports.update = function(req, res) {
   console.log("files->",req.files);
   var filesToUpload = [], filesToDelete = [];
   if(req.body._id) { delete req.body._id; }
+
+  if (req.body.tags) {
+    if (req.body.tags.en) { req.body.tags.en = req.body.tags.en.split(','); };
+    if (req.body.tags.es) { req.body.tags.es = req.body.tags.es.split(','); };
+  }
+
+  req.body.homeDelivery = req.body.homeDelivery || false;
+
   Promo.findById(req.params.id, function (err, promo) {
 
     if (req.files) {
@@ -145,6 +326,28 @@ exports.destroy = function(req, res) {
     });
   });
 };
+
+// Get a single promo
+exports.visited = function(req, res) {
+
+  if (!req.params.rank || !req.params.id) {
+    res.send(404);
+  };
+
+  Promo.findById(req.params.id, function (err, promo) {
+    if(err) { return handleError(res, err); }
+    if(!promo) { return res.send(404); }
+
+    if (req.params.rank==='visited') {
+      promos.likes.visited = promos.likes.visited++;
+    }
+    if (req.params.rank==='liked') {
+      promos.likes.liked = promos.likes.liked++;
+    };
+    return res.json(promo);
+  });
+};
+
 
 function handleError(res, err) {
   return res.send(500, err);

@@ -1,0 +1,51 @@
+#wrapper
+  div(ng-include='"components/navbar/navbar.html"')
+  #page-wrapper.pack(ng-controller="PackCtrl")
+    .row
+      .col-lg-12.page-header
+          h1 Promociones
+          a.btn.btn-primary.new(href='/new-pack') Nueva Promocion
+        //
+           /.col-lg-12
+    .row
+        .col-lg-12
+            .panel.panel-default
+              .panel-heading
+                | Promociones Más recientes - Total: {{ packs.length }}
+              //
+                 /.panel-heading
+              .panel-body
+                .table-responsive
+                  table.table.table-striped.table-bordered
+                    thead
+                      tr(role='row')
+                        th Código
+                        th código de cliente
+                        th Nombre
+                        th Cantidad
+                        th Precio
+                        th día registrado
+                        th Editar
+                    tbody
+                      tr.gradeA.odd(ng-repeat="pack in packs")
+                        td.sorting_1 {{ pack._id }}
+                        td.center
+                          a.btn.btn-large.btn-primary.btn-xs(ng-repeat="owner in pack.owners"  href="/user/{{ owner }}")
+                            | {{ owner }}
+                        td {{ pack.name }}
+                        td {{ pack.quantity }}
+                        td {{ pack.price }}
+                        td {{ pack.dateRegistered }}
+                        td.center
+                          a.btn.btn-large.btn-primary.btn-xs(href="/pack/{{ pack._id }}")
+                            <i class="fa fa-angle-right fa-fw"></i>
+                  .row
+                //
+                   /.table-responsive
+              //
+                 /.panel-body
+            //
+               /.panel
+          //
+             /.col-lg-12
+

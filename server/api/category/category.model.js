@@ -12,7 +12,8 @@ var CategorySchema = new Schema({
     es: String,
     en: String
   },
-  parent: Array,
+  iconClass: String,
+  parent: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
   info:{
     es: String,
     en: String

@@ -45,8 +45,8 @@ module.exports.gallery = {
     dir: ''},
   large: {  //homepage
     sufix: '-la',
-    width: 500,
-    height: 300,
+    width: 490,
+    height: 275,
     custom: false,
     dir: '' },
   slim:{   //homepage

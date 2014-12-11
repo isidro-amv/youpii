@@ -9,6 +9,7 @@ angular.module('youpiiBApp')
 
     Pack.get({id:$scope.packId}, function (data) {
       $scope.pack = data;
+      $scope.pack.dateRegistered = new Date(data.dateRegistered);
     });
 
     User.query(function (data) {
@@ -32,7 +33,6 @@ angular.module('youpiiBApp')
     }
 
     $scope.update = function (form) {
-      console.log('hola');
       $scope.submitted = true;
        if(form.$valid) {
         $scope.pack.$update(function (data) {

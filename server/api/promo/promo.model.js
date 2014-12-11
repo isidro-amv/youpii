@@ -3,7 +3,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     Category = require(__dirname + '/../category/category.model.js'),
-    User = require(__dirname + '/../user/user.model.js');
+    User = require(__dirname + '/../user/user.model.js'),
+    textSearch = require('mongoose-text-search');
 
 var PromoSchema = new Schema({
   title: {
@@ -31,7 +32,7 @@ var PromoSchema = new Schema({
     desc: {
       en: String,
       es: String
-    }, // TODO cambiar a multilenguaje
+    },
     paths:{
       big: String,
       large: String,
@@ -46,7 +47,7 @@ var PromoSchema = new Schema({
     desc:     {
       en: String,
       es: String
-    }, // TODO cambiar a multilenguaje
+    },
     paths:{
       big: String,
       large: String,
@@ -56,25 +57,70 @@ var PromoSchema = new Schema({
     kind:     String  }],
   price: Number,
   dateRegistered: { type: Date, default: Date.now },
-  dateLimit: { type: Date },
+  // el tiempo que que la promoción durará (válido hasta enero, agotar existencias, marzo a abril)
+  dateLimit: {
+    en: String,
+    es: String
+  },
+  // fecha en que la promocion debe de mostrase al usuario
   dateStart: { type: Date, default: Date.now },
+  // fecha en que la que la promción no se mostrará al usuario
   dateEnd: { type: Date },
   likes: {
-    count: Number,
-    record: String
+    // veces que se ha visitado la promoción
+    visited: { type:Number, default: 0},
+    // veces que se le ha dado like
+    liked: { type:Number, default: 0},
+    // relación entre likes y visited
+    average: { type:Number, default: 0}
   },
+  tags: {
+    en: [String],
+    es: [String]
+  },
+  homeDelivery: Boolean,
   pack: { type: Schema.Types.ObjectId, ref: 'Pack' },
   category:  [{ type: Schema.Types.ObjectId, ref: 'Category' }],
-  owner: { type: Schema.Types.ObjectId, ref: 'User' },
+  owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   currency: { type: String, enum: ['MXN','USD'], default: 'MXN' },
   active: Boolean
 });
+
+// add a text index to the tags array
+PromoSchema.index({ 'tags.es': 'text','tags.en': 'text'});
+
+
+// agrega a el id de promoción al listado de promociones del cliente
+PromoSchema.post('save', function (promo) {
+  //TODO: testear si esto funciona
+  promo.average = (promo.visited + promo.liked)/2;
+
+  User.findByIdAndUpdate(
+    promo.owner,
+    {$push: {promos: promo._id}},
+    {safe: true, upsert: true},
+    function(err, model) {
+        console.log("error en presave promo",err);
+    }
+  );
+});
+
+// elimina a el id de promoción al listado de promociones del cliente
+PromoSchema.post('remove', function (promo) {
+  User.findByIdAndUpdate(
+    promo.owner,
+    {$pull: {promos: promo._id}},
+    {safe: true, upsert: true},
+    function(err, model) {
+        console.log("error en presave promo",err);
+    }
+  );
+})
 
 
 /**
  * Virtuals
  */
-
 PromoSchema
   .virtual('renew')
   .set(function() {

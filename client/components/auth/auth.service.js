@@ -110,6 +110,8 @@ angular.module('youpiiBApp')
        * @return {Boolean}
        */
       isLoggedIn: function() {
+        console.log(currentUser);
+        console.log(currentUser.name);
         return currentUser.hasOwnProperty('role');
       },
 

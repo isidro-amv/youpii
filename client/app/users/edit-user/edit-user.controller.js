@@ -1,10 +1,14 @@
 'use strict';
 
 angular.module('youpiiBApp')
-  .controller('EditUserCtrl', function ($scope, User, $location, Auth) {
+  .controller('EditUserCtrl', function ($scope, User, $location, Auth, City) {
     $scope.status = '';
     $scope.user = [];
     $scope.userId = $location.path().split('/').slice(-1)[0];
+
+    City.query(function (data) {
+      $scope.cities = data;
+    });
 
     User.get({id:$scope.userId}, function (data) {
       $scope.user = data;

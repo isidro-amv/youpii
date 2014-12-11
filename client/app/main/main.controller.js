@@ -1,7 +1,14 @@
 'use strict';
 
 angular.module('youpiiBApp')
-  .controller('MainCtrl', function ($scope, $http, Auth) {
+  .controller('MainCtrl', function ($scope, $window, $http, Auth, $location) {
+
+
+    // TODO: evitar el doble redireccionamiento
+    Auth.isLoggedInAsync(function (isLogged) {
+      if (!isLogged) { $location.path('/login'); };
+    })
+
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {

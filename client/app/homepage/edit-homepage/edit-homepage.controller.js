@@ -15,6 +15,7 @@ angular.module('youpiiBApp')
         $scope.sections = data.sections;
       }).
       error(function(data) {
+        console.log(data);
         alert('Error al recuperar detalles del sitio');
       });
 
@@ -65,19 +66,22 @@ angular.module('youpiiBApp')
 
     $scope.deleteSlider = function (index) {
       console.log("index",index);
-      var form = $("#sliders [index='"+index+"']").find('form')[0];
-      var params = {
-        form: null,
-        url: urlModel+"/slider/"+form._id.value,
-        method: "DELETE"
-      };
-      App.sendRequest(params, function (data) {
-        $window.alert('Slider Eliminado');
-        $scope.sliders.splice(index,1);
-        $scope.$apply();
-      }, function (err) {
-        $window.alert('Error al eliminar Slider');
-      });
+      var wantToDelete = confirm('¿Estás segur@?');
+      if (wantToDelete) {
+        var form = $("#sliders [index='"+index+"']").find('form')[0];
+        var params = {
+          form: null,
+          url: urlModel+"/slider/"+form._id.value,
+          method: "DELETE"
+        };
+        App.sendRequest(params, function (data) {
+          $window.alert('Slider Eliminado');
+          $scope.sliders.splice(index,1);
+          $scope.$apply();
+        }, function (err) {
+          $window.alert('Error al eliminar Slider');
+        });
+      }
     }
 
     // Home section

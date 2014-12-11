@@ -32,6 +32,14 @@
                         p.help-block(ng-show='form.name[en].$error.required && submitted')
                           | Error de validación de campo
 
+                      .form-group(ng-class='{ "has-success": form.iconClass.$valid && submitted,\
+                        "has-error": form.iconClass.$invalid && submitted }')
+                        label Clase del ícono: http://fortawesome.github.io/Font-Awesome/icons/
+                        input.form-control(placeholder="Ejemplo: Restaurantes", type='text',
+                        name='iconClass', ng-model='category.iconClass', required='')
+                        p.help-block(ng-show='form.iconClass.$error.required && submitted')
+                          | Error de validación de campo
+
                       .form-group(ng-class='{ "has-success": form.url.es.$valid && submitted,\
                         "has-error": form.url.es.$invalid && submitted }')
                         label Url Español
@@ -50,11 +58,10 @@
 
                       .form-group(ng-class='{ "has-success": form.parent.$valid && submitted,\
                         "has-error": form.parent.$invalid && submitted }')
-                        label Padre
+                        label categoría Padre
                         select.form-control(placeholder="Ejemplo: id category", type='text',
-                        name='parent', ng-model='category.parent', required='')
-                          option(value="1231243") test1
-                          option(value="123123") test2
+                        name='parent', ng-model='category.parent', , ng-options="category.name.en for category in categories track by category._id")
+                          option(value="") sin categoría padre
                         p.help-block(ng-show='form.parent.$error.required && submitted')
                           | Error de validación de campo
 

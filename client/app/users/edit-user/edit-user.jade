@@ -18,6 +18,15 @@
                     .col-lg-6
                       input( type='hidden' ng-model="user._id" name='_id')
                       input( type='hidden', name="password" ng-model='user.password')
+
+                      .form-group(ng-class='{ "has-success": form.genericId.$valid && submitted,\
+                        "has-error": form.genericId.$invalid && submitted }')
+                        label Id interno
+                        input.form-control(placeholder="Ejemplo: VTA-TP002", type='text',
+                        name='genericId', ng-model='user.genericId', required='')
+                        p.help-block(ng-show='form.genericId.$error.required && submitted')
+                          | Error de validación de campo
+
                       .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
                         "has-error": form.name.$invalid && submitted }')
                         label Nombre Empresa
@@ -44,6 +53,39 @@
                           | Error de validación de campo
                         p.help-block(ng-show='form.url.$error.mongoose')
                           | {{ errors.url }}
+
+
+                      .form-group(ng-class='{ "has-success": form["description[en]"].$valid && submitted,\
+                        "has-error": form["description[en]"].$invalid && submitted }')
+                        label Breve descripción - Inglés
+                        input.form-control(placeholder="Ejemplo: Restaurant in downtown Vallarta, where you can find ...", type='text',
+                        name='description[en]', ng-model='user.description.en', required='')
+                        p.help-block(ng-show='form["description[en]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["description[es]"].$valid && submitted,\
+                        "has-error": form["description[es]"].$invalid && submitted }')
+                        label Breve descripción - Español
+                        input.form-control(placeholder="Ejemplo: Restaurante en el centro de vallarta, donde puedes encontrar...", type='text',
+                        name='description[es]', ng-model='user.description.es', required='')
+                        p.help-block(ng-show='form["description[es]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["info[en]"].$valid && submitted,\
+                        "has-error": form["info[en]"].$invalid && submitted }')
+                        label Descripción detallada - Inglés
+                        input.form-control(placeholder="Ejemplo: Restaurant in downtown Vallarta, where you can find ...", type='text',
+                        name='info[en]', ng-model='user.info.en', required='')
+                        p.help-block(ng-show='form["info[en]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["info[es]"].$valid && submitted,\
+                        "has-error": form["info[es]"].$invalid && submitted }')
+                        label Descripción detallada - Español
+                        input.form-control(placeholder="Ejemplo: Restaurante en el centro de vallarta, donde puedes encontrar...", type='text',
+                        name='info[es]', ng-model='user.info.es', required='')
+                        p.help-block(ng-show='form["info[es]"].$error.required && submitted')
+                          | Error de validación de campo
 
                       h1 contacto
 
@@ -72,13 +114,30 @@
                         label Celular
                         input.form-control(placeholder='Ejemplo: (329)1020102, (233)2344521', type='text',
                         name='cel', ng-model='user.cel')
+                        p.help-block(ng-show='form.cel.$error.required && submitted')
+                          | Error de validación de campo
 
 
-                      .form-group(ng-class='{ "has-success": form.dir.$valid && submitted,\
-                        "has-error": form.dir.$invalid && submitted }')
-                        label Dirección
-                        textarea.form-control(rows='3', placeholder='Ejemplo: Juan de la Barrera, Colonia: Buena vista', name='dir', ng-model='user.dir')
-                        p.help-block(ng-show='form.dir.$error.required && submitted')
+
+                      .form-group(ng-class='{ "has-success": form["dir[en]"].$valid && submitted,\
+                        "has-error": form["dir[en]"].$invalid && submitted }')
+                        label Dirección - Inglés
+                        textarea.form-control(rows='3', placeholder='Ejemplo:Street. Juan de la Barrera, Sector: Buena vista', name='dir[en]', ng-model='user.dir.en')
+                        p.help-block(ng-show='form["dir[en]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["dir[es]"].$valid && submitted,\
+                        "has-error": form["dir[es]"].$invalid && submitted }')
+                        label Dirección - Español
+                        textarea.form-control(rows='3', placeholder='Ejemplo: Juan de la Barrera, Colonia: Buena vista', name='dir[es]', ng-model='user.dir.es')
+                        p.help-block(ng-show='form["dir[es]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.hours.$valid && submitted,\
+                        "has-error": form.hours.$invalid && submitted }')
+                        label Horario
+                        input.form-control(placeholder='Ejemplo: 9:00 am -10:00pm', name='hours', ng-model='user.hours')
+                        p.help-block(ng-show='form.hours.$error.required && submitted')
                           | Error de validación de campo
 
 
@@ -86,16 +145,15 @@
                         "has-error": form.city.$invalid && submitted }')
                         label Ciudad
                         select.form-control(ng-model="user.city", name="city", placeholder="Ciudad",required='' )
-                          option(value="1") Puerto Vallarta, Jalisco
-                          option(value="2") Ŕivera Nayarit, Nayarit
-                          option(value="3") Zapopan, Jalisco
+                          option(value="") --- selecciona ciudad ----
+                          option(value="{{city._id}}" ng-repeat="city in cities | orderBy:'name'") {{ city.name }}
 
-                      .form-group(ng-class='{ "has-success": form.loc.$valid && submitted,\
-                        "has-error": form.loc.$invalid && submitted }')
+                      .form-group(ng-class='{ "has-success": form.coords.$valid && submitted,\
+                        "has-error": form.coords.$invalid && submitted }')
                         label Coordenadas
                         input.form-control(placeholder='Ejemplo: 20.640620, -105.222771', type='text',
-                        name='loc', ng-model='user.loc', required='')
-                        p.help-block(ng-show='form.dir.$error.required && submitted')
+                        name='coords', ng-model='user.coords', required='')
+                        p.help-block(ng-show='form.coords.$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form.logo.$valid && submitted,\
@@ -106,6 +164,7 @@
                         input.form-control(type='file', name="logo", ng-model="user.logo")
                         p.help-block(ng-show='form.logo.$error.required && submitted')
                           | Error de validación de campo
+
                     .col-lg-6
                       h1 Persona de contacto
 

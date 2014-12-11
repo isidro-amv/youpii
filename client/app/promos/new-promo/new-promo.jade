@@ -145,6 +145,26 @@
                         p.help-block(ng-show='form.dateEnd.$error.required && submitted')
                           | Error de validación de campo
 
+
+
+                      .form-group(ng-class='{ "has-success": form["dateLimit[en]"].$valid && submitted,\
+                        "has-error": form["dateLimit[en]"].$invalid && submitted }')
+                        label Tiempo que será válida la Promoción - Inglés
+                        input.form-control(placeholder="Ejemplo: sólo los lunen", type='text',
+                        name='dateLimit[en]', ng-model='promo.dateLimit.en', required='')
+                        p.help-block(ng-show='form["dateLimit[en]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["dateLimit[es]"].$valid && submitted,\
+                        "has-error": form["dateLimit[es]"].$invalid && submitted }')
+                        label Tiempo que será válida la Promoción - Español
+                        input.form-control(placeholder="Ejemplo: sólo los lunes", type='text',
+                        name='dateLimit[es]', ng-model='promo.dateLimit.es', required='')
+                        p.help-block(ng-show='form["dateLimit[es]"].$error.required && submitted')
+                          | Error de validación de campo
+
+
+
                       .form-group(ng-class='{ "has-success": form.currency.$valid && submitted,\
                         "has-error": form.currency.$invalid && submitted }')
                         label Moneda
@@ -153,8 +173,6 @@
                           option(value="USD") Dolares Americanos
                         p.help-block(ng-show='form.currency.$error.required && submitted')
                           | Error de validación de campo
-
-
 
                       .form-group(ng-class='{ "has-success": form["url[es]"].$valid && submitted,\
                         "has-error": form["url[es]"].$invalid && submitted }')
@@ -172,6 +190,25 @@
                         p.help-block(ng-show='form["url[en]"].$error.required && submitted')
                           | Error de validación de campo
 
+                      .form-group(ng-class='{ "has-success": form["tags[en]"].$valid && submitted,\
+                        "has-error": form["tags[en]"].$invalid && submitted }')
+                        label Tags (separadas por coma) Inglés
+                        input.form-control(placeholder="Ejemplo: food, pizza, mexican", type='text',
+                        name='tags[en]', ng-model='promo.tags.en', required='')
+                        p.help-block(ng-show='form["tags[en]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["tags[es]"].$valid && submitted,\
+                        "has-error": form["tags[es]"].$invalid && submitted }')
+                        label Tags (separadas por coma) Español
+                        input.form-control(placeholder="Ejemplo: comida, pizza, mexicana", type='text',
+                        name='tags[es]', ng-model='promo.tags.es', required='')
+                        p.help-block(ng-show='form["tags[es]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group
+                        label Tiene envio a domicilio?
+                        input.form-control(type='checkbox', name='homeDelivery', ng-model='promo.homeDelivery')
 
                     .col-lg-6
                       h1 Imágenes
@@ -197,35 +234,35 @@
                             | Error de validación de campo
 
                       p Gallería
-                      input.form-control.fileInput(type='file', name="images" )
-                      input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
-                      name='imagesdesc[en]', ng-model='user.images[0].desc.en')
-                      input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
-                      name='imagesdesc[es]', ng-model='user.images[0].desc.es')
+                      input.form-control(type='file', name="images")
+                      input.form-control(placeholder='Ejemplo: The Chutneys', type='text',
+                      name='imagesdesc[en]', ng-model='promo.images[1].desc.en')
+                      input.form-control(placeholder='Ejemplo: Las salsas picantes', type='text',
+                      name='imagesdesc[es]', ng-model='promo.images[1].desc.es')
 
                       input.form-control(type='file', name="images")
-                      input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
-                      name='imagesdesc[en]', ng-model='user.images[1].desc.en')
-                      input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
-                      name='imagesdesc[es]', ng-model='user.images[1].desc.es')
+                      input.form-control(placeholder='Ejemplo: The entrance to the store Mrs. chona', type='text',
+                      name='imagesdesc[en]', ng-model='promo.images[2].desc.en')
+                      input.form-control(placeholder='Ejemplo: La entrada a la tienda doña chona', type='text',
+                      name='imagesdesc[es]', ng-model='promo.images[2].desc.es')
 
                       input.form-control(type='file', name="images")
-                      input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
-                      name='imagesdesc[en]', ng-model='user.images[2].desc.en')
-                      input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
-                      name='imagesdesc[es]', ng-model='user.images[2].desc.es')
+                      input.form-control(placeholder='Ejemplo: Mrs. Chona Restaurant', type='text',
+                      name='imagesdesc[en]', ng-model='promo.images[3].desc.en')
+                      input.form-control(placeholder='Ejemplo: Restaurante Doña Chona', type='text',
+                      name='imagesdesc[es]', ng-model='promo.images[3].desc.es')
 
                       input.form-control(type='file', name="images")
-                      input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
-                      name='imagesdesc[en]', ng-model='user.images[3].desc.en')
-                      input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
-                      name='imagesdesc[es]', ng-model='user.images[3].desc.es')
+                      input.form-control(placeholder='Ejemplo: Our Chefs', type='text',
+                      name='imagesdesc[en]', ng-model='promo.images[4].desc.en')
+                      input.form-control(placeholder='Ejemplo: Nuestros Chefs', type='text',
+                      name='imagesdesc[es]', ng-model='promo.images[4].desc.es')
 
                       input.form-control(type='file', name="images")
-                      input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
-                      name='imagesdesc[en]', ng-model='user.images[4].desc.en')
-                      input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
-                      name='imagesdesc[es]', ng-model='user.images[4].desc.es')
+                      input.form-control(placeholder='Ejemplo: Our Chefs', type='text',
+                      name='imagesdesc[en]', ng-model='promo.images[5].desc.en')
+                      input.form-control(placeholder='Ejemplo: Nuestros Chefs', type='text',
+                      name='imagesdesc[es]', ng-model='promo.images[5].desc.es')
 
                       button.btn.btn-warning(type='reset') Reset Button
                       button.btn.btn-primary(type='submit') Submit Button
