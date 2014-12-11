@@ -144,12 +144,6 @@ exports.update = function(req, res, next) {
     if (req.files) {
 
       if (req.files.logo) {
-        console.log("logo",user.logo);
-        console.log("logo isEmpty",_.isEmpty(user.logo));
-        console.log("logo is vacio",user.logo==null);
-        console.log("logo is or",user.logo || 'pato');
-        console.log("logo is or",user.logo == 'null');
-
         if (user.logo != 'null') { s3.deleteFiles(user.logo); }
         user.logo.desc = req.body.name;
         user.logo = s3.uploadFile(req.files.logo,'logo');
