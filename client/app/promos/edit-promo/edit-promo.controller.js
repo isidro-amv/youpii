@@ -25,12 +25,12 @@ angular.module('youpiiBApp')
     });
 
     $scope.delete = function () {
-      var msg = "¿Realmente quieres eliminar esta promoción?"
+      var msg = '¿Realmente quieres eliminar esta promoción?';
       if ( window.confirm(msg) ) {
          $scope.promo.$delete();
          $location.path('/promos');
       }
-    }
+    };
 
     $scope.update = function (form) {
       console.log('helolo');
@@ -39,28 +39,29 @@ angular.module('youpiiBApp')
       console.log(form);
       if(form.$valid) {
         var formData = new FormData($('.form')[0]);
-        formData.append("imagemainCrop", App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
+        formData.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
         App.sendRequest({
           method: 'PUT',
           form: formData,
           url: 'promos/'+$scope.promoId
-        },function (data) {
-          alert('Usuario actualizado!');
+        },function () {
+          window.alert('Usuario actualizado!');
           $scope.$apply();
         },function (err) {
           console.log(err);
-          var err = err.responseJSON;
+          var errJSON = err.responseJSON;
+
           $scope.errors = {};
 
           // Update validity of form fields that match the mongoose errors
-          angular.forEach(err.errors, function(error, field) {
+          angular.forEach(errJSON.errors, function(error, field) {
             form[field].$setValidity('mongoose', false);
             $scope.errors[field] = error.message;
           });
           $scope.$apply();
         });
       }
-    }
+    };
 
     angular.element('.fileInput').on('change',function(evt) {
       var img = this.getAttribute('cropImg');

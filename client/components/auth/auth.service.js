@@ -61,7 +61,7 @@ angular.module('youpiiBApp')
         var cb = callback || angular.noop;
 
         return User.save(user,
-          function(data) {
+          function() {
             // No queremos que el usuario creado inicie sesión
             // $cookieStore.put('token', data.token);
             //currentUser = User.get();
@@ -152,7 +152,7 @@ angular.module('youpiiBApp')
        * Get auth token
        */
       getBarerToken: function() {
-        return "Bearer "+$cookieStore.get('token');
+        return 'Bearer '+$cookieStore.get('token');
       }
     };
   });

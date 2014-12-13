@@ -11,5 +11,5 @@ angular.module('youpiiBApp')
       get: {
         method: 'GET'
       }
-    })
+    });
   });

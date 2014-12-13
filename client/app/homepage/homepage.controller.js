@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('youpiiBApp')
-  .controller('HomepageCtrl', function ($scope, $http, App) {
+  .controller('HomepageCtrl', function () {
     // Simple GET request example :
   });

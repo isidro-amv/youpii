@@ -11,20 +11,20 @@ angular.module('youpiiBApp')
     });
 
     $scope.delete = function () {
-      var msg = "¿Realmente quieres eliminar esta ciudad?"
+      var msg = '¿Realmente quieres eliminar esta ciudad?';
       if ( window.confirm(msg) ) {
          $scope.city.$delete();
          $location.path('/cities');
       }
-    }
+    };
 
     $scope.update = function (form) {
        if(form.$valid) {
-        $scope.city.$update(function (data) {
-          alert('Ciudad actualizada!');
+        $scope.city.$update(function () {
+          window.alert('Ciudad actualizada!');
         });
        }
 
-    }
+    };
 
   });

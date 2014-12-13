@@ -8,17 +8,17 @@ angular.module('youpiiBApp')
     });
     $scope.category = {
       name:{
-        es: "Restaurante",
-        en: "Restaurant"
+        es: 'Restaurante',
+        en: 'Restaurant'
       },
       url: {
-        es: "restaurante",
-        en: "restaurant"
+        es: 'restaurante',
+        en: 'restaurant'
       },
-      parent: ["123123"],
+      parent: ['123123'],
       info:{
-        es: "Restaurante | comida",
-        en: "Restaurant | food"
+        es: 'Restaurante | comida',
+        en: 'Restaurant | food'
       }
     };
 
@@ -26,10 +26,10 @@ angular.module('youpiiBApp')
       $scope.submitted = true;
       if(form.$valid) {
         var category = new Category($scope.category);
-        category.$save(function (data) {
+        category.$save(function () {
           $location.path('/categories');
         });
       }
-    }
+    };
 
   });

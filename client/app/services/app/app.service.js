@@ -12,7 +12,7 @@ angular.module('youpiiBApp')
         contentType: false,
         processData: false,
         headers: { 'Authorization': Auth.getBarerToken() },
-        dataType: "json",
+        dataType: 'json',
         success:function(data){
           cbok(data);
         },
@@ -20,24 +20,29 @@ angular.module('youpiiBApp')
           cberr(err);
         }
       });
-    },
-    this.dataURItoBlob = function (dataURI) {
-        // convert base64/URLEncoded data component to raw binary data held in a string
-        var byteString;
-        if (dataURI.split(',')[0].indexOf('base64') >= 0)
-            byteString = atob(dataURI.split(',')[1]);
-        else
-            byteString = unescape(dataURI.split(',')[1]);
+    };
+    this.dataURItoBlob = function (dataURL) {
+        var BASE64_MARKER = ';base64,';
+        var parts, contentType, raw;
+        if (dataURL.indexOf(BASE64_MARKER) === -1) {
+          parts = dataURL.split(',');
+          contentType = parts[0].split(':')[1];
+          raw = decodeURIComponent(parts[1]);
 
-        // separate out the mime component
-        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-        // write the bytes of the string to a typed array
-        var ia = new Uint8Array(byteString.length);
-        for (var i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
+          return new Blob([raw], {type: contentType});
         }
 
-        return new Blob([ia], {type:mimeString});
-    }
+        parts = dataURL.split(BASE64_MARKER);
+        contentType = parts[0].split(':')[1];
+        raw = window.atob(parts[1]);
+        var rawLength = raw.length;
+
+        var uInt8Array = new Uint8Array(rawLength);
+
+        for (var i = 0; i < rawLength; ++i) {
+          uInt8Array[i] = raw.charCodeAt(i);
+        }
+
+        return new Blob([uInt8Array], {type: contentType});
+    };
   });

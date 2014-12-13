@@ -10,7 +10,7 @@ angular.module('youpiiBApp')
     });
 
     $scope.user = {
-      name: "Test",
+      name: 'Test',
       url: 'el-nombre-de-mi-empresa',
       businessName: 'Promocion Youpii S.A. de C.V.',
       contact:{
@@ -42,7 +42,7 @@ angular.module('youpiiBApp')
             contentType: false,
             processData: false,
             headers: { 'Authorization': Auth.getBarerToken() },
-            dataType: "json",
+            dataType: 'json',
             success:function(data){
               console.log(data);
               $location.path('/users');
@@ -50,10 +50,10 @@ angular.module('youpiiBApp')
             },
             error: function(err){
               console.log(err);
-              var err = err.responseJSON;
+              var errJSON = err.responseJSON;
               $scope.errors = {};
               // Update validity of form fields that match the mongoose errors
-              angular.forEach(err.errors, function(error, field) {
+              angular.forEach(errJSON.errors, function(error, field) {
                 console.log(field);
                 form[field].$setValidity('mongoose', false);
                 $scope.errors[field] = error.message;

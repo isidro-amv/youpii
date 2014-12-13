@@ -5,7 +5,7 @@ angular.module('youpiiBApp')
     return {
       templateUrl: 'app/directives/homeSection/homeSection.html',
       restrict: 'EA',
-      link: function (scope, element, attrs) {
+      link: function (/*scope, element, attrs*/) {
       }
     };
   });

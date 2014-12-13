@@ -24,7 +24,7 @@ angular.module('youpiiBApp')
       $scope.submitted = true;
        if(form.$valid) {
         $scope.category.$update(function () {
-          alert('categoría actualizada!');
+          window.alert('categoría actualizada!');
         });
        }
     };

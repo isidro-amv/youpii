@@ -15,19 +15,19 @@ angular.module('youpiiBApp')
     });
 
     $scope.delete = function () {
-      var msg = "¿Realmente quieres eliminar este usuario?"
+      var msg = '¿Realmente quieres eliminar este usuario?';
       if ( window.confirm(msg) ) {
          $scope.user.$delete();
          $location.path('/users');
       }
-    }
+    };
 
     $scope.update = function(form) {
 
       $scope.submitted = true;
       console.log(form);
       if(form.$valid) {
-        var formData = new FormData($('.form')[0])
+        var formData = new FormData($('.form')[0]);
         $.ajax({
             type:'PUT',
             url: 'http://localhost:9000/api/users/'+$scope.userId,
@@ -36,18 +36,18 @@ angular.module('youpiiBApp')
             contentType: false,
             processData: false,
             headers: { 'Authorization': Auth.getBarerToken() },
-            dataType: "json",
-            success:function(data){
-              alert('Usuario actualizado!');
+            dataType: 'json',
+            success:function(){
+              window.alert('Usuario actualizado!');
               $scope.$apply();
             },
             error: function(err){
               console.log(err);
-              var err = err.responseJSON;
+              var errJSON = err.responseJSON;
               $scope.errors = {};
 
               // Update validity of form fields that match the mongoose errors
-              angular.forEach(err.errors, function(error, field) {
+              angular.forEach(errJSON.errors, function(error, field) {
                 form[field].$setValidity('mongoose', false);
                 $scope.errors[field] = error.message;
               });

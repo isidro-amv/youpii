@@ -6,8 +6,8 @@ angular.module('youpiiBApp')
 
     // TODO: evitar el doble redireccionamiento
     Auth.isLoggedInAsync(function (isLogged) {
-      if (!isLogged) { $location.path('/login'); };
-    })
+      if (!isLogged) { $location.path('/login'); }
+    });
 
     $scope.awesomeThings = [];
 
@@ -29,5 +29,5 @@ angular.module('youpiiBApp')
 
     $scope.logout = function () {
       Auth.logout();
-    }
+    };
   });

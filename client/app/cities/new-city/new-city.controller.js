@@ -6,14 +6,14 @@ angular.module('youpiiBApp')
       name: 'Puerto Vallarta',
       state: 'Jalisco',
       loc: '20.640620, -105.222771'
-    }
+    };
 
     $scope.register = function (form) {
       if(form.$valid) {
         var city = new City($scope.city);
-        city.$save(function (data) {
+        city.$save(function () {
           $location.path('/cities');
         });
       }
-    }
+    };
   });
