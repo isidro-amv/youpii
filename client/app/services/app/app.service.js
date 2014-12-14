@@ -2,7 +2,8 @@
 
 angular.module('youpiiBApp')
   .service('App', function ($location, Auth ) {
-    this.host = 'http://localhost:9000/api/';
+    this.host = window.location.origin+'/api/';
+
     this.sendRequest = function (v, cbok, cberr) {
       $.ajax({
         type: v.method,
