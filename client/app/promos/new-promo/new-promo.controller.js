@@ -58,33 +58,27 @@ angular.module('youpiiBApp')
 
         formData.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
 
-        $.ajax({
-            type:'POST',
-            url: 'http://localhost:9000/api/promos',
-            data:formData,
-            cache:false,
-            contentType: false,
-            processData: false,
-            headers: { 'Authorization': Auth.getBarerToken() },
-            dataType: 'json',
-            success:function(data){
-              console.log(data);
-              $location.path('/promos');
-              $scope.$apply();
-            },
-            error: function(err){
-              console.log(err);
-              var errJSON = err.responseJSON;
-              $scope.errors = {};
-              // Update validity of form fields that match the mongoose errors
-              angular.forEach(errJSON.errors, function(error, field) {
-                console.log(field);
-                form[field].$setValidity('mongoose', false);
-                $scope.errors[field] = error.message;
-              });
-              $scope.$apply();
-            }
+        App.sendRequest({
+          method: 'POST',
+          form: formData,
+          url: 'promos/'
+        },function (data) {
+          console.log(data);
+          $location.path('/promos');
+          $scope.$apply();
+        },function (err) {
+          console.log(err);
+          var errJSON = err.responseJSON;
+          $scope.errors = {};
+          // Update validity of form fields that match the mongoose errors
+          angular.forEach(errJSON.errors, function(error, field) {
+            console.log(field);
+            form[field].$setValidity('mongoose', false);
+            $scope.errors[field] = error.message;
+          });
+          $scope.$apply();
         });
+
       }
     };
 

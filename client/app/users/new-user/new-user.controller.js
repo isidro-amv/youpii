@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('youpiiBApp')
-  .controller('NewUserCtrl', function ($scope, User,  $location, Auth, City) {
+  .controller('NewUserCtrl', function ($scope, User,  $location, Auth, City, App) {
     $scope.user = {};
     $scope.errors = {};
 
@@ -34,33 +34,26 @@ angular.module('youpiiBApp')
       if(form.$valid) {
         var formData = new FormData($('.form')[0]);
 
-        $.ajax({
-            type:'POST',
-            url: 'http://localhost:9000/api/users',
-            data:formData,
-            cache:false,
-            contentType: false,
-            processData: false,
-            headers: { 'Authorization': Auth.getBarerToken() },
-            dataType: 'json',
-            success:function(data){
-              console.log(data);
-              $location.path('/users');
-              $scope.$apply();
-            },
-            error: function(err){
-              console.log(err);
-              var errJSON = err.responseJSON;
-              $scope.errors = {};
-              // Update validity of form fields that match the mongoose errors
-              angular.forEach(errJSON.errors, function(error, field) {
-                console.log(field);
-                form[field].$setValidity('mongoose', false);
-                $scope.errors[field] = error.message;
-              });
-              $scope.$apply();
-            }
+        App.sendRequest({
+          method: 'POST',
+          form: formData,
+          url: 'users/'
+        },function (data) {
+          console.log(data);
+          $location.path('/users');
+          $scope.$apply();
+        },function (err) {
+          var errJSON = err.responseJSON;
+          $scope.errors = {};
+          // Update validity of form fields that match the mongoose errors
+          angular.forEach(errJSON.errors, function(error, field) {
+            console.log(field);
+            form[field].$setValidity('mongoose', false);
+            $scope.errors[field] = error.message;
+          });
+          $scope.$apply();
         });
+
       }
     };
 
