@@ -2,7 +2,7 @@
 
 angular.module('youpiiBApp')
   .service('App', function ($location, Auth ) {
-    this.host = window.location.origin+'/api/';
+    this.host = window.location.origin + '/api/';
 
     this.sendRequest = function (v, cbok, cberr) {
       $.ajax({
