@@ -110,6 +110,20 @@ UserSchema
         'name': this.contact.name,
         'tel': this.contact.tel
       },
+      'genericId': this.genericId,
+      'description':{
+        'en': this.description.en,
+        'es': this.description.es
+      },
+      'info':{
+        'en': this.info.en,
+        'es': this.info.es
+      },
+      'dir':{
+        'en': this.dir.en,
+        'es': this.dir.es
+      },
+      'hours': this.hours,
       'tel': this.tel,
       'cel': this.cel,
       'coords': this.coords,

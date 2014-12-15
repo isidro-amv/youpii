@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     Category = require(__dirname + '/../category/category.model.js'),
     User = require(__dirname + '/../user/user.model.js'),
+    Pack = require(__dirname + '/../pack/pack.model.js'),
     textSearch = require('mongoose-text-search');
 
 var PromoSchema = new Schema({
@@ -79,7 +80,7 @@ var PromoSchema = new Schema({
     es: [String]
   },
   homeDelivery: Boolean,
-  pack: { type: Schema.Types.ObjectId, ref: 'Pack' },
+  pack: { type: Schema.Types.ObjectId, ref: 'Pack', required:true },
   category:  [{ type: Schema.Types.ObjectId, ref: 'Category' }],
   owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   currency: { type: String, enum: ['MXN','USD'], default: 'MXN' },
@@ -103,6 +104,16 @@ PromoSchema.post('save', function (promo) {
         console.log("error en presave promo",err);
     }
   );
+
+  Pack.findByIdAndUpdate(
+    promo.pack,
+    {$push: {promos: promo._id}},
+    {safe: true, upsert: true},
+    function(err, model) {
+        console.log("error en presave promo",err);
+    }
+  );
+
 });
 
 // elimina a el id de promoción al listado de promociones del cliente

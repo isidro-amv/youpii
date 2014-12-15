@@ -5,6 +5,7 @@ var config = require('../../config/environment');
 var Promo = require('./promo.model');
 var User = require(config.root+'/server/api/user/user.model');
 var City = require(config.root+'/server/api/city/city.model');
+var Pack = require(config.root+'/server/api/pack/pack.model');
 var Category = require(config.root+'/server/api/category/category.model');
 var s3 = require(config.root+'/server/components/s3');
 var ObjectId = require('mongoose').Types.ObjectId;
@@ -16,6 +17,182 @@ exports.index = function(req, res) {
     return res.json(200, promos);
   });
 };
+
+// Creates a new promo in the DB.
+exports.create = function(req, res) {
+  console.log("promo-body",req.body);
+  console.log("promo-files",req.files);
+
+  var promo = req.body;
+  promo.images = [];
+
+  // se necesita elegir un paquete para la promoción
+  if (!req.body.pack) {
+    res.send(500);
+  }
+
+  Promo.findById(req.body.pack,function (err, pack) {
+    if(err) { return handleError(res, err); }
+    if(!pack) { return res.send(404); }
+
+    if (pack.availablePromos < 1) {
+      handleError(res, {errors:{pack:{message:"No promotions availables"}}});
+    }
+
+
+    if (req.body.category) {
+      if (!(req.body.category instanceof Array)) {
+        req.body.category = [req.body.category];
+      }
+    }
+
+    if (req.body.tags) {
+      if (req.body.tags.en) { req.body.tags.en = req.body.tags.en.split(','); };
+      if (req.body.tags.es) { req.body.tags.es = req.body.tags.es.split(','); };
+    }
+
+    req.body.homeDelivery = req.body.homeDelivery || false;
+
+    if (req.files) {
+
+      // se agrega al array la gallería
+      if (req.files.images) {
+        // si no es array de imágenes crea uno
+        if (!(req.files.images instanceof Array) ) {
+          req.files.images = [req.files.images];
+        }
+        //si no es array de descripción crea uno
+        if (req.body.imagesdesc) {
+          if (!(req.body.imagesdesc instanceof Array) ) {
+            req.body.imagesdesc = [req.body.imagesdesc];
+          }
+          // asigna descripción a cada una de las imagenes
+          for (var i = 0; i < req.files.images.length; i++) {
+            req.files.images[i].desc = req.body.imagesdesc[i];
+          }
+        }
+        promo.images = s3.uploadFile(req.files.images,'gallery');
+      }
+
+      // se agrega al array la imagen principal
+      if (req.files.imagemain) {
+        req.files.imagemain.desc = req.body.imagemaindesc || '';
+        promo.imagemain = s3.uploadFile(req.files.imagemain,'gallery');
+        if (req.files.imagemainCrop) {
+          promo.imagemain.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
+        }
+      }
+
+    }
+
+    console.log("save this promos->",promo);
+    Promo.create(promo, function(err, promo) {
+      if(err) { return handleError(res, err); }
+      return res.json(201, promo);
+    });
+  });
+};
+
+// Updates an existing promo in the DB.
+exports.update = function(req, res) {
+  // hay una sospecha de los updates de array no funcionan
+  console.log("hola mundo");
+  console.log("body->", req.body);
+  console.log("files->",req.files);
+  var filesToUpload = [], filesToDelete = [];
+  if(req.body._id) { delete req.body._id; }
+
+  if (req.body.tags) {
+    if (req.body.tags.en) { req.body.tags.en = req.body.tags.en.split(','); };
+    if (req.body.tags.es) { req.body.tags.es = req.body.tags.es.split(','); };
+  }
+
+  req.body.homeDelivery = req.body.homeDelivery || false;
+
+  Promo.findById(req.params.id, function (err, promo) {
+
+    if (req.files) {
+
+      // si el usuario actual tienen elementos, eliminará los elementos y enlistará los elementos
+      // para eliminarlos del S3 también enlistará los nuevos elmentos a subir
+      if (req.files.images) {
+        s3.deleteFiles(promo.images);
+        // si no es array de imágenes crea uno
+        if (!(req.files.images instanceof Array) ) {
+          req.files.images = [req.files.images];
+        }
+        if (!(req.body.imagesdesc instanceof Array) ) {
+          req.body.imagesdesc = [req.body.imagesdesc];
+        }
+
+        //si existe la descripciónde de la imagen
+        if (req.body.imagesdesc) {
+          // asigna descripción a cada una de las imagenes
+          for (var i = 0; i < req.files.images.length; i++) {
+            req.files.images[i].desc = req.body.imagesdesc[i];
+          }
+        }
+        promo.images = s3.uploadFile(req.files.images,'gallery');
+      }
+
+      // si el usuario actual tienen elementos, eliminará los elementos tipo main y enlistará los elementos
+      // para eliminarlos del S3 también enlistará los nuevos elementos a subir
+      if (req.files.imagemain) {
+        console.log("to delete->", promo.imagemain);
+        s3.deleteFiles(promo.imagemain);
+        promo.imagemain = s3.uploadFile(req.files.imagemain,'gallery');
+        promo.imagemain.desc = req.body.imagemaindesc || '';
+        if (req.files.imagemainCrop) {
+          promo.imagemain.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
+        }
+      }
+    }
+
+    if (err) { return handleError(res, err); }
+    if(!promo) { return res.send(404); }
+    var updated = _.merge(promo, req.body);
+    updated.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, promo);
+    });
+  });
+};
+
+// Deletes a promo from the DB.
+exports.destroy = function(req, res) {
+  Promo.findById(req.params.id, function (err, promo) {
+    s3.deleteFiles(promo.imagemain);
+    s3.deleteFiles(promo.images);
+    if(err) { return handleError(res, err); }
+    if(!promo) { return res.send(404); }
+    promo.remove(function(err) {
+      if(err) { return handleError(res, err); }
+      return res.send(204);
+    });
+  });
+};
+
+// Get a single promo
+exports.visited = function(req, res) {
+
+  if (!req.params.rank || !req.params.id) {
+    res.send(500);
+  };
+
+  Promo.findById(req.params.id, function (err, promo) {
+    if(err) { return handleError(res, err); }
+    if(!promo) { return res.send(404); }
+
+    if (req.params.rank==='visited') {
+      promos.likes.visited = promos.likes.visited++;
+    }
+    if (req.params.rank==='liked') {
+      promos.likes.liked = promos.likes.liked++;
+    };
+    return res.json(promo);
+  });
+};
+
 
 // Get a single promo
 exports.show = function(req, res) {
@@ -187,167 +364,6 @@ exports.showByCityAndCategory = function(req, res) {
     })
   })
 }
-
-// Creates a new promo in the DB.
-exports.create = function(req, res) {
-  console.log("promo-body",req.body);
-  console.log("promo-files",req.files);
-
-  var promo = req.body;
-  promo.images = [];
-
-  if (req.body.category) {
-    if (!(req.body.category instanceof Array)) {
-      req.body.category = [req.body.category];
-    }
-  }
-
-  if (req.body.tags) {
-    if (req.body.tags.en) { req.body.tags.en = req.body.tags.en.split(','); };
-    if (req.body.tags.es) { req.body.tags.es = req.body.tags.es.split(','); };
-  }
-
-  req.body.homeDelivery = req.body.homeDelivery || false;
-
-  if (req.files) {
-
-    // se agrega al array la gallería
-    if (req.files.images) {
-      // si no es array de imágenes crea uno
-      if (!(req.files.images instanceof Array) ) {
-        req.files.images = [req.files.images];
-      }
-      //si no es array de descripción crea uno
-      if (req.body.imagesdesc) {
-        if (!(req.body.imagesdesc instanceof Array) ) {
-          req.body.imagesdesc = [req.body.imagesdesc];
-        }
-        // asigna descripción a cada una de las imagenes
-        for (var i = 0; i < req.files.images.length; i++) {
-          req.files.images[i].desc = req.body.imagesdesc[i];
-        }
-      }
-      promo.images = s3.uploadFile(req.files.images,'gallery');
-    }
-
-    // se agrega al array la imagen principal
-    if (req.files.imagemain) {
-      req.files.imagemain.desc = req.body.imagemaindesc || '';
-      promo.imagemain = s3.uploadFile(req.files.imagemain,'gallery');
-      if (req.files.imagemainCrop) {
-        promo.imagemain.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
-      }
-    }
-
-  }
-
-  console.log("save this promos->",promo);
-  Promo.create(promo, function(err, promo) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, promo);
-  });
-};
-
-// Updates an existing promo in the DB.
-exports.update = function(req, res) {
-  // hay una sospecha de los updates de array no funcionan
-  console.log("hola mundo");
-  console.log("body->", req.body);
-  console.log("files->",req.files);
-  var filesToUpload = [], filesToDelete = [];
-  if(req.body._id) { delete req.body._id; }
-
-  if (req.body.tags) {
-    if (req.body.tags.en) { req.body.tags.en = req.body.tags.en.split(','); };
-    if (req.body.tags.es) { req.body.tags.es = req.body.tags.es.split(','); };
-  }
-
-  req.body.homeDelivery = req.body.homeDelivery || false;
-
-  Promo.findById(req.params.id, function (err, promo) {
-
-    if (req.files) {
-
-      // si el usuario actual tienen elementos, eliminará los elementos y enlistará los elementos
-      // para eliminarlos del S3 también enlistará los nuevos elmentos a subir
-      if (req.files.images) {
-        s3.deleteFiles(promo.images);
-        // si no es array de imágenes crea uno
-        if (!(req.files.images instanceof Array) ) {
-          req.files.images = [req.files.images];
-        }
-        if (!(req.body.imagesdesc instanceof Array) ) {
-          req.body.imagesdesc = [req.body.imagesdesc];
-        }
-
-        //si existe la descripciónde de la imagen
-        if (req.body.imagesdesc) {
-          // asigna descripción a cada una de las imagenes
-          for (var i = 0; i < req.files.images.length; i++) {
-            req.files.images[i].desc = req.body.imagesdesc[i];
-          }
-        }
-        promo.images = s3.uploadFile(req.files.images,'gallery');
-      }
-
-      // si el usuario actual tienen elementos, eliminará los elementos tipo main y enlistará los elementos
-      // para eliminarlos del S3 también enlistará los nuevos elementos a subir
-      if (req.files.imagemain) {
-        console.log("to delete->", promo.imagemain);
-        s3.deleteFiles(promo.imagemain);
-        promo.imagemain = s3.uploadFile(req.files.imagemain,'gallery');
-        promo.imagemain.desc = req.body.imagemaindesc || '';
-        if (req.files.imagemainCrop) {
-          promo.imagemain.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
-        }
-      }
-    }
-
-    if (err) { return handleError(res, err); }
-    if(!promo) { return res.send(404); }
-    var updated = _.merge(promo, req.body);
-    updated.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.json(200, promo);
-    });
-  });
-};
-
-// Deletes a promo from the DB.
-exports.destroy = function(req, res) {
-  Promo.findById(req.params.id, function (err, promo) {
-    s3.deleteFiles(promo.imagemain);
-    s3.deleteFiles(promo.images);
-    if(err) { return handleError(res, err); }
-    if(!promo) { return res.send(404); }
-    promo.remove(function(err) {
-      if(err) { return handleError(res, err); }
-      return res.send(204);
-    });
-  });
-};
-
-// Get a single promo
-exports.visited = function(req, res) {
-
-  if (!req.params.rank || !req.params.id) {
-    res.send(404);
-  };
-
-  Promo.findById(req.params.id, function (err, promo) {
-    if(err) { return handleError(res, err); }
-    if(!promo) { return res.send(404); }
-
-    if (req.params.rank==='visited') {
-      promos.likes.visited = promos.likes.visited++;
-    }
-    if (req.params.rank==='liked') {
-      promos.likes.liked = promos.likes.liked++;
-    };
-    return res.json(promo);
-  });
-};
-
 
 function handleError(res, err) {
   return res.send(500, err);

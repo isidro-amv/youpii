@@ -12,6 +12,7 @@ angular.module('youpiiBApp')
 
     User.get({id:$scope.userId}, function (data) {
       $scope.user = data;
+      console.log($scope.user);
     });
 
     $scope.delete = function () {

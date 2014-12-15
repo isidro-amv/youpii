@@ -20,4 +20,20 @@ var PackSchema = new Schema({
   active: Boolean
 });
 
+/**
+ * Methods
+ */
+PackSchema.methods = {
+  /**
+   * availablePromos - checks the amount of available promotions
+   *
+   * @return {Number}
+   * @api public
+   */
+  availablePromos: function() {
+    var availablePromos = this.quantity - promos.length;
+    return availablePromos;
+  }
+}
+
 module.exports = mongoose.model('Pack', PackSchema);
