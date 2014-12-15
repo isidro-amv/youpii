@@ -18,6 +18,7 @@ angular.module('youpiiBApp')
 
     Promo.get({id:$scope.promoId}, function (data) {
       $scope.promo = data;
+      console.log(data.promoStyle);
     });
 
     Pack.query(function (data) {
@@ -39,13 +40,15 @@ angular.module('youpiiBApp')
       console.log(form);
       if(form.$valid) {
         var formData = new FormData($('.form')[0]);
-        formData.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
+        if ($scope.imagemainCropped) {
+          formData.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
+        }
         App.sendRequest({
           method: 'PUT',
           form: formData,
           url: 'promos/'+$scope.promoId
         },function () {
-          window.alert('Usuario actualizado!');
+          window.alert('promoción actualizado!');
           $scope.$apply();
         },function (err) {
           console.log(err);

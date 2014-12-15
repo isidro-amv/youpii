@@ -16,6 +16,11 @@ var PromoSchema = new Schema({
     en: String,
     es: String
   },
+  // estilo que tendrá la promoción
+  promoStyle:{
+    en: String,
+    es: String
+  },
   description:{
     en: String,
     es: String
