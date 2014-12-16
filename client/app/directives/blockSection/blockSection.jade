@@ -54,11 +54,11 @@
             p.help-block(ng-show='formBlock["promo[es]"].$error.required && submitted[$index]')
               | Error de validación de campo
 
-          label Imagen
-          a( href="{{ block.image.paths.normal }}" target="_blank") {{ block.image.paths.normal}}
+          label Imagen Delgada
+          a( href="{{ block.image.paths.slim }}" target="_blank") {{ block.image.paths.slim}}
           .form-group(ng-class='{ "has-success": formBlock.$valid && submitted[$index],\
             "has-error": formBlock.$invalid && submitted[$index] }')
-            input.fileInput.form-control(type='file', name="image", valid-file="", ng-required="block.kind == 'generic'", cropImg="imagemain", index="{{$index}}", ng-model="block.promo.input.file", onchange="angular.element(this).scope().fileNameChanged(event,this)")
+            input.fileInput.form-control(type='file', name="image", valid-file="", ng-required="block.kind == 'generic'", cropImg="imagemain", index="{{$index}}", ng-model="block.promo.input.slim", onchange="angular.element(this).scope().fileNameChanged(event,this)")
             .cropArea Imagen Original
               img-crop(image="imagemain[$index]", result-image="imagemainCropped" area-type="rectangle" result-image-size="{w: 260, h: 280}")
             div Imagen Delgada:
@@ -68,6 +68,7 @@
             "has-error": formBlock.$invalid && submitted[$index] }')
             p.help-block(ng-show='formBlock.$error.required && submitted[$index]')
                 | Error de validación de campo
+
 
         .form-group(ng-class='{ "has-success": formBlock.dimension.$valid && submitted[$index],\
           "has-error": formBlock.dimension.$invalid && submitted[$index] }')

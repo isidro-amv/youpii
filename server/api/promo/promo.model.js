@@ -133,6 +133,15 @@ PromoSchema.post('remove', function (promo) {
   );
 })
 
+// Non-sensitive info we'll be putting in the token
+PromoSchema
+  .virtual('valid')
+  .get(function() {
+    var now = Date.now();
+    return this.dateStart < now && this.dateEnd > now;
+  });
+
+
 
 /**
  * Virtuals

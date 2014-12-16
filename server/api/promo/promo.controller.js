@@ -208,11 +208,10 @@ exports.showByUrl = function(req, res) {
   if (!req.params.lang || !req.params.url) {
     return res.send(404);
   }
-
   var url = req.params.url;
   var query = 'url.'+req.params.lang;
   var obj = {}; obj[query] = url;
-  Promo.findOne(obj, function (err, promos) {
+  Promo.findOne({$and: [obj, {dateStart: {$lt: Date.now()}}, {dateEnd: {$gt: Date.now()} }]}, function (err, promos) {
     if(err) { return handleError(res, err); }
     if(!promos) { return res.send(404); }
     return res.json(promos);
@@ -229,7 +228,12 @@ exports.showBySimilar = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!promo) { return res.send(404); }
     // busca promociones que tenga el mismo dueño pero diferente id
-    Promo.find({$and:[{ owner: promo.owner },{_id: {'$ne': promo.category }}]}).limit(3).exec( function (err, promos) {
+    Promo.find({$and:[
+      { owner: promo.owner },
+      {_id: {'$ne': promo.category }},
+      {dateStart: {$lt: Date.now()}},
+      {dateEnd: {$gt: Date.now()}}
+      ]}).limit(3).exec( function (err, promos) {
       // si no hay promociones o la cantidad es menor a 3
       if (!promos || promos.length < 3) {
         // busca promociones que tengan la misma categoría pero diferente id
@@ -256,7 +260,11 @@ exports.showByTitle = function(req, res) {
   // db.adminCommand( { setParameter : 1, textSearchEnabled : true } )
 
   var findScore = {'score':{'$meta':'textScore'}};
-  Promo.find({ $text: { $search: req.params.words } },findScore,{skip: 0, limit: 50 },function (err,search) {
+  Promo.find({$and:[
+      { $text: { $search: req.params.words } },
+      { dateStart: {$lt: Date.now()}},
+      { dateEnd: {$gt: Date.now()}}
+    ]},findScore,{skip: 0, limit: 50 },function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
     return res.json(search);
@@ -266,7 +274,10 @@ exports.showByTitle = function(req, res) {
 // Get items if the promo have title or promo with the parameters words
 exports.showByVoted = function(req, res) {
   var page = req.params.page;
-  Promo.find({},null,{skip: 0, limit: 50, sort: { average: -1 }},function (err,search) {
+  Promo.find({$and:[
+      { dateStart: {$lt: Date.now()}},
+      { dateEnd: {$gt: Date.now()}}
+    ]},null,{skip: 0, limit: 50, sort: { average: -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
     return res.json(search);
@@ -277,7 +288,10 @@ exports.showByVoted = function(req, res) {
 exports.showByLatest = function(req, res) {
   var page = req.params.page;
 
-  Promo.find({},null,{skip: 0, limit: 50, sort: { dateStart: -1 }},function (err,search) {
+  Promo.find({$and:[
+      { dateStart: {$lt: Date.now()}},
+      { dateEnd: {$gt: Date.now()}}
+    ]},null,{skip: 0, limit: 50, sort: { dateStart: -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
     return res.json(search);
@@ -296,7 +310,11 @@ exports.showByNear = function(req, res) {
   if (!coords[0] || !coords[1]) return res.send(404);
   console.log(coords);
 
-  User.find({ coords : { '$near' : coords } })
+  User.find({$and:[
+      { coords : { '$near' : coords } },
+      { dateStart: {$lt: Date.now()}},
+      { dateEnd: {$gt: Date.now()}}
+    ]})
   .skip(0).populate('promos').limit(50).exec(function (err,users) {
     var promos = [];
     if(err) { return handleError(res, err); }
@@ -319,7 +337,11 @@ exports.showByCity = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!city) { return res.send(404); };
     console.log("city",city);
-    User.find({city:city._id}).populate('promos').skip(0).limit(50).exec(function (err,search) {
+    User.find({$and:[
+        {city:city._id},
+        { dateStart: {$lt: Date.now()}},
+        { dateEnd: {$gt: Date.now()}}
+      ]}).populate('promos').skip(0).limit(50).exec(function (err,search) {
       if(err) { return handleError(res, err); }
       if(!search) { return res.send(404); }
       return res.json(search);
@@ -335,7 +357,11 @@ exports.showByCategory = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!category) { return res.send(404); };
 
-    Promo.find({category:{ $in: [category._id]}}).skip(0).limit(50).exec(function (err,search) {
+    Promo.find({$and:[
+        {category:{ $in: [category._id]}},
+        { dateStart: {$lt: Date.now()}},
+        { dateEnd: {$gt: Date.now()}}
+      ]}).skip(0).limit(50).exec(function (err,search) {
       if(err) { return handleError(res, err); }
       if(!search) { return res.send(404); }
       return res.json(search);
@@ -355,7 +381,12 @@ exports.showByCityAndCategory = function(req, res) {
     console.log("city",city);
     Category.findOne({$or:[{'url.es':urlCategory},{'url.en':urlCategory}]}).exec(function (err, category) {
       console.log("category",category);
-      User.find({city:city._id}).populate({path:'promos', match:{ category:{ $in: [category._id]} }})
+      User.find({city:city._id}).populate({path:'promos',
+        match:{ $and:[
+          { category:{ $in: [category._id]}},
+          { dateStart: {$lt: Date.now()}},
+          { dateEnd: {$gt: Date.now()}}
+        ] }})
       .skip(0).limit(50).exec(function (err,search) {
         if(err) { return handleError(res, err); }
         if(!search) { return res.send(404); }

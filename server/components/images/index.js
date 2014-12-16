@@ -47,13 +47,13 @@ module.exports.gallery = {
     sufix: '-la',
     width: 490,
     height: 275,
-    custom: false,
+    custom: true, // las medidas serán exactamente como se suba
     dir: '' },
   slim:{   //homepage
     sufix: '-sl',
     width: 260,
     height: 280,
-    custom: true,
+    custom: true, // las medidas serán exactamente como se suba
     dir: ''
   }
 }

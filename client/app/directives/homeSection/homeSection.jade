@@ -27,23 +27,23 @@
               .form-group(ng-class='{ "has-success": formSec["order"].$valid && submitted[$index],\
               "has-error": formSec["order"].$invalid && submitted[$index] }')
                 label Posición
-                input.form-control(placeholder="Ejemplo: 0", type='text', name='order', ng-model='section.order', required='')
+                input.form-control(placeholder="Ejemplo: 0", type='number', name='order', ng-model='section.order', required='')
                 p.help-block(ng-show='formSec["order"].$error.required && submitted[$index]')
                   | Error de validación de campo
 
             .col-lg-6
-              .form-group(ng-class='{ "has-success": formSec["href[es]"].$valid && submitted[$index],\
-              "has-error": formSec["href[es]"].$invalid && submitted[$index] }')
+              .form-group(ng-class='{ "has-success": formSec["url[es]"].$valid && submitted[$index],\
+              "has-error": formSec["url[es]"].$invalid && submitted[$index] }')
                 label Enlace español
-                input.form-control(placeholder="Ejemplo: es/bares/mi-empresa", type='text', name='href[es]', ng-model='section.href.es', required='')
-                p.help-block(ng-show='formSec["href[es]"].$error.required && submitted[$index]')
+                input.form-control(placeholder="Ejemplo: es/bares/mi-empresa", type='text', name='url[es]', ng-model='section.url.es', required='')
+                p.help-block(ng-show='formSec["url[es]"].$error.required && submitted[$index]')
                   | Error de validación de campo
 
-              .form-group(ng-class='{ "has-success": formSec["href[en]"].$valid && submitted[$index],\
-              "has-error": formSec["href[en]"].$invalid && submitted[$index] }')
+              .form-group(ng-class='{ "has-success": formSec["url[en]"].$valid && submitted[$index],\
+              "has-error": formSec["url[en]"].$invalid && submitted[$index] }')
                 label Enlace inglés
-                input.form-control(placeholder="Ejemplo: es/bars/my-company", type='text', name='href[en]', ng-model='section.href.en', required='')
-                p.help-block(ng-show='formSec["href[en]"].$error.required && submitted[$index]')
+                input.form-control(placeholder="Ejemplo: es/bars/my-company", type='text', name='url[en]', ng-model='section.url.en', required='')
+                p.help-block(ng-show='formSec["url[en]"].$error.required && submitted[$index]')
                   | Error de validación de campo
 
               input.btn.btn-primary( type="submit" ng-click='updateSection(formSec,$index)'

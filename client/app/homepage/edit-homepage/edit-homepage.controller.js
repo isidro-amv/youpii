@@ -93,7 +93,7 @@ angular.module('youpiiBApp')
       $scope.submitted[index] = true;
       if (form.$valid) {
         var params = {
-          form: new FormData($('.home-section [index="'+index+'"]').find('form')[0]),
+          form: new FormData($('home-section[index="'+index+'"]').find('form')[0]),
           url: urlModel+'/section',
           method: 'POST'
         };
@@ -110,7 +110,7 @@ angular.module('youpiiBApp')
       $scope.submitted[index] = true;
 
       if (form.$valid) {
-        var $form = $('.home-section [index="'+index+'"]').find('form')[0];
+        var $form = $('home-section[index="'+index+'"]').find('form')[0];
         var params = {
           form: new FormData($form),
           url: urlModel+'/section/'+$form._id.value,
@@ -127,10 +127,10 @@ angular.module('youpiiBApp')
     };
     $scope.deleteSection = function (index) {
       console.log('index',index);
-      var form = $('.home-section [index="'+index+'""]').find('form')[0];
+      var idSection = $('.home-section [index="'+index+'"] input[name="_id"]').val();
       var params = {
         form: null,
-        url: urlModel+'/section/'+form._id.value,
+        url: urlModel+'/section/'+idSection,
         method: 'DELETE'
       };
       App.sendRequest(params, function () {
@@ -151,13 +151,12 @@ angular.module('youpiiBApp')
     };
     $scope.createBlock = function (form, sectionIndex, index) {
       $scope.submitted[index] = true;
-      var section = $('.home-section [index="'+sectionIndex+'"]');
-      var formBlock = section.find('.block-section [index="'+index+'"]').find('form')[0];
+      var section = $('home-section[index="'+sectionIndex+'"]');
+      var formBlock = section.find('promo-section[index="'+index+'"]').find('form')[0];
       var dataForm = new FormData(formBlock);
       if (formBlock.kind.value === 'generic') {
         dataForm.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped[index]), 'imagemainCrop.png');
       }
-
       if (form.$valid) {
         var params = {
           form: dataForm,
@@ -173,12 +172,12 @@ angular.module('youpiiBApp')
       }
     };
     $scope.updateBlock = function (form, sectionIndex, index) {
-
+      console.log(sectionIndex,index);
       $scope.submitted[index] = true;
       var sectionId = $scope.sections[sectionIndex]._id;
       var blockId = $scope.sections[sectionIndex].blocks[index]._id;
-      var section = $('.home-section [index="'+sectionIndex+'"]');
-      var formBlock = section.find('.block-section [index="'+index+'""]').find('form')[0];
+      var section = $('home-section[index="'+sectionIndex+'"]');
+      var formBlock = section.find('promo-section[index="'+index+'"]').find('form')[0];
       var dataForm = new FormData(formBlock);
       if (formBlock.kind.value === 'generic') {
         dataForm.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped[index]), 'imagemainCrop.png');
