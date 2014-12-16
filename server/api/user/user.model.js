@@ -68,10 +68,14 @@ var UserSchema = new Schema({
   },
   urlWebsite: String,
   social:{
+    whatsapp: String,
     facebook: String,
-    pinterest: String,
     twitter: String,
-    instagram: String
+    youtube: String,
+    pinterest: String,
+    instagram: String,
+    yelp: String,
+    foursquare: String
   },
   promos: [{ type: Schema.Types.ObjectId, ref: 'Promo' }],
   hashedPassword: String,
@@ -134,10 +138,14 @@ UserSchema
       'email': this.email,
       'role': this.role,
       'social': {
+        'whatsapp': this.social.whatsapp,
         'facebook': this.social.facebook,
-        'pinterest': this.social.pinterest,
         'twitter': this.social.twitter,
-        'instagram': this.social.instagram
+        'youtube': this.social.youtube,
+        'pinterest': this.social.pinterest,
+        'instagram': this.social.instagram,
+        'yelp': this.social.yelp,
+        'foursquare': this.social.foursquare
       }
     };
   });

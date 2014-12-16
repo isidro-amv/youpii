@@ -71,7 +71,7 @@
                       .form-group(ng-class='{ "has-success": form["info[en]"].$valid && submitted,\
                         "has-error": form["info[en]"].$invalid && submitted }')
                         label Descripción detallada - Inglés
-                        input.form-control(placeholder="Ejemplo: Restaurant in downtown Vallarta, where you can find ...", type='text',
+                        textarea.form-control(placeholder="Ejemplo: Restaurant in downtown Vallarta, where you can find ...", type='text',
                         name='info[en]', ng-model='user.info.en', required='')
                         p.help-block(ng-show='form["info[en]"].$error.required && submitted')
                           | Error de validación de campo
@@ -79,7 +79,7 @@
                       .form-group(ng-class='{ "has-success": form["info[es]"].$valid && submitted,\
                         "has-error": form["info[es]"].$invalid && submitted }')
                         label Descripción detallada - Español
-                        input.form-control(placeholder="Ejemplo: Restaurante en el centro de vallarta, donde puedes encontrar...", type='text',
+                        textarea.form-control(placeholder="Ejemplo: Restaurante en el centro de vallarta, donde puedes encontrar...", type='text',
                         name='info[es]', ng-model='user.info.es', required='')
                         p.help-block(ng-show='form["info[es]"].$error.required && submitted')
                           | Error de validación de campo
@@ -219,19 +219,62 @@
                         p.help-block(ng-show='form.urlWebsite.$error.required && submitted')
                             | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form.social[facebook].$valid && submitted,\
-                        "has-error": form.social[facebook].$invalid && submitted }')
-                        label Facebook
-                        input.form-control(type="text", name="social[facebook]" placeholder='Ejemplo: www.facebook.com/mi_empresa' ng-model='user.social.facebook' )
-                        p.help-block(ng-show='form.social[facebook].$error.required && submitted')
+                      .form-group(ng-class='{ "has-success": form.social["whatsapp"].$valid && submitted,\
+                        "has-error": form.social["whatsapp"].$invalid && submitted }')
+                        label Whatsapp
+                        input.form-control(type="text", name="social[whatsapp]" placeholder='Ejemplo: 01(322)123532' ng-model='user.social.whatsapp' )
+                        p.help-block(ng-show='form.social[whatsapp].$error.required && submitted')
                             | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form.social[twitter].$valid && submitted,\
-                        "has-error": form.social[twitter].$invalid && submitted }')
+                      .form-group(ng-class='{ "has-success": form.social["facebook"].$valid && submitted,\
+                        "has-error": form.social["facebook"].$invalid && submitted }')
+                        label Facebook
+                        input.form-control(type="text", name="social[facebook]" placeholder='Ejemplo: www.facebook.com/mi_empresa' ng-model='user.social.facebook' )
+                        p.help-block(ng-show='form.social["facebook"].$error.required && submitted')
+                            | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.social["twitter"].$valid && submitted,\
+                        "has-error": form.social["twitter"].$invalid && submitted }')
                         label Twitter
                         input.form-control(type="text", name="social[twitter]" placeholder='Ejemplo: www.twitter.com/mi_empresa' ng-model='user.social.twitter')
-                        p.help-block(ng-show='form.social[twitter].$error.required && submitted')
+                        p.help-block(ng-show='form.social["twitter"].$error.required && submitted')
                             | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.social["youtube"].$valid && submitted,\
+                        "has-error": form.social["youtube"].$invalid && submitted }')
+                        label youtube
+                        input.form-control(type="text", name="social[youtube]" placeholder='Ejemplo: www.youtube.com/mi_empresa' ng-model='user.social.youtube')
+                        p.help-block(ng-show='form.social["youtube"].$error.required && submitted')
+                            | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.social["pinterest"].$valid && submitted,\
+                        "has-error": form.social["pinterest"].$invalid && submitted }')
+                        label pinterest
+                        input.form-control(type="text", name="social[pinterest]" placeholder='Ejemplo: www.pinterest.com/mi_empresa' ng-model='user.social.pinterest')
+                        p.help-block(ng-show='form.social["pinterest"].$error.required && submitted')
+                            | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.social["instagram"].$valid && submitted,\
+                        "has-error": form.social["instagram"].$invalid && submitted }')
+                        label instagram
+                        input.form-control(type="text", name="social[instagram]" placeholder='Ejemplo: www.instagram.com/mi_empresa' ng-model='user.social.instagram')
+                        p.help-block(ng-show='form.social["instagram"].$error.required && submitted')
+                            | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.social["yelp"].$valid && submitted,\
+                        "has-error": form.social["yelp"].$invalid && submitted }')
+                        label yelp
+                        input.form-control(type="text", name="social[yelp]" placeholder='Ejemplo: www.yelp.com/mi_empresa' ng-model='user.social.yelp')
+                        p.help-block(ng-show='form.social["yelp"].$error.required && submitted')
+                            | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.social["foursquare"].$valid && submitted,\
+                        "has-error": form.social["foursquare"].$invalid && submitted }')
+                        label foursquare
+                        input.form-control(type="text", name="social[foursquare]" placeholder='Ejemplo: www.foursquare.com/mi_empresa' ng-model='user.social.foursquare')
+                        p.help-block(ng-show='form.social["foursquare"].$error.required && submitted')
+                            | Error de validación de campo
+
                       input.form-control( ng-hide='{{true}}', type="password", name="password" ng-model='user.password')
 
                       button.btn.btn-warning(type='reset') Reset Button

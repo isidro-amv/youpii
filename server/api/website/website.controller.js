@@ -19,6 +19,12 @@ exports.show = function(req, res) {
   Website.findById(req.params.id, function (err, website) {
     if(err) { return handleError(res, err); }
     if(!website) { return res.send(404); }
+    if (website.sections) {
+      website.sections = _.sortBy(website.sections,'order');
+      if (website.sections.blocks) {
+        website.sections.blocks = _.sortBy(website.sections.blocks,'order');
+      }
+    }
     return res.json(website);
   });
 };
