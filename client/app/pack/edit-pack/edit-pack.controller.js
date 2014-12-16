@@ -39,6 +39,5 @@ angular.module('youpiiBApp')
           window.alert('Paquete actualizada!');
         });
        }
-
     };
   });

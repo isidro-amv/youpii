@@ -4,7 +4,7 @@ angular.module('youpiiBApp')
   .controller('NewPackCtrl', function ($scope, $location, User, Pack) {
     $scope.ownerFields = [0];
     $scope.pack = {};
-    $scope.pack.owners=[];
+    $scope.pack.owners=[''];
     $scope.ownerFields = [0];
     User.query(function (data) {
       $scope.users = data;
@@ -35,4 +35,5 @@ angular.module('youpiiBApp')
         });
       }
     };
+
   });

@@ -26,13 +26,13 @@
 
                       .form-group(ng-class='{ "has-success": form.ownerField[$index].$valid && submitted,\
                         "has-error": form.ownerField[$index].$invalid && submitted }' ng-repeat="owner in pack.owners")
-                        label Empresa {{pack.owners[$index]}}
+                        label Sucursal {{pack.owners[$index]}}
                         select.form-control(type='text', name='owners', ng-model='pack.owners[$index]', required='', ng-options="user._id as user.name for user in users")
-                          option(value="") --- selecciona empresa ----
+                          option(value="") --- selecciona Sucursal ----
                         p.help-block(ng-show='form.ownerField[$index].$error.required && submitted')
                           | Error de validación de campo
                         .btn.btn-warning(ng-click="deleteOwner($index)") Eliminar
-                      .btn.btn-primary(ng-click="addOwner()") Nueva empresa
+                      .btn.btn-primary(ng-click="addOwner()") Nueva Sucursal
 
                       .form-group(ng-class='{ "has-success": form.quantity.$valid && submitted,\
                         "has-error": form.quantity.$invalid && submitted }')
