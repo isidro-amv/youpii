@@ -25,12 +25,12 @@ module.exports.logo = {
 };
 
 module.exports.gallery = {
-  big:{
+    /*big:{
     sufix: '-bi',
     width: 800,
     height: 700,
     custom: false,
-    dir: '' },
+    dir: '' },*/
   normal: {
     sufix: '-no',
     width: 550,
@@ -39,8 +39,8 @@ module.exports.gallery = {
     dir: '' },
   small: {
     sufix: '-sm',
-    width: 340,
-    height: 320,
+    width: 320,
+    height: 300,
     custom: false,
     dir: ''},
   large: {  //homepage
@@ -93,13 +93,11 @@ module.exports.setSizePaths = function (images,type) {
     images[i].paths = {};
     // Todo esto se puede hacer con arrays
     if (type==='logo') {
-      images[i].paths.big = this.generateS3Url(images[i].name,this.logo.big.sufix);
       images[i].paths.normal = this.generateS3Url(images[i].name,this.logo.normal.sufix);
       images[i].paths.small = this.generateS3Url(images[i].name,this.logo.small.sufix);
       images[i].paths.thumb = this.generateS3Url(images[i].name,this.logo.thumb.sufix);
     }
     if (type==='gallery') {
-      images[i].paths.big = this.generateS3Url(images[i].name,this.gallery.big.sufix);
       images[i].paths.normal = this.generateS3Url(images[i].name,this.gallery.normal.sufix);
       images[i].paths.small = this.generateS3Url(images[i].name,this.gallery.small.sufix);
       images[i].paths.large = this.generateS3Url(images[i].name,this.gallery.large.sufix);

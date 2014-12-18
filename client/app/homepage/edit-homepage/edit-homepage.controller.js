@@ -8,6 +8,8 @@ angular.module('youpiiBApp')
     $scope.submitted = [];
     $scope.imagemain = [];
     $scope.imagemainCropped =[];
+    $scope.imagemainl = [];
+    $scope.imagemainCroppedl =[];
 
     $http.get(App.host+'website/').
       success(function(data) {
@@ -83,7 +85,6 @@ angular.module('youpiiBApp')
         });
       }
     };
-
     // Home section
     $scope.addSection = function () {
       $scope.sections.push([]);
@@ -100,6 +101,7 @@ angular.module('youpiiBApp')
         App.sendRequest(params, function (data) {
           $window.alert('Sección creada');
           $scope.sections = data.sections;
+          $window.location.reload();
         }, function () {
           $window.alert('Error al crear Section');
         });
@@ -141,7 +143,6 @@ angular.module('youpiiBApp')
         $window.alert('Error al eliminar section');
       });
     };
-
     $scope.addBlock = function (sectionId) {
       var block = {
         kind: 0,
@@ -154,8 +155,11 @@ angular.module('youpiiBApp')
       var section = $('home-section[index="'+sectionIndex+'"]');
       var formBlock = section.find('promo-section[index="'+index+'"]').find('form')[0];
       var dataForm = new FormData(formBlock);
+      var dataImgSlim = section.find('promo-section[index="'+index+'"]').find('.img-slim-'+index).attr('ng-src');
+      var dataImgLarge = section.find('promo-section[index="'+index+'"]').find('.img-large-'+index).attr('ng-src');
       if (formBlock.kind.value === 'generic') {
-        dataForm.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped[index]), 'imagemainCrop.png');
+        dataForm.append('imagemainCrop', App.dataURItoBlob(dataImgSlim), 'imagemainCrop.png');
+        dataForm.append('imageLargeCrop', App.dataURItoBlob(dataImgLarge), 'imageLargeCrop.png');
       }
       if (form.$valid) {
         var params = {
@@ -166,6 +170,7 @@ angular.module('youpiiBApp')
         App.sendRequest(params, function (data) {
           $window.alert('Block creado');
           console.log(data);
+          $window.location.reload();
         }, function () {
           $window.alert('Error al crear Block');
         });
@@ -179,8 +184,11 @@ angular.module('youpiiBApp')
       var section = $('home-section[index="'+sectionIndex+'"]');
       var formBlock = section.find('promo-section[index="'+index+'"]').find('form')[0];
       var dataForm = new FormData(formBlock);
+      var dataImgSlim = section.find('promo-section[index="'+index+'"]').find('.img-slim-'+index).attr('ng-src');
+      var dataImgLarge = section.find('promo-section[index="'+index+'"]').find('.img-large-'+index).attr('ng-src');
       if (formBlock.kind.value === 'generic') {
-        dataForm.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped[index]), 'imagemainCrop.png');
+        dataForm.append('imagemainCrop', App.dataURItoBlob(dataImgSlim), 'imagemainCrop.png');
+        dataForm.append('imageLargeCrop', App.dataURItoBlob(dataImgLarge), 'imageLargeCrop.png');
       }
       if (form.$valid) {
         var params = {
@@ -214,10 +222,11 @@ angular.module('youpiiBApp')
         $window.alert('Error al eliminar Bloque');
       });
     };
-
     $scope.fileNameChanged = function (evt,el) {
+      console.log(this);
       var img = el.getAttribute('cropImg');
       var index = el.getAttribute('index');
+      console.log(img,index);
       var file=evt.currentTarget.files[0];
       var reader = new FileReader();
       reader.onload = function (evt) {

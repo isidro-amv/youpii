@@ -9,7 +9,8 @@ angular.module('youpiiBApp')
     $scope.packs = [];
 
     // Inicializa el resultado del crop
-    $scope.imagemainCropped='';
+    $scope.imagemainCropped = '';
+    $scope.imagemainlCropped = '';
 
     User.query(function (data) {
       $scope.users = data;
@@ -57,6 +58,7 @@ angular.module('youpiiBApp')
         var formData = new FormData($('.form')[0]);
 
         formData.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
+        formData.append('imagemainlCrop', App.dataURItoBlob($scope.imagemainlCropped), 'imagemainlCrop.png');
 
         App.sendRequest({
           method: 'POST',

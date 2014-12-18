@@ -34,14 +34,13 @@ angular.module('youpiiBApp')
     };
 
     $scope.update = function (form) {
-      console.log('helolo');
-      console.log(form);
       $scope.submitted = true;
       console.log(form);
       if(form.$valid) {
         var formData = new FormData($('.form')[0]);
         if ($scope.imagemainCropped) {
           formData.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
+          formData.append('imagemainlCrop', App.dataURItoBlob($scope.imagemainlCropped), 'imagemainlCrop.png');
         }
         App.sendRequest({
           method: 'PUT',

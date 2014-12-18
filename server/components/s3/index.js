@@ -51,9 +51,7 @@ module.exports.uploadFile = function (files, type, cb) {
 
       var pathVariation = images.addSufixText(files[k].path, format[el].sufix);
       gm(files[k].path)
-      .resize(format[el].width,format[el].width,'^')
-      .gravity('Center')
-      .crop(format[el].width,format[el].width)
+      .resize(format[el].width,format[el].width)
       .write(pathVariation, function (err) {
         if (!err) {
           uploadFile(pathVariation,pathVariation.split('/').slice(-1)[0],cb);

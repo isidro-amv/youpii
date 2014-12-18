@@ -81,6 +81,9 @@ exports.create = function(req, res) {
         if (req.files.imagemainCrop) {
           promo.imagemain.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
         }
+        if (req.files.imagemainlCrop) {
+          promo.imagemain.paths.large = s3.oneUploadFile(req.files.imagemainlCrop,{kind:'gallery',size:'large'});
+        }
       }
 
     }
@@ -144,6 +147,9 @@ exports.update = function(req, res) {
         promo.imagemain.desc = req.body.imagemaindesc || '';
         if (req.files.imagemainCrop) {
           promo.imagemain.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
+        }
+        if (req.files.imagemainlCrop) {
+          promo.imagemain.paths.large = s3.oneUploadFile(req.files.imagemainlCrop,{kind:'gallery',size:'large'});
         }
       }
     }

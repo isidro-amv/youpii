@@ -247,7 +247,14 @@ exports.createBlock = function(req, res) {
       req.files.image = s3.uploadFile(req.files.image,'gallery');
       req.files.image.desc = req.body.title || '';
       if (req.files.imagemainCrop) {
-        req.files.image.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
+        req.files.image.paths.slim = s3.oneUploadFile(
+          req.files.imagemainCrop,{kind:'gallery',size:'slim'}
+        );
+      }
+      if (req.files.imageLargeCrop) {
+        req.files.image.paths.large = s3.oneUploadFile(
+          req.files.imageLargeCrop,{kind:'gallery',size:'large'}
+        );
       }
       delete req.files.image.path;
       req.body.image = req.files.image;
@@ -266,6 +273,8 @@ exports.updateBlock = function(req, res) {
   console.log("Files",req.files);
   var updateFunc = function (website, indexS, indexB, info) {
     var block = website.sections[indexS].blocks[indexB];
+    console.log("saved");
+    console.log(website.sections[indexS].blocks[indexB]);
     website.sections[indexS].blocks[indexB] = _.merge(block, req.body);
     website.save(function (err) {
       if (err) { return handleError(res, err); }
@@ -293,6 +302,8 @@ exports.updateBlock = function(req, res) {
     }
     block = website.sections[indexS].blocks[indexB];
 
+    console.log("indexB",indexB);
+    console.log("indexS",indexS);
     if(req.body._id) { delete req.body._id; }
     if (req.body.kind === 'promo') {
       // si el block era 'generic' eliminar imágenes
@@ -316,7 +327,14 @@ exports.updateBlock = function(req, res) {
         req.body.image = s3.uploadFile(req.files.image,'gallery');
         req.body.image.desc = req.body.title || '';
         if (req.files.imagemainCrop) {
-          req.body.image.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
+          req.body.image.paths.slim = s3.oneUploadFile(
+            req.files.imagemainCrop,{kind:'gallery',size:'slim'}
+          );
+        }
+        if (req.files.imageLargeCrop) {
+          req.files.image.paths.large = s3.oneUploadFile(
+            req.files.imageLargeCrop,{kind:'gallery',size:'large'}
+          );
         }
         delete req.body.image.path;
       }
