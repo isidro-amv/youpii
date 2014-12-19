@@ -275,6 +275,13 @@
                         p.help-block(ng-show='form.social["foursquare"].$error.required && submitted')
                             | Error de validación de campo
 
+                      .form-group(ng-class='{ "has-success": form.social["tripadvisor"].$valid && submitted,\
+                        "has-error": form.social["tripadvisor"].$invalid && submitted }')
+                        label tripadvisor
+                        input.form-control(type="text", name="social[tripadvisor]" placeholder='Ejemplo: www.tripadvisor.com/mi_empresa' ng-model='user.social.tripadvisor')
+                        p.help-block(ng-show='form.social["tripadvisor"].$error.required && submitted')
+                            | Error de validación de campo
+
                       input.form-control( ng-hide='{{true}}', type="password", name="password" ng-model='user.password')
 
                       button.btn.btn-warning(type='reset') Reset Button

@@ -24,10 +24,10 @@ var UserSchema = new Schema({
   },
   tel: [String],
   cel: [String],
-  dir: [{
+  dir: {
     en: String,
     es: String
-  }],
+  },
   hours: String,
   loc: { type: Number, required: false },
   coords: {type: [Number], index: '2d', required: true},
@@ -75,7 +75,8 @@ var UserSchema = new Schema({
     pinterest: String,
     instagram: String,
     yelp: String,
-    foursquare: String
+    foursquare: String,
+    tripadvisor: String
   },
   promos: [{ type: Schema.Types.ObjectId, ref: 'Promo' }],
   hashedPassword: String,
@@ -137,6 +138,8 @@ UserSchema
       'dateCreate': this.dateCreate,
       'email': this.email,
       'role': this.role,
+      'urlWebsite': this.urlWebsite,
+      'loc': this.loc,
       'social': {
         'whatsapp': this.social.whatsapp,
         'facebook': this.social.facebook,
@@ -145,6 +148,7 @@ UserSchema
         'pinterest': this.social.pinterest,
         'instagram': this.social.instagram,
         'yelp': this.social.yelp,
+        'tripadvisor': this.social.tripadvisor,
         'foursquare': this.social.foursquare
       }
     };
