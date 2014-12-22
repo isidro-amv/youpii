@@ -28,24 +28,26 @@ exports.create = function(req, res) {
 
   // se necesita elegir un paquete para la promoción
   if (!req.body.pack) {
+    console.log("no se ha elegido un paquete");
     res.send(500);
   }
 
-  Promo.findById(req.body.pack,function (err, pack) {
+  Pack.findById(req.body.pack,function (err, pack) {
     if(err) { return handleError(res, err); }
-    if(!pack) { return res.send(404); }
-
-    if (pack.availablePromos < 1) {
-      handleError(res, {errors:{pack:{message:"No promotions availables"}}});
+    if(!pack) {
+      console.log("No se encontró el paquete");
+      return res.send(404);
     }
-
-
+    var availablePromos = pack.quantity - pack.promos.length;
+    if (availablePromos <= 0) {
+      console.log("Se acabaron las promociones disponibles para este paquete");
+      return res.send(404);
+    }
     if (req.body.category) {
       if (!(req.body.category instanceof Array)) {
         req.body.category = [req.body.category];
       }
     }
-
     if (req.body.tags) {
       if (req.body.tags.en) { req.body.tags.en = req.body.tags.en.split(','); };
       if (req.body.tags.es) { req.body.tags.es = req.body.tags.es.split(','); };
@@ -54,7 +56,6 @@ exports.create = function(req, res) {
     req.body.homeDelivery = req.body.homeDelivery || false;
 
     if (req.files) {
-
       // se agrega al array la gallería
       if (req.files.images) {
         // si no es array de imágenes crea uno
@@ -78,6 +79,8 @@ exports.create = function(req, res) {
       if (req.files.imagemain) {
         req.files.imagemain.desc = req.body.imagemaindesc || '';
         promo.imagemain = s3.uploadFile(req.files.imagemain,'gallery');
+        promo.imagemain.desc.en = req.body.imagemaindesc.en || '';
+        promo.imagemain.desc.es = req.body.imagemaindesc.es || '';
         if (req.files.imagemainCrop) {
           promo.imagemain.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
         }
@@ -144,7 +147,8 @@ exports.update = function(req, res) {
         console.log("to delete->", promo.imagemain);
         s3.deleteFiles(promo.imagemain);
         promo.imagemain = s3.uploadFile(req.files.imagemain,'gallery');
-        promo.imagemain.desc = req.body.imagemaindesc || '';
+        promo.imagemain.desc.en = req.body.imagemaindesc.en || '';
+        promo.imagemain.desc.es = req.body.imagemaindesc.es || '';
         if (req.files.imagemainCrop) {
           promo.imagemain.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
         }

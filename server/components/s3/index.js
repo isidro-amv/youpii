@@ -1,4 +1,5 @@
 var s3 = require('s3');
+var _ = require('lodash');
 var config = require('./config.js');
 var images = require('../images');
 var clientS3 =  s3.createClient(config.options);
@@ -96,9 +97,7 @@ module.exports.deleteFiles = function (images,name,cb) {
     // por alguna razon json de mongoose no se puden hacer foreach
     // el siguiente código convierte json a string y los regresa a su forma original
     console.log("to delete s3->", images[i]);
-    if (!images[i].paths) {
-      continue;
-    }
+    if (images[i].paths) { continue; }
     images[i].paths = JSON.parse(JSON.stringify(images[i].paths));
     for(var k in images[i].paths){
       if( typeof images[i].paths[k] === 'string'  ){

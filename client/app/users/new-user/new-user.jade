@@ -114,18 +114,18 @@
                         p.help-block(ng-show='form.cel.$error.required && submitted')
                           | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form.["dir[en]"].$valid && submitted,\
-                        "has-error": form.["dir[en]"].$invalid && submitted }')
+                      .form-group(ng-class='{ "has-success": form["dir[en]"].$valid && submitted,\
+                        "has-error": form["dir[en]"].$invalid && submitted }')
                         label Dirección - Inglés
                         textarea.form-control(rows='3', placeholder='Ejemplo:Street. Juan de la Barrera, Sector: Buena vista', name='dir[en]', ng-model='user.dir.en')
-                        p.help-block(ng-show='form.["dir[en]"].$error.required && submitted')
+                        p.help-block(ng-show='form["dir[en]"].$error.required && submitted')
                           | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form.["dir[es]"].$valid && submitted,\
-                        "has-error": form.["dir[es]"].$invalid && submitted }')
+                      .form-group(ng-class='{ "has-success": form["dir[es]"].$valid && submitted,\
+                        "has-error": form["dir[es]"].$invalid && submitted }')
                         label Dirección - Español
                         textarea.form-control(rows='3', placeholder='Ejemplo: Juan de la Barrera, Colonia: Buena vista', name='dir[es]', ng-model='user.dir.es')
-                        p.help-block(ng-show='form.["dir[es]"].$error.required && submitted')
+                        p.help-block(ng-show='form["dir[es]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form.hours.$valid && submitted,\
@@ -185,7 +185,9 @@
                         "has-error": form.images.$invalid && submitted }')
                         input.form-control(type='file', name="images", ng-model="user.images")
                         input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
-                        name='images[desc]', ng-model='user.images1.desc')
+                        name='images[desc]', ng-model='user.images1.desc.en')
+                        input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
+                        name='images[desc]', ng-model='user.images1.desc.es')
 
                         input.form-control(type='file', name="images", ng-model="user.images")
                         input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',

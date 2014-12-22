@@ -9,6 +9,7 @@ angular.module('youpiiBApp')
 
     Pack.get({id:$scope.packId}, function (data) {
       $scope.pack = data;
+      console.log(data);
       $scope.pack.dateRegistered = new Date(data.dateRegistered);
     });
 

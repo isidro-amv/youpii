@@ -20,7 +20,10 @@ angular.module('youpiiBApp')
       coords: '20.640620, -105.222771',
       tel: '(329)1020102, (233)2344521',
       cel: '(329)1020102, (233)2344521',
-      dir: 'Juan de la Barrera, Colonia: Buena vista',
+      dir: {
+        en: 'Juan de la Barrera, Cologne: Good view',
+        es: 'Juan de la Barrera, Colonia: Buena vista'
+      },
       city: '2',
       email: 'mi_empresa@fake.com',
       password: 'yr7867iUL',

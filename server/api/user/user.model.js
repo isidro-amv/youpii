@@ -134,7 +134,7 @@ UserSchema
       'coords': this.coords,
       'city': this.city,
       'logo': this.logo,
-      'pic': this.pic,
+      'images': this.images,
       'dateCreate': this.dateCreate,
       'email': this.email,
       'role': this.role,

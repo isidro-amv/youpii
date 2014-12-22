@@ -75,6 +75,9 @@
                         p.help-block(ng-show='form.info.$error.required && submitted')
                           | Error de validación de campo
 
+                      .form-group
+                        label(ng-repeat="owners in pack.owners") {{ owners }}
+
 
 
                       button.btn.btn-warning(type='reset') Reset Button

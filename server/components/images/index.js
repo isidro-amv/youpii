@@ -89,7 +89,9 @@ module.exports.setSizePaths = function (images,type) {
     images = [images];
     isArray = false;
   }
+  console.log(images);
   for (var i = images.length - 1; i >= 0; i--) {
+    console.log(images[i]);
     images[i].paths = {};
     // Todo esto se puede hacer con arrays
     if (type==='logo') {

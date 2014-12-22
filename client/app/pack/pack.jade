@@ -23,6 +23,7 @@
                         th código de cliente
                         th Nombre
                         th Cantidad
+                        th Disponibles
                         th Precio
                         th día registrado
                         th Editar
@@ -34,6 +35,7 @@
                             | {{ owner }}
                         td {{ pack.name }}
                         td {{ pack.quantity }}
+                        td {{ pack.quantity - pack.promos.length }}
                         td {{ pack.price }}
                         td {{ pack.dateRegistered }}
                         td.center

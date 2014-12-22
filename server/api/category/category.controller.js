@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Category = require('./category.model');
+var mongoose = require('mongoose');
 
 // Get list of categorys
 exports.index = function(req, res) {
@@ -26,18 +27,16 @@ exports.indexFiltered = function(req, res) {
       if (_.isEmpty(categories[k].parent)) {
         categories[k].childs = [];
         parents.push(categories[k]);
-        childs.splice(k, 1);
+        //childs.splice(k, 1);
       }
     }
 
-    // asigna los hijos a los padres (un hijo puede tener múltiples padres)
-    for(var k in childs){
-      if (childs[k].parent && childs[k].parent.length >0) {
-        for (var i = childs[k].parent.length - 1; i >= 0; i--) {
-          for (var i2 = parents.length - 1; i2 >= 0; i2--) {
-            if (parents[i2]._id.equals(childs[k].parent[i])) {
-              parents[i2].childs.push(childs[k]);
-            }
+    // por ahora la categoría sólo puede tener un padre
+    for(var k in categories){
+      if (!_.isEmpty(categories[k].parent)) {
+        for(var p in parents){
+          if (parents[p]._id.equals(categories[k].parent[0])) {
+            parents[p].childs.push(categories[k]);
           }
         }
       }

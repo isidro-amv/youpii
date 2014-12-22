@@ -4,6 +4,7 @@ angular.module('youpiiBApp')
   .controller('EditPromoCtrl', function ($scope, Pack, $location, Promo, User, Category, App) {
     $scope.status = '';
     $scope.imagemainCropped='';
+    $scope.imagemainlCropped = '';
     $scope.promo = [];
     $scope.categories = [];
     $scope.users = [];
@@ -18,7 +19,7 @@ angular.module('youpiiBApp')
 
     Promo.get({id:$scope.promoId}, function (data) {
       $scope.promo = data;
-      console.log(data.promoStyle);
+      console.log(data);
     });
 
     Pack.query(function (data) {

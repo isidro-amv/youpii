@@ -113,32 +113,9 @@ exports.update = function(req, res, next) {
   User.findById(userId, function (err, user) {
 
     console.log(req.body);
-    // Update info
-    /*user.name = req.body.name || user.name;
-    user.url = req.body.url || user.url;
-    user.businessName = req.body.businessName || user.businessName;
-    if (req.body.contact) {
-      user.contact.name = req.body.contact.name || user.contact.name;
-      user.contact.tel = req.body.contact.tel || user.contact.tel;
-    }
-    user.tel = req.body.tel || user.tel;
-    user.cel = req.body.cel || user.cel;
-    user.dir = req.body.dir || user.dir;
-    user.city = req.body.city || user.city;
-    user.logo = req.body.logo || user.logo;
-    user.images = req.body.images || user.images;
-    user.email = req.body.email || user.email;
-    user.urlWebsite = req.body.urlWebsite || user.urlWebsite;
-    if (req.body.social) {
-      user.social.facebook = req.body.social.facebook || user.social.facebook;
-      user.social.pinterest = req.body.social.pinterest || user.social.pinterest;
-      user.social.twitter = req.body.social.twitter || user.social.twitter;
-      user.social.instagram = req.body.social.instagram || user.social.instagram;
-    }*/
+    if (req.body.coords ) { req.body.coords = req.body.coords.split(','); }
+    if (!req.body.images) { req.body.images = {}; }
 
-    if (req.body.coords ) {
-      req.body.coords = req.body.coords.split(',');
-    }
     var user = _.merge(user, req.body);
     console.log(user);
     if (req.files) {
