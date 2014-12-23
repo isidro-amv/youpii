@@ -261,24 +261,17 @@ exports.showBySimilar = function(req, res) {
 // Get items if the promo have title or promo with the parameters words
 // TODO: hacer funcionar el paginado de search (por ahora se solicita la página 0)
 exports.showByTitle = function(req, res) {
-
   // la url requiere parametro de lenguaje pero no se neccesita
   if (!req.params.words || !req.params.lang) {
     return res.send(404);
   }
-  // ejecutar el siguiente comando para versiones anteriores de mongodb 2.4
-  // db.adminCommand( { setParameter : 1, textSearchEnabled : true } )
 
-  Promo.find({$and:[
-      { "$text": { "$search": req.params.words } },
-      { dateStart: {$lt: Date.now()}},
-      { dateEnd: {$gt: Date.now()}}
-    ]}).skip(0).limit(50).exec(function (err,search) {
-    console.log(err);
+  Promo.textSearch(req.params.words, function (err, search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
-    return res.json(search);
-  })
+    console.log(search);
+    return res.json(renderPagination(search.results,0,50));
+  });
 }
 
 // Get items if the promo have title or promo with the parameters words
@@ -404,6 +397,10 @@ exports.showByCityAndCategory = function(req, res) {
       });
     })
   })
+}
+
+function renderPagination(arr, skip, limit) {
+    return arr.slice(skip,limit+1);
 }
 
 function handleError(res, err) {

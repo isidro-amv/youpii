@@ -92,6 +92,9 @@ var PromoSchema = new Schema({
   active: Boolean
 });
 
+// give our schema text search capabilities
+PromoSchema.plugin(textSearch);
+
 // add a text index to the tags array
 PromoSchema.index({ 'tags.es': 'text','tags.en': 'text'});
 
