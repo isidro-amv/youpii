@@ -271,10 +271,9 @@ exports.showByTitle = function(req, res) {
 
   var findScore = {'score':{'$meta':'textScore'}};
   Promo.find({$and:[
-      { $text: { $search: req.params.words } },
-      { dateStart: {$lt: Date.now()}},
-      { dateEnd: {$gt: Date.now()}}
-    ]},findScore,{skip: 0, limit: 50 },function (err,search) {
+    { 'tags.es': { $in: [req.params.words] }},
+    { 'tags.en': { $in: [req.params.words] }}]},
+    function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
     return res.json(search);
