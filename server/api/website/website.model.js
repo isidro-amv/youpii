@@ -29,7 +29,6 @@ var WebsiteSchema = new Schema({
     },
     blocks:[{
       _id: { type: Schema.Types.ObjectId , default: new mongoose.Types.ObjectId()},
-      promo_id: { type: Schema.Types.ObjectId, ref: 'Promo' },
       order: Number,
       title:{
         en: String,
@@ -38,6 +37,10 @@ var WebsiteSchema = new Schema({
       promo:{
         en: String,
         es: String
+      },
+      promoStyle:{
+        en: String,
+        es: String,
       },
       url:{
         en: String,
