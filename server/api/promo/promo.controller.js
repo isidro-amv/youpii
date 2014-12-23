@@ -269,11 +269,12 @@ exports.showByTitle = function(req, res) {
   // ejecutar el siguiente comando para versiones anteriores de mongodb 2.4
   // db.adminCommand( { setParameter : 1, textSearchEnabled : true } )
 
-  var findScore = {'score':{'$meta':'textScore'}};
   Promo.find({$and:[
-    { 'tags.es': { $in: [req.params.words] }},
-    { 'tags.en': { $in: [req.params.words] }}]},
-    function (err,search) {
+      { "$text": { "$search": req.params.words } },
+      { dateStart: {$lt: Date.now()}},
+      { dateEnd: {$gt: Date.now()}}
+    ]}).skip(0).limit(50).exec(function (err,search) {
+    console.log(err);
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
     return res.json(search);
