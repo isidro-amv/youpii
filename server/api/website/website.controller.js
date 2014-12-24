@@ -98,7 +98,6 @@ exports.updateSlider = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!website) { return res.send(404); }
     website.sliders[indexS] = _.merge(website.sliders[indexS], req.body);
-    console.log("Body to save", website);
     website.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, website);
