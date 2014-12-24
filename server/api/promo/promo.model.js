@@ -7,10 +7,6 @@ var mongoose = require('mongoose'),
     Pack = require(__dirname + '/../pack/pack.model.js'),
     textSearch = require('mongoose-text-search');
 
-
-// give our schema text search capabilities
-PromoSchema.plugin(textSearch);
-
 var PromoSchema = new Schema({
   title: {
     en: String,
@@ -96,11 +92,11 @@ var PromoSchema = new Schema({
   active: Boolean
 });
 
-
+// give our schema text search capabilities
+PromoSchema.plugin(textSearch);
 
 // add a text index to the tags array
 PromoSchema.index({ 'tags.es': 'text','tags.en': 'text'});
-
 
 // agrega a el id de promoción al listado de promociones del cliente
 PromoSchema.post('save', function (promo) {
