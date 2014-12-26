@@ -266,11 +266,31 @@ exports.showByTitle = function(req, res) {
     return res.send(404);
   }
 
-  Promo.textSearch(req.params.words, function (err, search) {
+  var paramsArr = req.params.words.split(" ");
+  var wordsArr = [];
+  for (var i = paramsArr.length - 1; i >= 0; i--) {
+    if (i>6) { break }
+    // agrega palabras para buscar en un array
+    console.log(paramsArr[i].length);
+    if(paramsArr[i].length>4){
+      wordsArr.push(new RegExp(paramsArr[i],'i'));
+    }
+  }
+
+  Promo.find({$and:[
+      { $or: [
+        { 'tags.en': { $in: wordsArr } },
+        { 'tags.es': { $in: wordsArr } } ]
+      },
+      { dateStart: {$lt: Date.now()}},
+      { dateEnd: {$gt: Date.now()}}
+    ]},null,{skip: 0, limit: 50}, function (err, search) {
+    console.log(err);
+    console.log(search);
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
-    console.log(search);
-    return res.json(renderPagination(search.results,0,50));
+
+    return res.json(search);
   });
 }
 
