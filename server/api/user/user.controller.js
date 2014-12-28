@@ -35,6 +35,7 @@ exports.create = function (req, res, next) {
   var splitName = '';
   var uploader = [], uploader2 = [];
 
+  req.body.visibleEmail = req.body.visibleEmail || false;
 
   if (req.body.coords) { req.body.coords = req.body.coords.split(',') }
 
@@ -113,6 +114,7 @@ exports.update = function(req, res, next) {
   User.findById(userId, function (err, user) {
 
     console.log(req.body);
+    req.body.visibleEmail = req.body.visibleEmail || false;
     if (req.body.coords ) { req.body.coords = req.body.coords.split(','); }
     if (!req.body.images) { req.body.images = {}; }
 

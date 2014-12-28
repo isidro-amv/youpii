@@ -62,6 +62,7 @@ var UserSchema = new Schema({
     kind:     String  }],
   dateCreate: { type: Date, default: Date.now },
   email: { type: String, lowercase: true },
+  visibleEmail : {type: Boolean, default: false},
   role: {
     type: String,
     default: 'user'
@@ -140,6 +141,7 @@ UserSchema
       'role': this.role,
       'urlWebsite': this.urlWebsite,
       'loc': this.loc,
+      'visibleEmail': this.visibleEmail,
       'social': {
         'whatsapp': this.social.whatsapp,
         'facebook': this.social.facebook,

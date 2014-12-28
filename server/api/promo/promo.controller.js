@@ -81,6 +81,7 @@ exports.create = function(req, res) {
         promo.imagemain = s3.uploadFile(req.files.imagemain,'gallery');
         promo.imagemain.desc.en = req.body.imagemaindesc.en || '';
         promo.imagemain.desc.es = req.body.imagemaindesc.es || '';
+        promo.imagemain.paths.normal = s3.oneUploadFile(req.files.imagemain,{kind:'gallery',size:'normal'});
         if (req.files.imagemainCrop) {
           promo.imagemain.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
         }
@@ -149,6 +150,7 @@ exports.update = function(req, res) {
         promo.imagemain = s3.uploadFile(req.files.imagemain,'gallery');
         promo.imagemain.desc.en = req.body.imagemaindesc.en || '';
         promo.imagemain.desc.es = req.body.imagemaindesc.es || '';
+        promo.imagemain.paths.normal = s3.oneUploadFile(req.files.imagemain,{kind:'gallery',size:'normal'});
         if (req.files.imagemainCrop) {
           promo.imagemain.paths.slim = s3.oneUploadFile(req.files.imagemainCrop,{kind:'gallery',size:'slim'});
         }
@@ -272,18 +274,17 @@ exports.showByTitle = function(req, res) {
     if (i>6) { break }
     // agrega palabras para buscar en un array
     console.log(paramsArr[i].length);
-    if(paramsArr[i].length>4){
+    if(paramsArr[i].length>2){
+      paramsArr[i] = paramsArr[i].trim();
       wordsArr.push(new RegExp(paramsArr[i],'i'));
     }
   }
-
+  console.log("words to find:",wordsArr);
   Promo.find({$and:[
       { $or: [
         { 'tags.en': { $in: wordsArr } },
         { 'tags.es': { $in: wordsArr } } ]
-      },
-      { dateStart: {$lt: Date.now()}},
-      { dateEnd: {$gt: Date.now()}}
+      }
     ]},null,{skip: 0, limit: 50}, function (err, search) {
     console.log(err);
     console.log(search);

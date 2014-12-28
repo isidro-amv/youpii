@@ -98,6 +98,10 @@
                         p.help-block(ng-show='form.email.$error.mongoose')
                           | {{ errors.email }}
 
+                      .form-group
+                        label ¿Selecciona si quieres el email sea visible al público?
+                        input.form-control(type='checkbox', name='visibleEmail', ng-model='user.visibleEmail')
+
                       .form-group(ng-class='{ "has-success": form.tel.$valid && submitted,\
                         "has-error": form.tel.$invalid && submitted }')
                         label Telefono
