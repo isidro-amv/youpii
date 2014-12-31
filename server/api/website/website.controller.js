@@ -184,7 +184,7 @@ exports.updateSection = function(req, res) {
 
 // Deletes a website from the DB.
 exports.destroySection = function(req, res) {
-  console.log("Update Section", req.params);
+  console.log("Destroy Section", req.params);
   console.log("body",req.body);
   console.log("Files",req.files);
 
@@ -210,18 +210,23 @@ exports.destroySection = function(req, res) {
 
 // Creates a new website in the DB.
 exports.createBlock = function(req, res) {
-  console.log("Create Section Block",req.params);
+  console.log("Create Section Block --",req.params);
   console.log("body",req.body);
   console.log("Files",req.files);
   var sectionId = req.params.sectionId;
   var processBlock = function (promo) {
     Website.findOne(function (err, website) {
       if(err) { return handleError(res, err); }
+      if(!website) { return res.send(404); }
+
+      console.log('section',website);
       var indexS = website.getSectionIndexBy({section:'sections',id:sectionId});
+
       if(indexS === false) {
         console.log("Section not found");
         return res.send(404);
       }
+
       website.sections[indexS].blocks.push(req.body);
       website.save(function (err,website) {
         if (err) { return handleError(res, err); }
@@ -346,7 +351,7 @@ exports.updateBlock = function(req, res) {
 
 // Deletes a website from the DB.
 exports.destroyBlock = function(req, res) {
-  console.log("destroy section block",req.params);
+  console.log("Destroy section block",req.params);
   var sectionId = req.params.sectionId;
   var blockId = req.params.blockId;
 
@@ -358,6 +363,7 @@ exports.destroyBlock = function(req, res) {
     var indexS = website.getSectionIndexBy({section:'sections',id:sectionId});
     var indexB = website.getBlockIndex({id:blockId,sectionIndex:indexS})
     var block = website.sections[indexS].blocks[indexB];
+
     var deleted = website.sections[indexS].blocks.splice(indexB,1);
     if (block.kind === 'generic') {
       s3.deleteFiles(block.image);

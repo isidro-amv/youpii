@@ -14,7 +14,7 @@
 
 
         div(ng-show="block.kind == 'promo' ")
-          .form-group(ng-class='{ "has-success": formformBlock.promo_id.$valid && submitted[$index],\
+          .form-group(ng-class='{ "has-success": formBlock.promo_id.$valid && submitted[$index],\
             "has-error": formBlock.promo_id.$invalid && submitted[$index] }')
             label Id Promoción
             input.form-control(placeholder="Ejemplo: id Promoción", type='text', name='promo_id', ng-model='block.promo_id', ng-required="block.kind == 'promo'")

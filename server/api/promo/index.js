@@ -17,7 +17,8 @@ router.get('/city/:url/:page',controller.showByCity);
 router.get('/city/:urlCity/:urlCategory/:page',controller.showByCityAndCategory);
 router.get('/category/:category/:page',controller.showByCategory);
 
-//router.get('/rank/:rank/:id', controller.showByVoted);
+router.get('/rank/:rank/:id', controller.visited);
+
 router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);

@@ -194,13 +194,19 @@ exports.visited = function(req, res) {
   Promo.findById(req.params.id, function (err, promo) {
     if(err) { return handleError(res, err); }
     if(!promo) { return res.send(404); }
+    var tenVisited;
 
     if (req.params.rank==='visited') {
-      promos.likes.visited = promos.likes.visited++;
+      promo.likes.visited = promo.likes.visited+1;
     }
     if (req.params.rank==='liked') {
-      promos.likes.liked = promos.likes.liked++;
-    };
+      promo.likes.liked = promo.likes.liked+1;
+    }
+
+    tenVisited = parseInt(promo.likes.visited / 10);
+    promo.likes.average = parseInt((tenVisited+ promo.likes.liked)/2);
+
+    promo.save();
     return res.json(promo);
   });
 };

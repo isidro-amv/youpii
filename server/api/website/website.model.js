@@ -29,6 +29,7 @@ var WebsiteSchema = new Schema({
     },
     blocks:[{
       _id: { type: Schema.Types.ObjectId , default: new mongoose.Types.ObjectId()},
+      promo_id: { type: Schema.Types.ObjectId, ref: 'Promo' },
       order: Number,
       title:{
         en: String,
@@ -74,6 +75,7 @@ WebsiteSchema.methods = {
     var section = obj.section;
 
     for (var i = 0; i < this[section].length; i++) {
+      console.log(this[section][i]._id+" is equals to"+id+"?");
       if (this[section][i]._id.equals(id)) {
         return i;
       }
