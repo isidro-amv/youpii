@@ -137,7 +137,6 @@ exports.destroySlider = function(req, res) {
   });
 };
 
-
 // Creates a new website in the DB.
 exports.createSection = function(req, res) {
   console.log("Create Section");
@@ -206,7 +205,6 @@ exports.destroySection = function(req, res) {
     });
   });
 };
-
 
 // Creates a new website in the DB.
 exports.createBlock = function(req, res) {

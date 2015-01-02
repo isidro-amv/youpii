@@ -75,9 +75,9 @@ module.exports.largeSlider = {
 module.exports.mobileSlider = {
   normal:{
     sufix:'-no',
-    width: 460,
+    width: 600,
     custom: false,
-    height: 360
+    height: 230
   }
 }
 

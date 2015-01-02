@@ -204,7 +204,7 @@ exports.visited = function(req, res) {
     }
 
     tenVisited = parseInt(promo.likes.visited / 10);
-    promo.likes.average = parseInt((tenVisited+ promo.likes.liked)/2);
+    promo.likes.average = parseInt(tenVisited+ promo.likes.liked);
 
     promo.save();
     return res.json(promo);

@@ -114,17 +114,15 @@
                       .form-group(ng-class='{ "has-success": form.owner.$valid && submitted,\
                         "has-error": form.owner.$invalid && submitted }')
                         label Empresa
-                        select.form-control(type='text', name='owner', ng-model='promo.owner', required='')
+                        select.form-control( name='owner', ng-model='promo.owner', required='')
                           option(value="{{user._id}}" ng-repeat="user in users | orderBy:'name'") {{ user.name }}
                         p.help-block(ng-show='form.owner.$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form.pack.$valid && submitted,\
                         "has-error": form.pack.$invalid && submitted }')
-                        label Paquete
-                        select.form-control(type='text', name='pack', ng-model='promo.pack', required='')
-                          option(value="") --- selecciona empresa ----
-                          option(value="{{pack._id}}" ng-repeat="pack in packs | orderBy:'name'") {{ pack.name }}
+                        label Paquete {{promo.pack}}
+                        select.form-control( name='pack', ng-model='promo.pack', ng-options="pack._id as pack.name for pack in packs track by pack._id" )
                         p.help-block(ng-show='form.pack.$error.required && submitted')
                           | Error de validación de campo
 

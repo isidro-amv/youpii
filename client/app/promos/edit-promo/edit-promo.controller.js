@@ -19,7 +19,7 @@ angular.module('youpiiBApp')
 
     Promo.get({id:$scope.promoId}, function (data) {
       $scope.promo = data;
-      console.log(data);
+      console.log(data.pack);
     });
 
     Pack.query(function (data) {
