@@ -121,8 +121,10 @@
 
                       .form-group(ng-class='{ "has-success": form.pack.$valid && submitted,\
                         "has-error": form.pack.$invalid && submitted }')
-                        label Paquete {{promo.pack}}
-                        select.form-control( name='pack', ng-model='promo.pack', ng-options="pack._id as pack.name for pack in packs track by pack._id" )
+                        label Paquete
+                        select.form-control(type='text', name='pack', ng-model='promo.pack', required='')
+                          option(value="") --- selecciona empresa ----
+                          option(value="{{pack._id}}" ng-repeat="pack in packs | orderBy:'name'") {{ pack.name }}
                         p.help-block(ng-show='form.pack.$error.required && submitted')
                           | Error de validación de campo
 
