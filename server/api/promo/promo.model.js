@@ -114,7 +114,7 @@ PromoSchema.post('save', function (promo) {
     {$push: {promos: promo._id}},
     {safe: true, upsert: true},
     function(err, model) {
-        console.log("error en presave promo",err);
+        console.log("error en presave promo with pack",err);
     }
   );
 

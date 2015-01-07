@@ -162,10 +162,19 @@ exports.update = function(req, res) {
 
     if (err) { return handleError(res, err); }
     if(!promo) { return res.send(404); }
+
+    // por alguna razón extraña el merge tampoco funciona para actualizar arrays
+    // el siguiente script resuelve el problema
+    if (req.body.category) {
+      promo.category = req.body.category;
+    }
+
     var updated = _.merge(promo, req.body);
-    updated.save(function (err) {
+    updated.save(function (err,p) {
       if (err) { return handleError(res, err); }
-      return res.json(200, promo);
+      console.log("saved");
+      console.log(p);
+      return res.json(200, p);
     });
   });
 };

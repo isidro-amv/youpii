@@ -9,21 +9,40 @@ angular.module('youpiiBApp')
     $scope.categories = [];
     $scope.users = [];
     $scope.promoId = $location.path().split('/').slice(-1)[0];
-    User.query(function (data) {
-      $scope.users = data;
-    });
-    Category.query(function (data) {
-      $scope.categories = data;
-    });
-    $scope.promoId = $location.path().split('/').slice(-1)[0];
 
     Promo.get({id:$scope.promoId}, function (data) {
       $scope.promo = data;
-      console.log(data.pack);
-    });
-
-    Pack.query(function (data) {
-      $scope.packs = data;
+      User.query(function (data) {
+        $scope.users = data;
+        for (var i = $scope.users.length - 1; i >= 0; i--) {
+          if ($scope.promo.owner == $scope.users[i]._id) {
+            $scope.promo.owner = $scope.users[i];
+          }
+        }
+      });
+      Pack.query(function (data) {
+        $scope.packs = data;
+        for (var i = $scope.packs.length - 1; i >= 0; i--) {
+          if ($scope.promo.pack == $scope.packs[i]._id) {
+            $scope.promo.pack = $scope.packs[i];
+          }
+        }
+      });
+      Category.query(function (data) {
+        $scope.categories = data;
+        for (var i = $scope.categories.length - 1; i >= 0; i--) {
+          if ($scope.promo.category[0]) {
+            if ($scope.promo.category[0] == $scope.categories[i]._id) {
+              $scope.promo.category[0] = $scope.categories[i];
+            }
+          }
+          if ($scope.promo.category[1]) {
+            if ($scope.promo.category[1] == $scope.categories[i]._id) {
+              $scope.promo.category[1] = $scope.categories[i];
+            }
+          }
+        }
+      });
     });
 
     $scope.delete = function () {
@@ -39,6 +58,14 @@ angular.module('youpiiBApp')
       console.log(form);
       if(form.$valid) {
         var formData = new FormData($('.form')[0]);
+        formData.append('owner', $scope.promo.owner._id);
+        formData.append('pack', $scope.promo.pack._id);
+        if ($scope.promo.category[0]) {
+          formData.append('category', $scope.promo.category[0]._id);
+        }
+        if ($scope.promo.category[1]) {
+          formData.append('category', $scope.promo.category[1]._id);
+        }
         if ($scope.imagemainCropped) {
           formData.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
           formData.append('imagemainlCrop', App.dataURItoBlob($scope.imagemainlCropped), 'imagemainlCrop.png');

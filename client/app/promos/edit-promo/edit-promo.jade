@@ -114,35 +114,35 @@
                       .form-group(ng-class='{ "has-success": form.owner.$valid && submitted,\
                         "has-error": form.owner.$invalid && submitted }')
                         label Empresa
-                        select.form-control( name='owner', ng-model='promo.owner', required='')
-                          option(value="{{user._id}}" ng-repeat="user in users | orderBy:'name'") {{ user.name }}
+                        select.form-control( ng-model='promo.owner',
+                          ng-options="user.name for user in users", required='')
+                          option(value="") --- selecciona empresa ----
                         p.help-block(ng-show='form.owner.$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form.pack.$valid && submitted,\
                         "has-error": form.pack.$invalid && submitted }')
                         label Paquete
-                        select.form-control(type='text', name='pack', ng-model='promo.pack', required='')
-                          option(value="") --- selecciona empresa ----
-                          option(value="{{pack._id}}" ng-repeat="pack in packs | orderBy:'name'") {{ pack.name }}
+                        select.form-control(type='text', ng-model='promo.pack', required='', ng-options="pack.name for pack in packs")
+                          option(value="") --- selecciona Paquete ----
                         p.help-block(ng-show='form.pack.$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["category[0]"].$valid && submitted,\
                         "has-error": form["category[0]"].$invalid && submitted }')
                         label Categorías
-                        select.form-control( type='text', name='category[0]', ng-model='promo.category[0]', required='')
+                        select.form-control( type='text', ng-model='promo.category[0]', required='', ng-options="category.name.es for category in categories")
                           option(value="") --- selecciona categoría ----
-                          option(value="{{category._id}}" ng-repeat="category in categories | orderBy:'name'") {{ category.name }}
                         p.help-block(ng-show='form["category[0]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["category[1]"].$valid && submitted,\
                         "has-error": form["category[1]"].$invalid && submitted }')
                         label Sub Categoría
-                        select.form-control(type='text', name='category[1]', ng-model='promo.category[1]')
+                        select.form-control(type='text', ng-model='promo.category[1]',
+                          required='', ng-options="category.name.es for category in categories")
                           option(value="") --- selecciona categoría ----
-                          option(value="{{category._id}}" ng-repeat="category in categories | orderBy:'name'") {{ category.name }}
+
                         p.help-block(ng-show='form["category[1]"].$error.required && submitted')
                           | Error de validación de campo
 
