@@ -28,7 +28,10 @@ var UserSchema = new Schema({
     en: String,
     es: String
   },
-  hours: String,
+  hours: {
+    en: String,
+    es: String
+  },
   loc: { type: Number, required: false },
   coords: {type: [Number], index: '2d', required: true},
   city: { type: Schema.Types.ObjectId, ref: 'City' },
@@ -79,7 +82,7 @@ var UserSchema = new Schema({
     foursquare: String,
     tripadvisor: String
   },
-  promos: [{ type: Schema.Types.ObjectId, ref: 'Promo' }],
+  promos: [{ type: Schema.Types.ObjectId, ref: 'Promo', unique:true }],
   hashedPassword: String,
   provider: String,
   salt: String,
@@ -107,6 +110,16 @@ UserSchema
 UserSchema
   .virtual('profile')
   .get(function() {
+
+    var hours = {};
+
+    if (typeof this.hours === "string") {
+      hours.es = this.hours;
+      hours.en = '';
+    }else{
+      hours = this.hours
+    }
+
     return {
       '_id': this._id,
       'name': this.name,
@@ -129,7 +142,7 @@ UserSchema
         'en': this.dir.en,
         'es': this.dir.es
       },
-      'hours': this.hours,
+      'hours':hours,
       'tel': this.tel,
       'cel': this.cel,
       'coords': this.coords,

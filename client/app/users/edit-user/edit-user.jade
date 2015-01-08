@@ -3,7 +3,7 @@
   #page-wrapper(ng-controller="EditUserCtrl").form-user
     .row
         .col-lg-12.page-header
-            h1 Nuevo Usuario
+            h1 Editar Usuario
             div(ng-show="user.role!='admin'")
               div.btn.btn-warning.new(ng-click="delete()") Eliminar Usuario
           //
@@ -138,11 +138,18 @@
                         p.help-block(ng-show='form["dir[es]"].$error.required && submitted')
                           | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form.hours.$valid && submitted,\
-                        "has-error": form.hours.$invalid && submitted }')
-                        label Horario
-                        input.form-control(placeholder='Ejemplo: 9:00 am -10:00pm', name='hours', ng-model='user.hours')
-                        p.help-block(ng-show='form.hours.$error.required && submitted')
+                      .form-group(ng-class='{ "has-success": form["hours[en]"].$valid && submitted,\
+                        "has-error": form["hours[en]"].$invalid && submitted }')
+                        label Horario - Inglés
+                        input.form-control(placeholder='Ejemplo: 9:00 am -10:00pm', name='hours[en]', ng-model='user.hours.en')
+                        p.help-block(ng-show='form["hours[en]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["hours[es]"].$valid && submitted,\
+                        "has-error": form["hours[es]"].$invalid && submitted }')
+                        label Horario - Español
+                        input.form-control(placeholder='Ejemplo: 9:00 am -10:00pm', name='hours[es]', ng-model='user.hours.es')
+                        p.help-block(ng-show='form["hours[es]"].$error.required && submitted')
                           | Error de validación de campo
 
 

@@ -119,6 +119,7 @@ exports.update = function(req, res, next) {
     if (!req.body.images) { req.body.images = {}; }
 
     var user = _.merge(user, req.body);
+
     console.log(user);
     if (req.files) {
 

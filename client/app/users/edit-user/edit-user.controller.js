@@ -12,6 +12,12 @@ angular.module('youpiiBApp')
 
     User.get({id:$scope.userId}, function (data) {
       $scope.user = data;
+      if ( typeof $scope.user.hours === "string") {
+        $scope.user.hours = {
+          en: '',
+          es: $scope.user.hours
+        }
+      }
       console.log($scope.user);
     });
 

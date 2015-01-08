@@ -285,6 +285,7 @@ exports.showByTitle = function(req, res) {
 
   var paramsArr = req.params.words.split(" ");
   var wordsArr = [];
+
   for (var i = paramsArr.length - 1; i >= 0; i--) {
     if (i>6) { break }
     // agrega palabras para buscar en un array
@@ -295,12 +296,15 @@ exports.showByTitle = function(req, res) {
     }
   }
   console.log("words to find:",wordsArr);
+
   Promo.find({$and:[
       { $or: [
         { 'tags.en': { $in: wordsArr } },
         { 'tags.es': { $in: wordsArr } } ]
-      }
-    ]},null,{skip: 0, limit: 50}, function (err, search) {
+      },
+      { dateStart: {$lt: Date.now()}},
+      { dateEnd: {$gt: Date.now()}} ]
+    },null,{skip: 0, limit: 50}, function (err, search) {
     console.log(err);
     console.log(search);
     if(err) { return handleError(res, err); }
@@ -349,21 +353,22 @@ exports.showByNear = function(req, res) {
   if (!coords[0] || !coords[1]) return res.send(404);
   console.log(coords);
 
-  User.find({$and:[
-      { coords : { '$near' : coords } },
-      { dateStart: {$lt: Date.now()}},
-      { dateEnd: {$gt: Date.now()}}
-    ]})
-  .skip(0).populate('promos').limit(50).exec(function (err,users) {
+  User.find({ coords : { '$near' : coords } })
+  .populate('promos')
+  .skip(0).limit(50).exec(function (err,users) {
+
     var promos = [];
     if(err) { return handleError(res, err); }
     if(!users) { return res.send(404); }
 
     for (var i = users.length - 1; i >= 0; i--) {
-      for (var i = users[i].promos.length - 1; i >= 0; i--) {
-        promos.push(users[i].promos[i]);
-      };
-    };
+      if (users[i].promos) {
+        for (var i2 = users[i].promos.length - 1; i2 >= 0; i2--) {
+          promos.push(users[i].promos[i2]);
+        }
+      }
+    }
+
     return res.json(promos);
   })
 }
