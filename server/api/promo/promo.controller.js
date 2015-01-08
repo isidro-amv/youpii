@@ -358,13 +358,16 @@ exports.showByNear = function(req, res) {
   .skip(0).limit(50).exec(function (err,users) {
 
     var promos = [];
+
     if(err) { return handleError(res, err); }
     if(!users) { return res.send(404); }
 
     for (var i = users.length - 1; i >= 0; i--) {
       if (users[i].promos) {
         for (var i2 = users[i].promos.length - 1; i2 >= 0; i2--) {
-          promos.push(users[i].promos[i2]);
+          if (!_.contains(promos, users[i].promos[i2])) {
+            promos.push(users[i].promos[i2]);
+          }
         }
       }
     }
