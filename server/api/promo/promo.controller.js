@@ -384,14 +384,27 @@ exports.showByCity = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!city) { return res.send(404); };
     console.log("city",city);
-    User.find({$and:[
-        {city:city._id},
-        { dateStart: {$lt: Date.now()}},
-        { dateEnd: {$gt: Date.now()}}
-      ]}).populate('promos').skip(0).limit(50).exec(function (err,search) {
+    User.find({$and:[{city:city._id}]}).populate({path:'promos',
+        match:{ $and:[
+          { dateStart: {$lt: Date.now()}},
+          { dateEnd: {$gt: Date.now()}}
+        ]}}).skip(0).limit(50).exec(function (err,users) {
+
+      var promos = [];
+
+      for (var i = users.length - 1; i >= 0; i--) {
+        if (users[i].promos) {
+          for (var i2 = users[i].promos.length - 1; i2 >= 0; i2--) {
+            if (!_.contains(promos, users[i].promos[i2])) {
+              promos.push(users[i].promos[i2]);
+            }
+          }
+        }
+      }
+
       if(err) { return handleError(res, err); }
-      if(!search) { return res.send(404); }
-      return res.json(search);
+      if(!users) { return res.send(404); }
+      return res.json(promos);
     })
   })
 }
