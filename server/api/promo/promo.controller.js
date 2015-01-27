@@ -317,10 +317,15 @@ exports.showByTitle = function(req, res) {
 // Get items if the promo have title or promo with the parameters words
 exports.showByVoted = function(req, res) {
   var page = req.params.page;
+  var skip = 0;
+  var limit = 8;
+
+  limit = limit * (page+1);
+  skip = page * 8;
   Promo.find({$and:[
       { dateStart: {$lt: Date.now()}},
       { dateEnd: {$gt: Date.now()}}
-    ]},null,{skip: 0, limit: 50, sort: { average: -1 }},function (err,search) {
+    ]},null,{skip: skip, limit: limit, sort: { average: -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
     return res.json(search);
@@ -330,11 +335,16 @@ exports.showByVoted = function(req, res) {
 // Get the latest items visibles to the users
 exports.showByLatest = function(req, res) {
   var page = req.params.page;
+  var skip = 0;
+  var limit = 8;
+
+  limit = limit * (page+1);
+  skip = page * 8;
 
   Promo.find({$and:[
       { dateStart: {$lt: Date.now()}},
       { dateEnd: {$gt: Date.now()}}
-    ]},null,{skip: 0, limit: 50, sort: { dateStart: -1 }},function (err,search) {
+    ]},null,{skip: skip, limit: limit, sort: { dateStart: -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
     return res.json(search);
@@ -344,8 +354,13 @@ exports.showByLatest = function(req, res) {
 // Get the latest items visibles to the users
 exports.showByNear = function(req, res) {
 
-  var page = req.params.page;
   var coords = req.params.coords.split(',');
+  var page = req.params.page;
+  var skip = 0;
+  var limit = 8;
+
+  limit = limit * (page+1);
+  skip = page * 8;
 
   if (coords.length !== 2) return res.send(404);
   coords[0] = parseFloat(coords[0]);
@@ -355,7 +370,7 @@ exports.showByNear = function(req, res) {
 
   User.find({ coords : { '$near' : coords } })
   .populate('promos')
-  .skip(0).limit(50).exec(function (err,users) {
+  .skip(skip).limit(limit).exec(function (err,users) {
 
     var promos = [];
 
@@ -379,6 +394,13 @@ exports.showByNear = function(req, res) {
 // Get the latest items visibles to the users
 exports.showByCity = function(req, res) {
   var url = req.params.url;
+  var page = req.params.page;
+  var skip = 0;
+  var limit = 8;
+
+  limit = limit * (page+1);
+  skip = page * 8;
+
   console.log(url);
   City.findOne({url:url}).exec(function (err, city) {
     if(err) { return handleError(res, err); }
@@ -388,7 +410,7 @@ exports.showByCity = function(req, res) {
         match:{ $and:[
           { dateStart: {$lt: Date.now()}},
           { dateEnd: {$gt: Date.now()}}
-        ]}}).skip(0).limit(50).exec(function (err,users) {
+        ]}}).skip(skip).limit(limit).exec(function (err,users) {
 
       var promos = [];
 
@@ -412,6 +434,12 @@ exports.showByCity = function(req, res) {
 // Get the latest items visibles to the users
 exports.showByCategory = function(req, res) {
   var urlCategory = req.params.category;
+  var page = req.params.page;
+  var skip = 0;
+  var limit = 8;
+
+  limit = limit * (page+1);
+  skip = page * 8;
 
   Category.findOne({$or:[{'url.es':urlCategory},{'url.en':urlCategory}]}).exec(function (err, category) {
     if(err) { return handleError(res, err); }
@@ -421,7 +449,7 @@ exports.showByCategory = function(req, res) {
         {category:{ $in: [category._id]}},
         { dateStart: {$lt: Date.now()}},
         { dateEnd: {$gt: Date.now()}}
-      ]}).skip(0).limit(50).exec(function (err,search) {
+      ]}).skip(skip).limit(limit).exec(function (err,search) {
       if(err) { return handleError(res, err); }
       if(!search) { return res.send(404); }
       return res.json(search);
@@ -434,6 +462,12 @@ exports.showByCityAndCategory = function(req, res) {
 
   var urlCity = req.params.urlCity;
   var urlCategory = req.params.urlCategory;
+  var page = req.params.page;
+  var skip = 0;
+  var limit = 8;
+
+  limit = limit * (page+1);
+  skip = page * 8;
 
   City.findOne({url:urlCity}).exec(function (err, city) {
     if(err) { return handleError(res, err); }
@@ -447,7 +481,7 @@ exports.showByCityAndCategory = function(req, res) {
           { dateStart: {$lt: Date.now()}},
           { dateEnd: {$gt: Date.now()}}
         ] }})
-      .skip(0).limit(50).exec(function (err,search) {
+      .skip(skip).limit(limit).exec(function (err,search) {
         if(err) { return handleError(res, err); }
         if(!search) { return res.send(404); }
         return res.json(search);
