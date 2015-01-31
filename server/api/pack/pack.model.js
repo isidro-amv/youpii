@@ -7,8 +7,8 @@ var Schema = mongoose.Schema;
 var PackSchema = new Schema({
   name: String,
   // Comapañias dueñas del paquete
-  owners: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  promos:  [{ type: Schema.Types.ObjectId, ref: 'Promo' }],
+  owners: [{ type: Schema.Types.ObjectId, ref: 'User', unique: true  }],
+  promos:  [{ type: Schema.Types.ObjectId, ref: 'Promo', unique: true }],
   quantity: Number,
   price: Number,
   dateRegistered: { type: Date, default: Date.now },

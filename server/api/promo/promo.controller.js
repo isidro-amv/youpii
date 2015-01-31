@@ -38,11 +38,6 @@ exports.create = function(req, res) {
       console.log("No se encontró el paquete");
       return res.send(404);
     }
-    var availablePromos = pack.quantity - pack.promos.length;
-    if (availablePromos <= 0) {
-      console.log("Se acabaron las promociones disponibles para este paquete");
-      return res.send(404);
-    }
     if (req.body.category) {
       if (!(req.body.category instanceof Array)) {
         req.body.category = [req.body.category];
@@ -257,7 +252,7 @@ exports.showBySimilar = function(req, res) {
     // busca promociones que tenga el mismo dueño pero diferente id
     Promo.find({$and:[
       { owner: promo.owner },
-      {_id: {'$ne': promo.category }},
+      {_id: {'$ne': promo._id }},
       {dateStart: {$lt: Date.now()}},
       {dateEnd: {$gt: Date.now()}}
       ]}).limit(3).exec( function (err, promos) {
@@ -266,6 +261,8 @@ exports.showBySimilar = function(req, res) {
         // busca promociones que tengan la misma categoría pero diferente id
         Promo.find({category: promo.category})
         .where('_id').ne(promo._id)
+        .where('dateStart').lt( Date.now() )
+        .wher('dateEnd').gt( Date.now() )
         .limit(3).exec(function (err, promos) {
           return res.json(promos); });
       }else{
