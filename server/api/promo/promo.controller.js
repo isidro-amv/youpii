@@ -262,7 +262,7 @@ exports.showBySimilar = function(req, res) {
         Promo.find({category: promo.category})
         .where('_id').ne(promo._id)
         .where('dateStart').lt( Date.now() )
-        .wher('dateEnd').gt( Date.now() )
+        .where('dateEnd').gt( Date.now() )
         .limit(3).exec(function (err, promos) {
           return res.json(promos); });
       }else{
