@@ -233,7 +233,7 @@ exports.showByUrl = function(req, res) {
   var url = req.params.url;
   var query = 'url.'+req.params.lang;
   var obj = {}; obj[query] = url;
-  Promo.findOne({$and: [obj, {dateStart: {$lt: Date.now()}}, {dateEnd: {$gt: Date.now()} }]}, function (err, promos) {
+  Promo.findOne(obj, function (err, promos) {
     if(err) { return handleError(res, err); }
     if(!promos) { return res.send(404); }
     return res.json(promos);
@@ -275,6 +275,16 @@ exports.showBySimilar = function(req, res) {
 // Get items if the promo have title or promo with the parameters words
 // TODO: hacer funcionar el paginado de search (por ahora se solicita la página 0)
 exports.showByTitle = function(req, res) {
+
+  var page = parseInt(req.params.page);
+  var skip = 0;
+  var limit = 8;
+
+  limit = limit * (page+1);
+  skip = page * 8;
+
+  console.log("page",page,"skip",skip,"limit",limit);
+
   // la url requiere parametro de lenguaje pero no se neccesita
   if (!req.params.words || !req.params.lang) {
     return res.send(404);
@@ -301,7 +311,7 @@ exports.showByTitle = function(req, res) {
       },
       { dateStart: {$lt: Date.now()}},
       { dateEnd: {$gt: Date.now()}} ]
-    },null,{skip: 0, limit: 50}, function (err, search) {
+    },null,{skip: skip, limit: limit}, function (err, search) {
     console.log(err);
     console.log(search);
     if(err) { return handleError(res, err); }
@@ -313,7 +323,7 @@ exports.showByTitle = function(req, res) {
 
 // Get items if the promo have title or promo with the parameters words
 exports.showByVoted = function(req, res) {
-  var page = req.params.page;
+  var page = parseInt(req.params.page);
   var skip = 0;
   var limit = 8;
 
@@ -331,7 +341,7 @@ exports.showByVoted = function(req, res) {
 
 // Get the latest items visibles to the users
 exports.showByLatest = function(req, res) {
-  var page = req.params.page;
+  var page = parseInt(req.params.page);
   var skip = 0;
   var limit = 8;
 
@@ -352,7 +362,7 @@ exports.showByLatest = function(req, res) {
 exports.showByNear = function(req, res) {
 
   var coords = req.params.coords.split(',');
-  var page = req.params.page;
+  var page = parseInt(req.params.page);
   var skip = 0;
   var limit = 8;
 
@@ -391,7 +401,7 @@ exports.showByNear = function(req, res) {
 // Get the latest items visibles to the users
 exports.showByCity = function(req, res) {
   var url = req.params.url;
-  var page = req.params.page;
+  var page = parseInt(req.params.page);
   var skip = 0;
   var limit = 8;
 
@@ -431,7 +441,7 @@ exports.showByCity = function(req, res) {
 // Get the latest items visibles to the users
 exports.showByCategory = function(req, res) {
   var urlCategory = req.params.category;
-  var page = req.params.page;
+  var page = parseInt(req.params.page);
   var skip = 0;
   var limit = 8;
 
@@ -459,7 +469,7 @@ exports.showByCityAndCategory = function(req, res) {
 
   var urlCity = req.params.urlCity;
   var urlCategory = req.params.urlCategory;
-  var page = req.params.page;
+  var page = parseInt(req.params.page);
   var skip = 0;
   var limit = 8;
 
@@ -485,10 +495,6 @@ exports.showByCityAndCategory = function(req, res) {
       });
     })
   })
-}
-
-function renderPagination(arr, skip, limit) {
-    return arr.slice(skip,limit+1);
 }
 
 function handleError(res, err) {

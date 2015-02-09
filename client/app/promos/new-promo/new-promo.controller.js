@@ -60,6 +60,7 @@ angular.module('youpiiBApp')
         formData.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
         formData.append('imagemainlCrop', App.dataURItoBlob($scope.imagemainlCropped), 'imagemainlCrop.png');
 
+        window.alert('Subiendo promo...');
         App.sendRequest({
           method: 'POST',
           form: formData,
@@ -73,6 +74,9 @@ angular.module('youpiiBApp')
           var errJSON = err.responseJSON;
           $scope.errors = {};
           // Update validity of form fields that match the mongoose errors
+          if (errJSON.errors.length) {
+            window.alert('Ocurrió un error, intenta nuevamente');
+          }
           angular.forEach(errJSON.errors, function(error, field) {
             console.log(field);
             form[field].$setValidity('mongoose', false);
