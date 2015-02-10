@@ -322,17 +322,40 @@ exports.showByTitle = function(req, res) {
 }
 
 // Get items if the promo have title or promo with the parameters words
-exports.showByVoted = function(req, res) {
+exports.showByBestOfMonth = function(req, res) {
+  var page = parseInt(req.params.page);
+  var skip = 0;
+  var limit = 8;
+  var date = new Date();
+  var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+  limit = limit * (page+1);
+  skip = page * 8;
+
+  Promo.find({$and:[
+      { dateStart: {$gt: firstDay}},
+      { dateStart: {$lte: Date.now()}},
+      { dateEnd: {$gt: Date.now()}}
+    ]},null,{skip: skip, limit: limit, sort: { 'likes.average': -1 }},function (err,search) {
+    if(err) { return handleError(res, err); }
+    if(!search) { return res.send(404); }
+    return res.json(search);
+  })
+}
+
+exports.showByBestEver = function(req, res) {
   var page = parseInt(req.params.page);
   var skip = 0;
   var limit = 8;
 
   limit = limit * (page+1);
   skip = page * 8;
+
   Promo.find({$and:[
-      { dateStart: {$lt: Date.now()}},
+      { dateStart: {$lte: Date.now()}},
       { dateEnd: {$gt: Date.now()}}
-    ]},null,{skip: skip, limit: limit, sort: { average: -1 }},function (err,search) {
+    ]},null,{skip: skip, limit: limit, sort: { 'likes.average': -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
     return res.json(search);

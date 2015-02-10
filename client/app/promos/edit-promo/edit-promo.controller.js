@@ -70,7 +70,7 @@ angular.module('youpiiBApp')
           formData.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
           formData.append('imagemainlCrop', App.dataURItoBlob($scope.imagemainlCropped), 'imagemainlCrop.png');
         }
-        window.alert('Subiendo promo...');
+        window.alert('Actualizando promo...');
         App.sendRequest({
           method: 'PUT',
           form: formData,
