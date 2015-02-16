@@ -8,27 +8,24 @@ var s3 = require(config.root+'/server/components/s3');
 
 // Get list of websites
 exports.index = function(req, res) {
-  Website.find(function (err, websites) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, websites[0]);
-  });
-};
 
-// Get a single website - pero no es requerido para este proyecto
-exports.show = function(req, res) {
-  Website.findById(req.params.id, function (err, website) {
+  Website.find(function (err, websites) {
+    var website = websites[0];
     if(err) { return handleError(res, err); }
-    if(!website) { return res.send(404); }
+
     if (website.sections) {
       website.sections = _.sortBy(website.sections,'order');
       if (website.sections.blocks) {
         website.sections.blocks = _.sortBy(website.sections.blocks,'order');
       }
     }
-    return res.json(website);
+    if (website.sliders) {
+      website.sliders = _.sortBy(website.sliders,'order');
+    }
+
+    return res.json(200, website);
   });
 };
-
 
 // Creates a new website in the DB.
 exports.createSlider = function(req, res) {
@@ -137,6 +134,7 @@ exports.destroySlider = function(req, res) {
   });
 };
 
+
 // Creates a new website in the DB.
 exports.createSection = function(req, res) {
   console.log("Create Section");
@@ -163,21 +161,17 @@ exports.updateSection = function(req, res) {
   if(req.body._id) { delete req.body._id; }
   var id = req.params.sectionId;
 
-  Website.findOne( function (err, website) {
-    if (err) { return handleError(res, err); }
-    if(!website) { return res.send(404); }
-
-    var indexS = website.getSectionIndexBy({section:'sections',id:id});
-    if(indexS === false) {
-      console.log("Section not found");
-      return res.send(404);
-    }
-
-    website.sections[indexS] = _.merge(website.sections[indexS], req.body);
-    website.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.json(200, website);
-    });
+  Website.update({"sections._id" : id },
+    {"$set" :{
+      "sections.$.title" : req.body.title,
+      "sections.$.url" : req.body.url,
+      "sections.$.order" : req.body.order
+    }},
+    function (err, numberAffected, raw) {
+      if (err) return handleError(err);
+      console.log('The number of updated documents was %d', numberAffected);
+      console.log('The raw response from Mongo was ', raw);
+      return res.json(200, raw);
   });
 };
 
@@ -190,21 +184,18 @@ exports.destroySection = function(req, res) {
   var id = req.params.sectionId;
 
 
-  Website.findOne(function (err, website) {
-    if(err) { return handleError(res, err); }
-    if(!website) { return res.send(404); }
-
-    var indexS = website.getSectionIndexBy({section:'sections',id:id});
-    var deleted = website.sections.splice(indexS,1);
-
-    console.log("index deleted->",deleted);
-    console.log(website.sections[indexS]);
-    website.save(function(err) {
-      if(err) { return handleError(res, err); }
-      return res.send(204);
-    });
+  Website.update(
+    { },
+    { $pull: { sections : { _id : id } } },
+    { safe: true },
+    function (err, website) {
+      console.log(err);
+      console.log(website);
+      console.log("succes");
+      res.send(200);
   });
 };
+
 
 // Creates a new website in the DB.
 exports.createBlock = function(req, res) {
@@ -263,9 +254,7 @@ exports.createBlock = function(req, res) {
     }
     processBlock();
   }
-
 }
-
 
 // Updates an existing website in the DB.
 exports.updateBlock = function(req, res) {
@@ -273,17 +262,6 @@ exports.updateBlock = function(req, res) {
   console.log("Update Section Block", req.params);
   console.log("body",req.body);
   console.log("Files",req.files);
-  var updateFunc = function (website, indexS, indexB, info) {
-    var block = website.sections[indexS].blocks[indexB];
-    console.log("saved");
-    console.log(website.sections[indexS].blocks[indexB]);
-    website.sections[indexS].blocks[indexB] = _.merge(block, req.body);
-    website.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.json(200, website);
-    });
-  }
-
   var sectionId = req.params.sectionId;
   var blockId = req.params.blockId;
 
@@ -291,24 +269,26 @@ exports.updateBlock = function(req, res) {
     var indexS, indexB, block;
     if (err) { return handleError(res, err); }
     if(!website) { return res.send(404); }
-
-    indexS = website.getSectionIndexBy({section:'sections',id:sectionId});
-    if(indexS === false ) {
-      console.log("Section not found");
-      return res.send(404);
-    }
-    indexB = website.getBlockIndex({id:blockId,sectionIndex:indexS});
-    if(indexB === false ) {
-      console.log("Section not found");
-      return res.send(404);
-    }
-    block = website.sections[indexS].blocks[indexB];
-
-    console.log("indexB",indexB);
-    console.log("indexS",indexS);
     if(req.body._id) { delete req.body._id; }
+
+    // busca un bloque por id
+    for (var i = website.sections.length - 1; i >= 0; i--) {
+      for (var i2 = website.sections[i].blocks.length - 1; i2 >= 0; i2--) {
+        if (website.sections[i].blocks[i2]._id == blockId) {
+          block = website.sections[i].blocks[i2];
+          indexS = i;
+          indexB = i2;
+        }
+      }
+    }
+    if (!block) {
+      return res.send(404,{
+        error: "No existe Id de promoción"
+      });
+    }
+
+
     if (req.body.kind === 'promo') {
-      // si el block era 'generic' eliminar imágenes
       if (block.kind === 'generic') {
         s3.deleteFiles(block.image);
       }
@@ -320,7 +300,12 @@ exports.updateBlock = function(req, res) {
             error: "No existe Id de promoción"
           });
         }
-        updateFunc(website, indexS, indexB, req.body);
+
+        website.sections[indexS].blocks[indexS] = _.merge(website.sections[indexS].blocks[indexS], req.body);
+        website.save(function (err,website) {
+          if (err) { return handleError(res, err); }
+          return res.json(200);
+        });
       });
     }
     if (req.body.kind === 'generic') {
@@ -334,18 +319,20 @@ exports.updateBlock = function(req, res) {
           );
         }
         if (req.files.imageLargeCrop) {
-          req.files.image.paths.large = s3.oneUploadFile(
+          req.body.image.paths.large = s3.oneUploadFile(
             req.files.imageLargeCrop,{kind:'gallery',size:'large'}
           );
         }
         delete req.body.image.path;
       }
-      updateFunc(website, indexS, indexB, req.body);
+      website.sections[indexS].blocks[indexS] = _.merge(website.sections[indexS].blocks[indexS], req.body);
+      website.save(function (err,website) {
+        if (err) { return handleError(res, err); }
+        return res.json(200);
+      });
     }
   });
-
 };
-
 
 // Deletes a website from the DB.
 exports.destroyBlock = function(req, res) {
@@ -358,22 +345,35 @@ exports.destroyBlock = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!website) { return res.send(404); }
 
-    var indexS = website.getSectionIndexBy({section:'sections',id:sectionId});
-    var indexB = website.getBlockIndex({id:blockId,sectionIndex:indexS})
-    var block = website.sections[indexS].blocks[indexB];
+    var blockDeleted;
 
-    var deleted = website.sections[indexS].blocks.splice(indexB,1);
-    if (block.kind === 'generic') {
-      s3.deleteFiles(block.image);
+     // busca un bloque por id
+    for (var i = website.sections.length - 1; i >= 0; i--) {
+      for (var i2 = website.sections[i].blocks.length - 1; i2 >= 0; i2--) {
+        if (website.sections[i].blocks[i2]._id == blockId) {
+
+          blockDeleted = website.sections[i].blocks[i2];
+
+          console.log("index deleted->", blockDeleted);
+          console.log("image index deleted->", blockDeleted.image);
+          console.log(website.sections[i].blocks[i2]);
+
+
+          if (blockDeleted.kind === 'generic') {
+            s3.deleteFiles(blockDeleted.image);
+          }
+          website.sections[i].blocks.splice(i2,1);
+
+        }
+      }
     }
 
-    console.log("index deleted->",deleted);
-    console.log(website.sections[indexS].blocks[indexB]);
     website.save(function(err) {
       if(err) { return handleError(res, err); }
       return res.send(204);
     });
   });
+
 };
 
 function handleError(res, err) {

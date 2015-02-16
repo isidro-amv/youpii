@@ -86,6 +86,8 @@ module.exports.oneUploadFile = function (file, obj,cb) {
 
 module.exports.deleteFiles = function (images,name,cb) {
 
+  console.log(images);
+
   var objects = [], isArray= true;
 
   if ( !(images instanceof Array) ) {
@@ -97,7 +99,7 @@ module.exports.deleteFiles = function (images,name,cb) {
     // por alguna razon json de mongoose no se puden hacer foreach
     // el siguiente código convierte json a string y los regresa a su forma original
     console.log("to delete s3->", images[i]);
-    if (images[i].paths) { continue; }
+    if (!images[i].paths) { continue; }
     images[i].paths = JSON.parse(JSON.stringify(images[i].paths));
     for(var k in images[i].paths){
       if( typeof images[i].paths[k] === 'string'  ){

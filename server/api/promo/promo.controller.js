@@ -253,7 +253,7 @@ exports.showBySimilar = function(req, res) {
     Promo.find({$and:[
       { owner: promo.owner },
       {_id: {'$ne': promo._id }},
-      {dateStart: {$lt: Date.now()}},
+      {dateStart: {$lte: Date.now()}},
       {dateEnd: {$gt: Date.now()}}
       ]}).limit(3).exec( function (err, promos) {
       // si no hay promociones o la cantidad es menor a 3
@@ -261,7 +261,7 @@ exports.showBySimilar = function(req, res) {
         // busca promociones que tengan la misma categoría pero diferente id
         Promo.find({category: promo.category})
         .where('_id').ne(promo._id)
-        .where('dateStart').lt( Date.now() )
+        .where('dateStart').lte( Date.now() )
         .where('dateEnd').gt( Date.now() )
         .limit(3).exec(function (err, promos) {
           return res.json(promos); });
@@ -334,7 +334,7 @@ exports.showByBestOfMonth = function(req, res) {
   skip = page * 8;
 
   Promo.find({$and:[
-      { dateStart: {$gt: firstDay}},
+      { dateStart: {$gte: firstDay}},
       { dateStart: {$lte: Date.now()}},
       { dateEnd: {$gt: Date.now()}}
     ]},null,{skip: skip, limit: limit, sort: { 'likes.average': -1 }},function (err,search) {
@@ -372,7 +372,7 @@ exports.showByLatest = function(req, res) {
   skip = page * 8;
 
   Promo.find({$and:[
-      { dateStart: {$lt: Date.now()}},
+      { dateStart: {$lte: Date.now()}},
       { dateEnd: {$gt: Date.now()}}
     ]},null,{skip: skip, limit: limit, sort: { dateStart: -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
@@ -438,7 +438,7 @@ exports.showByCity = function(req, res) {
     console.log("city",city);
     User.find({$and:[{city:city._id}]}).populate({path:'promos',
         match:{ $and:[
-          { dateStart: {$lt: Date.now()}},
+          { dateStart: {$lte: Date.now()}},
           { dateEnd: {$gt: Date.now()}}
         ]}}).skip(skip).limit(limit).exec(function (err,users) {
 
@@ -477,7 +477,7 @@ exports.showByCategory = function(req, res) {
 
     Promo.find({$and:[
         {category:{ $in: [category._id]}},
-        { dateStart: {$lt: Date.now()}},
+        { dateStart: {$lte: Date.now()}},
         { dateEnd: {$gt: Date.now()}}
       ]}).skip(skip).limit(limit).exec(function (err,search) {
       if(err) { return handleError(res, err); }
@@ -508,7 +508,7 @@ exports.showByCityAndCategory = function(req, res) {
       User.find({city:city._id}).populate({path:'promos',
         match:{ $and:[
           { category:{ $in: [category._id]}},
-          { dateStart: {$lt: Date.now()}},
+          { dateStart: {$lte: Date.now()}},
           { dateEnd: {$gt: Date.now()}}
         ] }})
       .skip(skip).limit(limit).exec(function (err,search) {

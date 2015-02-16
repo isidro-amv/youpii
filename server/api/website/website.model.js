@@ -14,6 +14,7 @@ var WebsiteSchema = new Schema({
       en: String,
       es: String
     },
+    order: Number,
     images: Schema.Types.Mixed // Type:image [mainimage, image]
   }],
   sections:[{
