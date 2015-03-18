@@ -6,7 +6,8 @@ angular.module('youpiiBApp', [
   'ngSanitize',
   'ui.router',
   'ngImgCrop',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'textAngular'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

@@ -71,16 +71,18 @@
                       .form-group(ng-class='{ "has-success": form["info[en]"].$valid && submitted,\
                         "has-error": form["info[en]"].$invalid && submitted }')
                         label Descripción detallada - Inglés
+                        text-angular(ng-model="user.info.en")
                         textarea.form-control(placeholder="Ejemplo: Restaurant in downtown Vallarta, where you can find ...", type='text',
-                        name='info[en]', ng-model='user.info.en', required='')
+                        name='info[en]', ng-model='user.info.en', required='', class="none")
                         p.help-block(ng-show='form["info[en]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["info[es]"].$valid && submitted,\
                         "has-error": form["info[es]"].$invalid && submitted }')
                         label Descripción detallada - Español
+                        text-angular(ng-model="user.info.es")
                         textarea.form-control(placeholder="Ejemplo: Restaurante en el centro de vallarta, donde puedes encontrar...", type='text',
-                        name='info[es]', ng-model='user.info.es', required='')
+                        name='info[es]', ng-model='user.info.es', required='', class="none")
                         p.help-block(ng-show='form["info[es]"].$error.required && submitted')
                           | Error de validación de campo
 
@@ -121,14 +123,16 @@
                       .form-group(ng-class='{ "has-success": form["dir[en]"].$valid && submitted,\
                         "has-error": form["dir[en]"].$invalid && submitted }')
                         label Dirección - Inglés
-                        textarea.form-control(rows='3', placeholder='Ejemplo:Street. Juan de la Barrera, Sector: Buena vista', name='dir[en]', ng-model='user.dir.en')
+                        text-angular(ng-model="user.dir.en")
+                        textarea.form-control(rows='3', placeholder='Ejemplo:Street. Juan de la Barrera, Sector: Buena vista', name='dir[en]', ng-model='user.dir.en', class="none")
                         p.help-block(ng-show='form["dir[en]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["dir[es]"].$valid && submitted,\
                         "has-error": form["dir[es]"].$invalid && submitted }')
                         label Dirección - Español
-                        textarea.form-control(rows='3', placeholder='Ejemplo: Juan de la Barrera, Colonia: Buena vista', name='dir[es]', ng-model='user.dir.es')
+                        text-angular(ng-model="user.dir.es")
+                        textarea.form-control(rows='3', placeholder='Ejemplo: Juan de la Barrera, Colonia: Buena vista', name='dir[es]', ng-model='user.dir.es', class="none")
                         p.help-block(ng-show='form["dir[es]"].$error.required && submitted')
                           | Error de validación de campo
 

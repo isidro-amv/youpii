@@ -16,7 +16,9 @@ exports.index = function(req, res) {
     if (website.sections) {
       website.sections = _.sortBy(website.sections,'order');
       if (website.sections.blocks) {
-        website.sections.blocks = _.sortBy(website.sections.blocks,'order');
+        for (var i = website.sections.length - 1; i >= 0; i--) {
+          website.sections[i].blocks = _.sortBy(website.sections[i].blocks,'order');
+        }
       }
     }
     if (website.sliders) {

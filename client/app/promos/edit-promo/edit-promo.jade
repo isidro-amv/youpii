@@ -20,16 +20,18 @@
                       .form-group(ng-class='{ "has-success": form["title[es]"].$valid && submitted,\
                         "has-error": form["title[es]"].$invalid && submitted }')
                         label Título español
+                        text-angular(ng-model="promo.title.es")
                         textarea.form-control(placeholder="Ejemplo: in buying medium pizza free 2 liter soda", type='text',
-                        name='title[es]', ng-model='promo.title.es', required='')
+                        name='title[es]', ng-model='promo.title.es', required='', class="none")
                         p.help-block(ng-show='form["title[es]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["title[en]"].$valid && submitted,\
                         "has-error": form["title[en]"].$invalid && submitted }')
                         label Título inglés
+                        text-angular(ng-model="promo.title.en")
                         textarea.form-control(placeholder="Ejemplo: En la compra de pizza mediana gratis un refresco de 2 litros", type='text',
-                        name='title[en]', ng-model='promo.title.en', required='')
+                        name='title[en]', ng-model='promo.title.en', required='', class="none")
                         p.help-block(ng-show='form["title[en]"].$error.required && submitted')
                           | Error de validación de campo
 
@@ -80,16 +82,18 @@
                       .form-group(ng-class='{ "has-success": form["description[es]"].$valid && submitted,\
                         "has-error": form["description[es]"].$invalid && submitted }')
                         label Descripción
+                        text-angular(ng-model="promo.description.es")
                         textarea.form-control(placeholder="Ejemplo: 2x1", type='text',
-                        name='description[es]', ng-model='promo.description.es', required='')
+                        name='description[es]', ng-model='promo.description.es', required='', class="none")
                         p.help-block(ng-show='form["description[es]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["description[en]"].$valid && submitted,\
                         "has-error": form["description[en]"].$invalid && submitted }')
                         label Description
+                        text-angular(ng-model="promo.description.en")
                         textarea.form-control(placeholder="Ejemplo: 2x1", type='text',
-                        name='description[en]', ng-model='promo.description.en', required='')
+                        name='description[en]', ng-model='promo.description.en', required='', class="none")
                         p.help-block(ng-show='form["description[en]"].$error.required && submitted')
                           | Error de validación de campo
 
@@ -98,16 +102,18 @@
                       .form-group(ng-class='{ "has-success": form["restriction[es]"].$valid && submitted,\
                         "has-error": form["restriction[es]"].$invalid && submitted }')
                         label Restricción
+                        text-angular(ng-model="promo.restriction.es")
                         textarea.form-control(placeholder="Ejemplo: 2x1", type='text',
-                        name='restriction[es]', ng-model='promo.restriction.es', required='')
+                        name='restriction[es]', ng-model='promo.restriction.es', required='', class="none")
                         p.help-block(ng-show='form["restriction[es]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["restriction[en]"].$valid && submitted,\
                         "has-error": form["restriction[en]"].$invalid && submitted }')
                         label Restriction
+                        text-angular(ng-model="promo.restriction.en")
                         textarea.form-control(placeholder="Ejemplo: 2x1", type='text',
-                        name='restriction[en]', ng-model='promo.restriction.en', required='')
+                        name='restriction[en]', ng-model='promo.restriction.en', required='', class="none")
                         p.help-block(ng-show='form["restriction[en]"].$error.required && submitted')
                           | Error de validación de campo
 

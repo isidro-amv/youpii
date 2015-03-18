@@ -120,6 +120,7 @@ angular.module('youpiiBApp')
         };
         App.sendRequest(params, function (data) {
           $window.alert('Section Actualizado');
+          $window.location.reload();
           $scope.sections = data.sections;
           console.log(data.sections);
         }, function () {
@@ -198,6 +199,7 @@ angular.module('youpiiBApp')
         };
         App.sendRequest(params, function (data) {
           $window.alert('Bloque Actualizado');
+          $window.location.reload();
           //$scope.sections = data.sections;
           console.log(data.sections);
         }, function () {

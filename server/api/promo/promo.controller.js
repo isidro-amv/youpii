@@ -309,9 +309,8 @@ exports.showByTitle = function(req, res) {
         { 'tags.en': { $in: wordsArr } },
         { 'tags.es': { $in: wordsArr } } ]
       },
-      { dateStart: {$lt: Date.now()}},
-      { dateEnd: {$gt: Date.now()}} ]
-    },null,{skip: skip, limit: limit}, function (err, search) {
+      { dateStart: {$lt: Date.now()}}]
+    },null,{skip: skip, limit: limit, sort: { dateStart: -1 }}, function (err, search) {
     console.log(err);
     console.log(search);
     if(err) { return handleError(res, err); }
@@ -335,8 +334,7 @@ exports.showByBestOfMonth = function(req, res) {
 
   Promo.find({$and:[
       { dateStart: {$gte: firstDay}},
-      { dateStart: {$lte: Date.now()}},
-      { dateEnd: {$gt: Date.now()}}
+      { dateStart: {$lte: Date.now()}}
     ]},null,{skip: skip, limit: limit, sort: { 'likes.average': -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
@@ -353,8 +351,7 @@ exports.showByBestEver = function(req, res) {
   skip = page * 8;
 
   Promo.find({$and:[
-      { dateStart: {$lte: Date.now()}},
-      { dateEnd: {$gt: Date.now()}}
+      { dateStart: {$lte: Date.now()}}
     ]},null,{skip: skip, limit: limit, sort: { 'likes.average': -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
@@ -372,8 +369,7 @@ exports.showByLatest = function(req, res) {
   skip = page * 8;
 
   Promo.find({$and:[
-      { dateStart: {$lte: Date.now()}},
-      { dateEnd: {$gt: Date.now()}}
+      { dateStart: {$lte: Date.now()}}
     ]},null,{skip: skip, limit: limit, sort: { dateStart: -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
@@ -477,8 +473,7 @@ exports.showByCategory = function(req, res) {
 
     Promo.find({$and:[
         {category:{ $in: [category._id]}},
-        { dateStart: {$lte: Date.now()}},
-        { dateEnd: {$gt: Date.now()}}
+        { dateStart: {$lte: Date.now()}}
       ]}).skip(skip).limit(limit).exec(function (err,search) {
       if(err) { return handleError(res, err); }
       if(!search) { return res.send(404); }
