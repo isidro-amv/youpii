@@ -15,10 +15,10 @@ exports.index = function(req, res) {
 
     if (website.sections) {
       website.sections = _.sortBy(website.sections,'order');
-      if (website.sections.blocks) {
-        for (var i = website.sections.length - 1; i >= 0; i--) {
+      for (var i = website.sections.length - 1; i >= 0; i--) {
+        if (website.sections[i].blocks) {
           website.sections[i].blocks = _.sortBy(website.sections[i].blocks,'order');
-        }
+        };
       }
     }
     if (website.sliders) {
