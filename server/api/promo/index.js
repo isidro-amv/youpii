@@ -17,6 +17,7 @@ router.get('/near/:coords/:page',controller.showByNear);
 router.get('/city/:url/:page',controller.showByCity);
 router.get('/city/:urlCity/:urlCategory/:page',controller.showByCityAndCategory);
 router.get('/category/:category/:page',controller.showByCategory);
+router.get('/company/:owner/:page', controller.showByCompany);
 
 router.get('/rank/:rank/:id', controller.visited);
 

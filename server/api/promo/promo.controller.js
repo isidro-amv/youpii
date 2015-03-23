@@ -273,7 +273,6 @@ exports.showBySimilar = function(req, res) {
 };
 
 // Get items if the promo have title or promo with the parameters words
-// TODO: hacer funcionar el paginado de search (por ahora se solicita la página 0)
 exports.showByTitle = function(req, res) {
 
   var page = parseInt(req.params.page);
@@ -309,7 +308,7 @@ exports.showByTitle = function(req, res) {
         { 'tags.en': { $in: wordsArr } },
         { 'tags.es': { $in: wordsArr } } ]
       },
-      { dateStart: {$lt: Date.now()}}]
+      { dateStart: {$lte: Date.now()}}]
     },null,{skip: skip, limit: limit, sort: { dateStart: -1 }}, function (err, search) {
     console.log(err);
     console.log(search);
@@ -512,6 +511,26 @@ exports.showByCityAndCategory = function(req, res) {
         return res.json(search);
       });
     })
+  })
+}
+
+// Get promos by company
+exports.showByCompany = function(req, res) {
+  var owner = req.params.owner;
+  var page = parseInt(req.params.page);
+  var skip = 0;
+  var limit = 8;
+
+  limit = limit * (page+1);
+  skip = page * 8;
+
+  Promo.find({$and:[
+      { dateStart: {$lte: Date.now()}},
+      { owner: owner }
+    ]},null,{skip: skip, limit: limit, sort: { dateStart: -1 }},function (err,search) {
+    if(err) { return handleError(res, err); }
+    if(!search) { return res.send(404); }
+    return res.json(search);
   })
 }
 

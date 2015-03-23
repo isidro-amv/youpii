@@ -103,6 +103,7 @@ module.exports.deleteFiles = function (images,name,cb) {
     images[i].paths = JSON.parse(JSON.stringify(images[i].paths));
     for(var k in images[i].paths){
       if( typeof images[i].paths[k] === 'string'  ){
+        if (_.isEmpty(images[i].paths[k])) { continue; }
         console.log('deleted-->',images[i].paths[k]);
         name = images[i].paths[k].split('/').slice(-1)[0];
         images[i].paths[k] = '';

@@ -3,7 +3,7 @@
     .panel-heading
     .panel-body
       form.form(name='formBlock', novalidate='', enctype="multipart/form-data")
-        input(name="sectionId" ng-model="block._id" type="hidden")
+        input(name="sectionId" ng-model="block._id" type="hidden" readonly)
 
         select.form-control( name='kind', ng-model='block.kind', required='')
           option( value="0" selected="") ---- Seleccionar una opción --------

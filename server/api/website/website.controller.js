@@ -269,6 +269,7 @@ exports.updateBlock = function(req, res) {
 
   Website.findOne( function (err, website) {
     var indexS, indexB, block;
+    console.log('blockId',blockId);
     if (err) { return handleError(res, err); }
     if(!website) { return res.send(404); }
     if(req.body._id) { delete req.body._id; }
@@ -289,7 +290,7 @@ exports.updateBlock = function(req, res) {
       });
     }
 
-
+    console.log('block',block);
     if (req.body.kind === 'promo') {
       if (block.kind === 'generic') {
         s3.deleteFiles(block.image);
@@ -303,7 +304,9 @@ exports.updateBlock = function(req, res) {
           });
         }
 
-        website.sections[indexS].blocks[indexS] = _.merge(website.sections[indexS].blocks[indexS], req.body);
+        console.log('block-bef',website.sections[indexS].blocks[indexB]);
+        website.sections[indexS].blocks[indexB] = _.merge(website.sections[indexS].blocks[indexB], req.body);
+        console.log('block-aft',website.sections[indexS].blocks[indexB]);
         website.save(function (err,website) {
           if (err) { return handleError(res, err); }
           return res.json(200);
@@ -327,7 +330,7 @@ exports.updateBlock = function(req, res) {
         }
         delete req.body.image.path;
       }
-      website.sections[indexS].blocks[indexS] = _.merge(website.sections[indexS].blocks[indexS], req.body);
+      website.sections[indexS].blocks[indexB] = _.merge(website.sections[indexS].blocks[indexB], req.body);
       website.save(function (err,website) {
         if (err) { return handleError(res, err); }
         return res.json(200);
