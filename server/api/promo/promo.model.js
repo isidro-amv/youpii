@@ -21,6 +21,18 @@ var PromoSchema = new Schema({
     en: String,
     es: String
   },
+  // tipo de promocion
+  promoKind: {type: String, enum: [
+    '',  // tomará el estilo inline si el tipo de promoción está vacio
+    'desc', // descuentos tipo: 15% - 50% - 70%
+    'only', // precios: Sólo $25, Sólo 300
+    'free', // gratis
+    'best', // mejor precio
+    'nxn', // 3x1 2x1
+    'nxn-2', // 2x2x1½
+    'from',  // Desde 2 pesos
+    'freeship' // Envío gratis
+  ]},
   description:{
     en: String,
     es: String
@@ -31,7 +43,11 @@ var PromoSchema = new Schema({
   },
   url:{
     en: String,
-    es: String,
+    es: String
+  },
+  fullTitle:{
+    en: String,
+    es: String
   },
   imagemain:{
     name:     String,

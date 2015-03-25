@@ -16,14 +16,6 @@
                   form.form(name='form', ng-submit='register(form)', novalidate='', enctype="multipart/form-data")
                     .col-lg-6
 
-                      .form-group(ng-class='{ "has-success": form.genericId.$valid && submitted,\
-                        "has-error": form.genericId.$invalid && submitted }')
-                        label Id interno
-                        input.form-control(placeholder="Ejemplo: VTA-TP002", type='text',
-                        name='genericId', ng-model='user.genericId', required='')
-                        p.help-block(ng-show='form.genericId.$error.required && submitted')
-                          | Error de validación de campo
-
                       .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
                         "has-error": form.name.$invalid && submitted }')
                         label Nombre Empresa
@@ -51,6 +43,13 @@
                         p.help-block(ng-show='form.url.$error.mongoose')
                           | {{ errors.url }}
 
+                      .form-group(ng-class='{ "has-success": form["description[es]"].$valid && submitted,\
+                        "has-error": form["description[es]"].$invalid && submitted }')
+                        label Breve descripción - Español
+                        input.form-control(placeholder="Ejemplo: Restaurante en el centro de vallarta, donde puedes encontrar...", type='text',
+                        name='description[es]', ng-model='user.description.es', required='')
+                        p.help-block(ng-show='form["description[es]"].$error.required && submitted')
+                          | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["description[en]"].$valid && submitted,\
                         "has-error": form["description[en]"].$invalid && submitted }')
@@ -60,12 +59,13 @@
                         p.help-block(ng-show='form["description[en]"].$error.required && submitted')
                           | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form["description[es]"].$valid && submitted,\
-                        "has-error": form["description[es]"].$invalid && submitted }')
-                        label Breve descripción - Español
-                        input.form-control(placeholder="Ejemplo: Restaurante en el centro de vallarta, donde puedes encontrar...", type='text',
-                        name='description[es]', ng-model='user.description.es', required='')
-                        p.help-block(ng-show='form["description[es]"].$error.required && submitted')
+                      .form-group(ng-class='{ "has-success": form["info[es]"].$valid && submitted,\
+                        "has-error": form["info[es]"].$invalid && submitted }')
+                        label Descripción detallada - Español
+                        text-angular(ng-model="user.info.es")
+                        textarea.form-control(placeholder="Ejemplo: Restaurante en el centro de vallarta, donde puedes encontrar...", type='text',
+                        name='info[es]', ng-model='user.info.es', required='', class="none")
+                        p.help-block(ng-show='form["info[es]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["info[en]"].$valid && submitted,\
@@ -75,15 +75,6 @@
                         textarea.form-control(placeholder="Ejemplo: Restaurant in downtown Vallarta, where you can find ...", type='text',
                         name='info[en]', ng-model='user.info.en', required='', class="none")
                         p.help-block(ng-show='form["info[en]"].$error.required && submitted')
-                          | Error de validación de campo
-
-                      .form-group(ng-class='{ "has-success": form["info[es]"].$valid && submitted,\
-                        "has-error": form["info[es]"].$invalid && submitted }')
-                        label Descripción detallada - Español
-                        text-angular(ng-model="user.info.es")
-                        textarea.form-control(placeholder="Ejemplo: Restaurante en el centro de vallarta, donde puedes encontrar...", type='text',
-                        name='info[es]', ng-model='user.info.es', required='', class="none")
-                        p.help-block(ng-show='form["info[es]"].$error.required && submitted')
                           | Error de validación de campo
 
                       h1 contacto
@@ -120,13 +111,6 @@
                         p.help-block(ng-show='form.cel.$error.required && submitted')
                           | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form["dir[en]"].$valid && submitted,\
-                        "has-error": form["dir[en]"].$invalid && submitted }')
-                        label Dirección - Inglés
-                        text-angular(ng-model="user.dir.en")
-                        textarea.form-control(rows='3', placeholder='Ejemplo:Street. Juan de la Barrera, Sector: Buena vista', name='dir[en]', ng-model='user.dir.en', class="none")
-                        p.help-block(ng-show='form["dir[en]"].$error.required && submitted')
-                          | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["dir[es]"].$valid && submitted,\
                         "has-error": form["dir[es]"].$invalid && submitted }')
@@ -136,11 +120,12 @@
                         p.help-block(ng-show='form["dir[es]"].$error.required && submitted')
                           | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form["hours[en]"].$valid && submitted,\
-                        "has-error": form["hours[en]"].$invalid && submitted }')
-                        label Horario - Inglés
-                        input.form-control(placeholder='Ejemplo: 9:00 am -10:00pm', name='hours[en]', ng-model='user.hours.en')
-                        p.help-block(ng-show='form["hours[en]"].$error.required && submitted')
+                      .form-group(ng-class='{ "has-success": form["dir[en]"].$valid && submitted,\
+                        "has-error": form["dir[en]"].$invalid && submitted }')
+                        label Dirección - Inglés
+                        text-angular(ng-model="user.dir.en")
+                        textarea.form-control(rows='3', placeholder='Ejemplo:Street. Juan de la Barrera, Sector: Buena vista', name='dir[en]', ng-model='user.dir.en', class="none")
+                        p.help-block(ng-show='form["dir[en]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["hours[es]"].$valid && submitted,\
@@ -148,6 +133,13 @@
                         label Horario - Español
                         input.form-control(placeholder='Ejemplo: 9:00 am -10:00pm', name='hours[es]', ng-model='user.hours.es')
                         p.help-block(ng-show='form["hours[es]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["hours[en]"].$valid && submitted,\
+                        "has-error": form["hours[en]"].$invalid && submitted }')
+                        label Horario - Inglés
+                        input.form-control(placeholder='Ejemplo: 9:00 am -10:00pm', name='hours[en]', ng-model='user.hours.en')
+                        p.help-block(ng-show='form["hours[en]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form.city.$valid && submitted,\
@@ -245,7 +237,7 @@
                       .form-group(ng-class='{ "has-success": form.social["facebook"].$valid && submitted,\
                         "has-error": form.social["facebook"].$invalid && submitted }')
                         label Facebook
-                        input.form-control(type="text", name="social[facebook]" placeholder='Ejemplo: www.facebook.com/mi_empresa' ng-model='user.social.facebook' )
+                        input.form-control(type="text", name="social[facebook]" placeholder='Ejemplo: /mi_empresa' ng-model='user.social.facebook' )
                         p.help-block(ng-show='form.social["facebook"].$error.required && submitted')
                             | Error de validación de campo
 

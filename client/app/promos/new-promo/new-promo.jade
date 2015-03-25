@@ -34,49 +34,6 @@
                           | Error de validación de campo
 
 
-
-                      .form-group(ng-class='{ "has-success": form["promoStyle[en]"].$valid && submitted,\
-                        "has-error": form["promoStyle[en]"].$invalid && submitted }')
-                        label Estilo de promoción inglés
-                        input.form-control(placeholder="Ejemplo: font-size:50%;line-heinght:10em;margin-top:2em", type='text',
-                        name='promoStyle[en]', ng-model='promo.promoStyle.en')
-                        p.help-block(ng-show='form["promoStyle[en]"].$error.required && submitted')
-                          | Error de validación de campo
-                      .form-group(ng-class='{ "has-success": form["promo[en]"].$valid && submitted,\
-                        "has-error": form["promo[en]"].$invalid && submitted }')
-                        label Promoción inglés
-                        input.form-control(placeholder="Ejemplo: 2x1", type='text',
-                        name='promo[en]', ng-model='promo.promo.en', required='')
-                        p.help-block(ng-show='form["promo[en]"].$error.required && submitted')
-                          | Error de validación de campo
-                        p Vista previa Inglés
-                        .circle-container
-                          .circle-wrapper
-                              .circle-inside
-                                .label(style='{{promo.promoStyle.en}}' ng-bind-html="promo.promo.en")
-
-
-                      .form-group(ng-class='{ "has-success": form["promoStyle[es]"].$valid && submitted,\
-                        "has-error": form["promoStyle[es]"].$invalid && submitted }')
-                        label Estilo de promoción español
-                        input.form-control(placeholder="Ejemplo: font-size:50%;line-heinght:10em;margin-top:2em", type='text',
-                        name='promoStyle[es]', ng-model='promo.promoStyle.es')
-                        p.help-block(ng-show='form["promoStyle[es]"].$error.required && submitted')
-                          | Error de validación de campo
-                      .form-group(ng-class='{ "has-success": form["promo[es]"].$valid && submitted,\
-                        "has-error": form["promo[es]"].$invalid && submitted }')
-                        label Promoción Español
-                        input.form-control(placeholder="Ejemplo: 2x1", type='text',
-                        name='promo[es]', ng-model='promo.promo.es', required='')
-                        p.help-block(ng-show='form["promo[es]"].$error.required && submitted')
-                          | Error de validación de campo
-                         p Vista previa Inglés
-                        .circle-container
-                          .circle-wrapper
-                              .circle-inside
-                                .label(style='{{promo.promoStyle.es}}' ng-bind-html="promo.promo.es")
-
-
                       .form-group(ng-class='{ "has-success": form["description[es]"].$valid && submitted,\
                         "has-error": form["description[es]"].$invalid && submitted }')
                         label Descripción
@@ -88,7 +45,7 @@
 
                       .form-group(ng-class='{ "has-success": form["description[en]"].$valid && submitted,\
                         "has-error": form["description[en]"].$invalid && submitted }')
-                        label Description
+                        label Descripción Inglés
                         text-angular(ng-model="promo.description.en")
                         textarea.form-control(placeholder="Ejemplo: 2x1", type='text',
                         name='description[en]', ng-model='promo.description.en', required='', class="none")
@@ -96,23 +53,80 @@
                           | Error de validación de campo
 
 
-
                       .form-group(ng-class='{ "has-success": form["restriction[es]"].$valid && submitted,\
                         "has-error": form["restriction[es]"].$invalid && submitted }')
-                        label Restricción
+                        label Restricción Español
                         text-angular(ng-model="promo.restriction.es")
                         textarea.form-control(placeholder="Ejemplo: 2x1", type='text',
                         name='restriction[es]', ng-model='promo.restriction.es', required='', class="none")
                         p.help-block(ng-show='form["restriction[es]"].$error.required && submitted')
                           | Error de validación de campo
 
+
                       .form-group(ng-class='{ "has-success": form["restriction[en]"].$valid && submitted,\
                         "has-error": form["restriction[en]"].$invalid && submitted }')
-                        label Restriction
+                        label Restricción Inglés
                         text-angular(ng-model="promo.restriction.en")
                         textarea.form-control(placeholder="Ejemplo: 2x1", type='text',
                         name='restriction[en]', ng-model='promo.restriction.en', required='', class="none")
                         p.help-block(ng-show='form["restriction[en]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                    .col-lg-6
+
+                      .form-group(ng-class='{ "has-success": form["fullTitle[es]"].$valid && submitted,\
+                        "has-error": form["fullTitle[es]"].$invalid && submitted }')
+                        label Título completo Español
+                        input.form-control(placeholder="Ejemplo: 2x1 en toda la verdura", type='text',
+                        name='fullTitle[es]', ng-model='promo.fullTitle.es', required='')
+                        p.help-block(ng-show='form["fullTitle[es]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["fullTitle[en]"].$valid && submitted,\
+                        "has-error": form["fullTitle[en]"].$invalid && submitted }')
+                        label Título completo Inglés
+                        input.form-control(placeholder="Ejemplo: 2x1 all the vegetables", type='text',
+                        name='fullTitle[en]', ng-model='promo.fullTitle.en', required='')
+                        p.help-block(ng-show='form["fullTitle[en]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["url[es]"].$valid && submitted,\
+                        "has-error": form["url[es]"].$invalid && submitted }')
+                        label Url Español
+                        input.form-control(type='text', name='url[es]', ng-model='promo.url.es', readonly="")
+                        p.help-block(ng-show='form["url[es]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["url[en]"].$valid && submitted,\
+                        "has-error": form["url[en]"].$invalid && submitted }')
+                        label Url Inglés
+                        input.form-control( type='text', name='url[en]', ng-model='promo.url.en', readonly="")
+                        p.help-block(ng-show='form["url[en]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.promoKind.$valid && submitted,\
+                        "has-error": form.promoKind.$invalid && submitted }')
+                        label Tipo de Promoción
+                        select.form-control(class="promoKind" , ng-model="promo.promoKind",
+                          ng-options="promoKind.title for promoKind in promoKinds")
+                          option(value="") --- selecciona Tipo de promoción ----
+                        p.help-block(ng-show='form.promoKind.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["promo[es]"].$valid && submitted,\
+                        "has-error": form["promo[es]"].$invalid && submitted }')
+                        label Promoción Español
+                        input.form-control(placeholder="Ejemplo: 2x1", type='text',
+                        name='promo[es]', ng-model='promo.promo.es', required='')
+                        p.help-block(ng-show='form["promo[es]"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form["promo[en]"].$valid && submitted,\
+                        "has-error": form["promo[en]"].$invalid && submitted }')
+                        label Promoción inglés
+                        input.form-control(placeholder="Ejemplo: 2x1", type='text',
+                        name='promo[en]', ng-model='promo.promo.en', required='')
+                        p.help-block(ng-show='form["promo[en]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form.owner.$valid && submitted,\
@@ -176,25 +190,6 @@
                           | Error de validación de campo
 
 
-
-                      .form-group(ng-class='{ "has-success": form["dateLimit[en]"].$valid && submitted,\
-                        "has-error": form["dateLimit[en]"].$invalid && submitted }')
-                        label Tiempo que será válida la Promoción - Inglés
-                        input.form-control(placeholder="Ejemplo: sólo los lunen", type='text',
-                        name='dateLimit[en]', ng-model='promo.dateLimit.en', required='')
-                        p.help-block(ng-show='form["dateLimit[en]"].$error.required && submitted')
-                          | Error de validación de campo
-
-                      .form-group(ng-class='{ "has-success": form["dateLimit[es]"].$valid && submitted,\
-                        "has-error": form["dateLimit[es]"].$invalid && submitted }')
-                        label Tiempo que será válida la Promoción - Español
-                        input.form-control(placeholder="Ejemplo: sólo los lunes", type='text',
-                        name='dateLimit[es]', ng-model='promo.dateLimit.es', required='')
-                        p.help-block(ng-show='form["dateLimit[es]"].$error.required && submitted')
-                          | Error de validación de campo
-
-
-
                       .form-group(ng-class='{ "has-success": form.currency.$valid && submitted,\
                         "has-error": form.currency.$invalid && submitted }')
                         label Moneda
@@ -204,45 +199,27 @@
                         p.help-block(ng-show='form.currency.$error.required && submitted')
                           | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form["url[es]"].$valid && submitted,\
-                        "has-error": form["url[es]"].$invalid && submitted }')
-                        label Url Español
-                        input.form-control(placeholder="Ejemplo: martes-de-frescura-en-walmart", type='text',
-                        name='url[es]', ng-model='promo.url.es', required='')
-                        p.help-block(ng-show='form["url[es]"].$error.required && submitted')
-                          | Error de validación de campo
-
-                      .form-group(ng-class='{ "has-success": form["url[en]"].$valid && submitted,\
-                        "has-error": form["url[en]"].$invalid && submitted }')
-                        label Url Inglés
-                        input.form-control(placeholder="Ejemplo: tuesday-freshness-in-walmart", type='text',
-                        name='url[en]', ng-model='promo.url.en', required='')
-                        p.help-block(ng-show='form["url[en]"].$error.required && submitted')
+                      .form-group(ng-class='{ "has-success": form["tags[es]"].$valid && submitted,\
+                        "has-error": form["tags[es]"].$invalid && submitted }')
+                        label Tags (separadas por espacios) Español
+                        input.form-control(placeholder="Ejemplo: comida pizza mexicana", type='text',
+                        name='tags[es]', ng-model='promo.tags.es', required='')
+                        p.help-block(ng-show='form["tags[es]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["tags[en]"].$valid && submitted,\
                         "has-error": form["tags[en]"].$invalid && submitted }')
-                        label Tags (separadas por coma) Inglés
-                        input.form-control(placeholder="Ejemplo: food, pizza, mexican", type='text',
+                        label Tags (separadas por espacios) Inglés
+                        input.form-control(placeholder="Ejemplo: food pizza mexican", type='text',
                         name='tags[en]', ng-model='promo.tags.en', required='')
                         p.help-block(ng-show='form["tags[en]"].$error.required && submitted')
-                          | Error de validación de campo
-
-                      .form-group(ng-class='{ "has-success": form["tags[es]"].$valid && submitted,\
-                        "has-error": form["tags[es]"].$invalid && submitted }')
-                        label Tags (separadas por coma) Español
-                        input.form-control(placeholder="Ejemplo: comida, pizza, mexicana", type='text',
-                        name='tags[es]', ng-model='promo.tags.es', required='')
-                        p.help-block(ng-show='form["tags[es]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group
                         label Tiene envio a domicilio?
                         input.form-control(type='checkbox', name='homeDelivery', ng-model='promo.homeDelivery')
 
-                    .col-lg-6
                       h1 Imágenes
-
 
                       .form-group(ng-class='{ "has-success": form.imagemainn.$valid && submitted,\
                         "has-error": form.imagemainn.$invalid && submitted }')

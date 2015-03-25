@@ -10,6 +10,18 @@ angular.module('youpiiBApp')
     $scope.users = [];
     $scope.promoId = $location.path().split('/').slice(-1)[0];
 
+    $scope.promoKinds = [
+      {id:'desc', title:'Descuento'},
+      {id:'only', title:'Sólo'},
+      {id:'free', title:'Gratis'},
+      {id:'best', title:'Mejor Precio'},
+      {id:'nxn', title:'2x1 - 3x2'},
+      {id:'nxn-2', title:'2x1½'},
+      {id:'from', title:'Desde'},
+      {id:'freeship', title:'Envio Gratis'}
+    ];
+
+
     Promo.get({id:$scope.promoId}, function (data) {
       $scope.promo = data;
       User.query(function (data) {
@@ -43,6 +55,13 @@ angular.module('youpiiBApp')
           }
         }
       });
+
+      for (var i = $scope.promoKinds.length - 1; i >= 0; i--) {
+        if($scope.promoKinds[i].id==$scope.promo.promoKind){
+          $scope.promo.promoKind = $scope.promoKinds[i];
+        }
+      }
+
     });
 
     $scope.delete = function () {
@@ -57,9 +76,12 @@ angular.module('youpiiBApp')
       $scope.submitted = true;
       console.log(form);
       if(form.$valid) {
+
         var formData = new FormData($('.form')[0]);
         formData.append('owner', $scope.promo.owner._id);
         formData.append('pack', $scope.promo.pack._id);
+        formData.append('promoKind', $scope.promoKinds[$(".promoKind option:selected" ).val()].id);
+
         if ($scope.promo.category[0]) {
           formData.append('category', $scope.promo.category[0]._id);
         }

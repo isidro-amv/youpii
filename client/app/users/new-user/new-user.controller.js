@@ -10,25 +10,25 @@ angular.module('youpiiBApp')
     });
 
     $scope.user = {
-      name: 'Test',
-      url: 'el-nombre-de-mi-empresa',
-      businessName: 'Promocion Youpii S.A. de C.V.',
+      name: '',
+      url: '',
+      businessName: '',
       contact:{
-        name: 'Paco Perez Piñón',
-        tel: '(329)1020102'
+        name: '',
+        tel: ''
       },
-      coords: '20.640620, -105.222771',
-      tel: '(329)1020102, (233)2344521',
-      cel: '(329)1020102, (233)2344521',
+      coords: '',
+      tel: '',
+      cel: '',
       dir: {
-        en: 'Juan de la Barrera, Cologne: Good view',
-        es: 'Juan de la Barrera, Colonia: Buena vista'
+        en: '',
+        es: ''
       },
       city: '2',
-      email: 'mi_empresa@fake.com',
+      email: 'fake@youpiipromos.com',
       password: 'yr7867iUL',
       social:{
-        facebook: 'http:/www.facebook.com/mi-empresa'
+        facebook: ''
       }
     };
 

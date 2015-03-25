@@ -7,6 +7,18 @@ angular.module('youpiiBApp')
     $scope.categories = [];
     $scope.users = [];
     $scope.packs = [];
+    var today = new Date();
+
+    $scope.promoKinds = [
+      {id:'desc', title:'Descuento'},
+      {id:'only', title:'Sólo'},
+      {id:'free', title:'Gratis'},
+      {id:'best', title:'Mejor Precio'},
+      {id:'nxn', title:'2x1 - 3x2'},
+      {id:'1xn-2', title:'2x1½'},
+      {id:'from', title:'Desde'},
+      {id:'freeship', title:'Enivio Gratis'}
+    ];
 
     // Inicializa el resultado del crop
     $scope.imagemainCropped = '';
@@ -24,28 +36,28 @@ angular.module('youpiiBApp')
 
     $scope.promo = {
       title: {
-        en: 'in buying medium pizza free 2 liter soda',
-        es: 'en la compra de pizza mediana gratis un refresco de 2 litros'
+        en: '',
+        es: ''
       },
       promo: {
-        en: 'Free',
-        es: 'Gratis'
+        en: '',
+        es: ''
       },
       url:{
-        en: 'martes-de-frescura-en-walmart',
-        es: 'tuesday-freshness-in-walmart',
+        en: '',
+        es: '',
       },
       description:{
-        en: '<p><strong>Description</strong> es simplemente el la creación de las hojas ,las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus  PageMaker, el cual incluye versiones de Lorem Ipsum.</p>',
-        es: '<p><strong>Descripción</strong> es simplemente el texto de quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas , las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus  PageMaker, el cual incluye versiones de Lorem Ipsum.</p>'
+        en: '',
+        es: ''
       },
       restriction:{
-        en: '<p><strong>Restriction</strong> es simplemente el la creación de las hojas , las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus  PageMaker, el cual incluye versiones de Lorem Ipsum.</p>',
-        es: '<p><strong>Restrición</strong> es simplemente el la creación de las hojas , las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus  PageMaker, el cual incluye versiones de Lorem Ipsum.</p>'
+        en: '',
+        es: ''
       },
-      price: 1500.35,
-      dateStart: '2011-04-11',
-      dateEnd: '2015-04-11',
+      price: 0,
+      dateStart: today.toISOString(),
+      dateEnd: today.toISOString(),
       category: '',
       owner: '',
       currency: 'MXN',

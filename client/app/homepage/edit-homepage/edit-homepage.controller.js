@@ -130,19 +130,22 @@ angular.module('youpiiBApp')
     };
     $scope.deleteSection = function (index) {
       console.log('index',index);
-      var idSection = $('.home-section [index="'+index+'"] input[name="_id"]').val();
-      var params = {
-        form: null,
-        url: urlModel+'/section/'+idSection,
-        method: 'DELETE'
-      };
-      App.sendRequest(params, function () {
-        $window.alert('Section Eliminado');
-        $scope.sections.splice(index,1);
-        $scope.$apply();
-      }, function () {
-        $window.alert('Error al eliminar section');
-      });
+      var wantToDelete = window.confirm('¿Estás segur@?');
+      if (wantToDelete) {
+        var idSection = $('.home-section [index="'+index+'"] input[name="_id"]').val();
+        var params = {
+          form: null,
+          url: urlModel+'/section/'+idSection,
+          method: 'DELETE'
+        };
+        App.sendRequest(params, function () {
+          $window.alert('Section Eliminado');
+          $scope.sections.splice(index,1);
+          $scope.$apply();
+        }, function () {
+          $window.alert('Error al eliminar section');
+        });
+      }
     };
     $scope.addBlock = function (sectionId) {
       var block = {
@@ -216,13 +219,17 @@ angular.module('youpiiBApp')
         url: urlModel+'/block/'+sectionId+'/'+blockId,
         method: 'DELETE'
       };
-      App.sendRequest(params, function () {
-        $window.alert('Bloque Eliminado');
-        $scope.sections[sectionIndex].blocks.splice(index,1);
-        $scope.$apply();
-      }, function () {
-        $window.alert('Error al eliminar Bloque');
-      });
+
+      var wantToDelete = window.confirm('¿Estás segur@?');
+      if (wantToDelete) {
+        App.sendRequest(params, function () {
+          $window.alert('Bloque Eliminado');
+          $scope.sections[sectionIndex].blocks.splice(index,1);
+          $scope.$apply();
+        }, function () {
+          $window.alert('Error al eliminar Bloque');
+        });
+      }
     };
     $scope.fileNameChanged = function (evt,el) {
       console.log(this);
