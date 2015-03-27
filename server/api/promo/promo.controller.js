@@ -33,16 +33,20 @@ exports.create = function(req, res) {
     res.send(500);
   }
 
-  if (promo.fullTitle.es) {
-    promo.url.es = promo.fullTitle.es.toLowerCase();
-    promo.url.es = removeDiacritics(promo.url.es);
-    promo.url.es = promo.url.es.split(" ").join("-");
-  }
+  if (promo.fullTitle) {
+    if (promo.fullTitle.es) {
+      promo.url.es = promo.fullTitle.es.toLowerCase();
+      promo.url.es = removeDiacritics(promo.url.es);
+      promo.url.es = promo.url.es.split(" ").join("-");
+      promo.url.es = promo.url.es.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'');
+    }
 
-  if (promo.fullTitle.en) {
-    promo.url.en = promo.fullTitle.en.toLowerCase();
-    promo.url.en = removeDiacritics(promo.url.en);
-    promo.url.en = promo.url.en.split(" ").join("-");
+    if (promo.fullTitle.en) {
+      promo.url.en = promo.fullTitle.en.toLowerCase();
+      promo.url.en = removeDiacritics(promo.url.en);
+      promo.url.en = promo.url.en.split(" ").join("-");
+      promo.url.en = promo.url.en.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'');
+    }
   }
 
   Pack.findById(req.body.pack,function (err, pack) {
@@ -129,13 +133,10 @@ exports.create = function(req, res) {
 // Updates an existing promo in the DB.
 exports.update = function(req, res) {
   // hay una sospecha de los updates de array no funcionan
-  console.log("hola mundo");
   console.log("body->", req.body);
   console.log("files->",req.files);
   var filesToUpload = [],
       filesToDelete = [];
-
-  req.body.url = {};
 
   if(req.body._id) { delete req.body._id; }
 
@@ -150,16 +151,24 @@ exports.update = function(req, res) {
     };
   }
 
-  if (req.body.fullTitle.es) {
-    req.body.url.es = req.body.fullTitle.es.split(" ").join("-");
-    req.body.url.es = req.body.url.es.toLowerCase();
-    req.body.url.es = removeDiacritics(req.body.url.es);
-  }
+  if (req.body.fullTitle) {
+    console.log(req.body.fullTitle);
+    req.body.url = {};
+    if (req.body.fullTitle.es) {
+      req.body.url.es = req.body.fullTitle.es.split(" ").join("-");
+      req.body.url.es = req.body.url.es.replace(/%/g, '-porciento');
+      req.body.url.es = req.body.url.es.toLowerCase();
+      req.body.url.es = removeDiacritics(req.body.url.es);
+      req.body.url.es = req.body.url.es.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'');
+    }
 
-  if (req.body.fullTitle.en) {
-    req.body.url.en = req.body.fullTitle.en.split(" ").join("-");
-    req.body.url.en = req.body.url.en.toLowerCase();
-    req.body.url.en = removeDiacritics(req.body.url.en);
+    if (req.body.fullTitle.en) {
+      req.body.url.en = req.body.fullTitle.en.split(" ").join("-");
+      req.body.url.en = req.body.url.en.replace(/%/g, '-percent');
+      req.body.url.en = req.body.url.en.toLowerCase();
+      req.body.url.en = removeDiacritics(req.body.url.en);
+      req.body.url.en = req.body.url.en.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'');
+    }
   }
 
   req.body.homeDelivery = req.body.homeDelivery || false;
@@ -224,8 +233,14 @@ exports.update = function(req, res) {
         return res.send(404);
       }
 
-      req.body.url.es = req.body.url.es+'-en-'+user.url;
-      req.body.url.en = req.body.url.en+'-in-'+user.url;
+      if (req.body.fullTitle) {
+        if (req.body.fullTitle.es) {
+          req.body.url.es = req.body.url.es+'-en-'+user.url;
+        }
+        if (req.body.fullTitle.es) {
+          req.body.url.en = req.body.url.en+'-in-'+user.url;
+        }
+      }
 
       var updated = _.merge(promo, req.body);
       updated.save(function (err,p) {
@@ -252,7 +267,7 @@ exports.destroy = function(req, res) {
   });
 };
 
-// Get a single promo
+// Set visited a single promo
 exports.visited = function(req, res) {
 
   if (!req.params.rank || !req.params.id) {

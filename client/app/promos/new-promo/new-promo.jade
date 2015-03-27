@@ -90,20 +90,6 @@
                         p.help-block(ng-show='form["fullTitle[en]"].$error.required && submitted')
                           | Error de validación de campo
 
-                      .form-group(ng-class='{ "has-success": form["url[es]"].$valid && submitted,\
-                        "has-error": form["url[es]"].$invalid && submitted }')
-                        label Url Español
-                        input.form-control(type='text', name='url[es]', ng-model='promo.url.es', readonly="")
-                        p.help-block(ng-show='form["url[es]"].$error.required && submitted')
-                          | Error de validación de campo
-
-                      .form-group(ng-class='{ "has-success": form["url[en]"].$valid && submitted,\
-                        "has-error": form["url[en]"].$invalid && submitted }')
-                        label Url Inglés
-                        input.form-control( type='text', name='url[en]', ng-model='promo.url.en', readonly="")
-                        p.help-block(ng-show='form["url[en]"].$error.required && submitted')
-                          | Error de validación de campo
-
                       .form-group(ng-class='{ "has-success": form.promoKind.$valid && submitted,\
                         "has-error": form.promoKind.$invalid && submitted }')
                         label Tipo de Promoción

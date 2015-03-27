@@ -22,7 +22,7 @@
                         label Título español
                         text-angular(ng-model="promo.title.es")
                         textarea.form-control(placeholder="Ejemplo: in buying medium pizza free 2 liter soda", type='text',
-                        name='title[es]', ng-model='promo.title.es', required='', class="none")
+                        name='title[es]', ng-model='promo.title.es', class="none")
                         p.help-block(ng-show='form["title[es]"].$error.required && submitted')
                           | Error de validación de campo
 
@@ -31,7 +31,7 @@
                         label Título inglés
                         text-angular(ng-model="promo.title.en")
                         textarea.form-control(placeholder="Ejemplo: En la compra de pizza mediana gratis un refresco de 2 litros", type='text',
-                        name='title[en]', ng-model='promo.title.en', required='', class="none")
+                        name='title[en]', ng-model='promo.title.en', class="none")
                         p.help-block(ng-show='form["title[en]"].$error.required && submitted')
                           | Error de validación de campo
 
@@ -80,7 +80,7 @@
                         "has-error": form["fullTitle[es]"].$invalid && submitted }')
                         label Título completo Español
                         input.form-control(placeholder="Ejemplo: 2x1 en toda la verdura", type='text',
-                        name='fullTitle[es]', ng-model='promo.fullTitle.es', required='')
+                        name='fullTitle[es]', ng-model='promo.fullTitle.es' )
                         p.help-block(ng-show='form["fullTitle[es]"].$error.required && submitted')
                           | Error de validación de campo
 
@@ -88,21 +88,21 @@
                         "has-error": form["fullTitle[en]"].$invalid && submitted }')
                         label Título completo Inglés
                         input.form-control(placeholder="Ejemplo: 2x1 all the vegetables", type='text',
-                        name='fullTitle[en]', ng-model='promo.fullTitle.en', required='')
+                        name='fullTitle[en]', ng-model='promo.fullTitle.en')
                         p.help-block(ng-show='form["fullTitle[en]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["url[es]"].$valid && submitted,\
                         "has-error": form["url[es]"].$invalid && submitted }')
                         label Url Español
-                        input.form-control(type='text', name='url[es]', ng-model='promo.url.es', readonly="")
+                        input.form-control(type='text', ng-model='promo.url.es', readonly="")
                         p.help-block(ng-show='form["url[es]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["url[en]"].$valid && submitted,\
                         "has-error": form["url[en]"].$invalid && submitted }')
                         label Url Inglés
-                        input.form-control( type='text', name='url[en]', ng-model='promo.url.en', readonly="")
+                        input.form-control( type='text', ng-model='promo.url.en', readonly="")
                         p.help-block(ng-show='form["url[en]"].$error.required && submitted')
                           | Error de validación de campo
 

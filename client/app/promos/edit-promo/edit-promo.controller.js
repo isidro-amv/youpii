@@ -80,7 +80,10 @@ angular.module('youpiiBApp')
         var formData = new FormData($('.form')[0]);
         formData.append('owner', $scope.promo.owner._id);
         formData.append('pack', $scope.promo.pack._id);
-        formData.append('promoKind', $scope.promoKinds[$(".promoKind option:selected" ).val()].id);
+        if ($(".promoKind option:selected" ).val()!=='') {
+          formData.append('promoKind', $scope.promoKinds[$(".promoKind option:selected" ).val()].id);
+        }
+
 
         if ($scope.promo.category[0]) {
           formData.append('category', $scope.promo.category[0]._id);
