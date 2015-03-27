@@ -3,6 +3,7 @@
 var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
+var City = require(config.root+'/server/api/city/city.model');
 var images = require(config.root+'/server/components/images');
 var s3 = require(config.root+'/server/components/s3');
 var jwt = require('jsonwebtoken');
@@ -87,7 +88,15 @@ exports.show = function (req, res, next) {
   User.findById(userId, function (err, user) {
     if (err) return next(err);
     if (!user) return res.send(401);
-    res.json(user.profile);
+
+    City.findById(user.city, function (err, city) {
+      if (err) return next(err);
+      var profile = user.profile;
+      profile.urlLoc = city.url+'/'+user.url
+      console.log(profile);
+      res.json(profile);
+    });
+
   });
 };
 

@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
+var City = require(__dirname + '/../city/city.model.js');
 
 var UserSchema = new Schema({
   name: { type:String, required: true, unique: true },
@@ -111,7 +112,7 @@ UserSchema
   .get(function() {
 
     var hours = {};
-
+    var user = this;
     if (typeof this.hours === "string") {
       hours.es = this.hours;
       hours.en = '';

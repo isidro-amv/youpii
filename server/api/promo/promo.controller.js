@@ -152,7 +152,6 @@ exports.update = function(req, res) {
   }
 
   if (req.body.fullTitle) {
-    console.log(req.body.fullTitle);
     req.body.url = {};
     if (req.body.fullTitle.es) {
       req.body.url.es = req.body.fullTitle.es.split(" ").join("-");
