@@ -156,8 +156,6 @@ PromoSchema
     return this.dateStart < now && this.dateEnd > now;
   });
 
-
-
 /**
  * Virtuals
  */

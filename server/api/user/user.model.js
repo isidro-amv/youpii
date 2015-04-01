@@ -5,11 +5,13 @@ var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 var City = require(__dirname + '/../city/city.model.js');
+var ObjectId = mongoose.Types.ObjectId;
 
 var UserSchema = new Schema({
   name: { type:String, required: true, unique: true },
   url: { type:String, required: true, unique: true },
   businessName: { type:String, required: true, unique: true },
+  genericId: { type: String, required: false, unique: false,  default: new ObjectId() }, //Este campo no es util
   contact:{
     name: String,
     tel: [String]

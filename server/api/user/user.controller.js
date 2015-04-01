@@ -93,7 +93,25 @@ exports.show = function (req, res, next) {
       if (err) return next(err);
       var profile = user.profile;
       profile.urlLoc = city.url+'/'+user.url
-      console.log(profile);
+      res.json(profile);
+    });
+
+  });
+};
+
+/**
+ * Get a single user
+ */
+exports.showByUrl = function (req, res, next) {
+  var url = req.params.url;
+
+  User.findOne({ url: url }, function (err, user) {
+    if (err) return next(err);
+    if (!user) return res.send(401);
+    City.findById(user.city, function (err, city) {
+      if (err) return next(err);
+      var profile = user.profile;
+      profile.urlLoc = city.url+'/'+user.url
       res.json(profile);
     });
 
