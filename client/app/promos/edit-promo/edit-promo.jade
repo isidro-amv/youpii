@@ -95,14 +95,14 @@
                       .form-group(ng-class='{ "has-success": form["url[es]"].$valid && submitted,\
                         "has-error": form["url[es]"].$invalid && submitted }')
                         label Url Español
-                        input.form-control(type='text', ng-model='promo.url.es', readonly="")
+                        input.form-control(type='text', ng-model='promo.url.es', name="url[es]" style="background:#f1f1f1")
                         p.help-block(ng-show='form["url[es]"].$error.required && submitted')
                           | Error de validación de campo
 
                       .form-group(ng-class='{ "has-success": form["url[en]"].$valid && submitted,\
                         "has-error": form["url[en]"].$invalid && submitted }')
                         label Url Inglés
-                        input.form-control( type='text', ng-model='promo.url.en', readonly="")
+                        input.form-control( type='text', ng-model='promo.url.en', name="url[en]" style="background:#f1f1f1")
                         p.help-block(ng-show='form["url[en]"].$error.required && submitted')
                           | Error de validación de campo
 

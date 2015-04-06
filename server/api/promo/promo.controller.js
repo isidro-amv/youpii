@@ -152,25 +152,6 @@ exports.update = function(req, res) {
     };
   }
 
-  if (req.body.fullTitle) {
-    req.body.url = {};
-    if (req.body.fullTitle.es) {
-      req.body.url.es = req.body.fullTitle.es.split(" ").join("-");
-      req.body.url.es = req.body.url.es.replace(/%/g, '-porciento');
-      req.body.url.es = req.body.url.es.toLowerCase();
-      req.body.url.es = removeDiacritics(req.body.url.es);
-      req.body.url.es = req.body.url.es.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'');
-    }
-
-    if (req.body.fullTitle.en) {
-      req.body.url.en = req.body.fullTitle.en.split(" ").join("-");
-      req.body.url.en = req.body.url.en.replace(/%/g, '-percent');
-      req.body.url.en = req.body.url.en.toLowerCase();
-      req.body.url.en = removeDiacritics(req.body.url.en);
-      req.body.url.en = req.body.url.en.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'');
-    }
-  }
-
   req.body.homeDelivery = req.body.homeDelivery || false;
 
   Promo.findById(req.params.id, function (err, promo) {
@@ -231,15 +212,6 @@ exports.update = function(req, res) {
       if (!user) {
         console.log("No se encontró el paquete");
         return res.send(404);
-      }
-
-      if (req.body.fullTitle) {
-        if (req.body.fullTitle.es) {
-          req.body.url.es = req.body.url.es+'-en-'+user.url;
-        }
-        if (req.body.fullTitle.es) {
-          req.body.url.en = req.body.url.en+'-in-'+user.url;
-        }
       }
 
       var updated = _.merge(promo, req.body);
