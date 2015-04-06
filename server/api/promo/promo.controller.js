@@ -82,6 +82,7 @@ exports.create = function(req, res) {
         }
         //si no es array de descripción crea uno
         if (req.body.imagesdesc) {
+
           if (!(req.body.imagesdesc instanceof Array) ) {
             req.body.imagesdesc = [req.body.imagesdesc];
           }

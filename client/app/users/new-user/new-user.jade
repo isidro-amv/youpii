@@ -189,34 +189,61 @@
                       h1 Imágenes
                       .form-group(ng-class='{ "has-success": form.images.$valid && submitted,\
                         "has-error": form.images.$invalid && submitted }')
+
+                        label Reemplazarás todas las imágenes al subir nuevos archivos
+                        img.logo(src="{{user.images[0].paths.small}}" )
                         input.form-control(type='file', name="images", ng-model="user.images")
                         input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
-                        name='images[desc]', ng-model='user.images1.desc.en')
+                        name='imageDesc[0][en]', ng-model='user.images[0].desc.en')
                         input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
-                        name='images[desc]', ng-model='user.images1.desc.es')
+                        name='imageDesc[0][es]', ng-model='user.images[0].desc.es')
 
+                      .form-group(ng-class='{ "has-success": form.images.$valid && submitted,\
+                        "has-error": form.images.$invalid && submitted }')
+                        img.logo(src="{{user.images[1].paths.small}}" )
                         input.form-control(type='file', name="images", ng-model="user.images")
-                        input.form-control(placeholder='Ejemplo: Las salsas chola', type='text',
-                        name='images[desc]', ng-model='user.images2.desc')
+                        input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
+                        name='imageDesc[1][en]', ng-model='user.images[1].desc.en')
+                        input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
+                        name='imageDesc[1][es]', ng-model='user.images[1].desc.es')
 
+                      .form-group(ng-class='{ "has-success": form.images.$valid && submitted,\
+                        "has-error": form.images.$invalid && submitted }')
+                        img.logo(src="{{user.images[2].paths.slim}}" )
                         input.form-control(type='file', name="images", ng-model="user.images")
-                        input.form-control(placeholder='Ejemplo: La entrada a la tienda doña chona', type='text',
-                        name='images[desc]', ng-model='user.images3.desc')
+                        input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
+                        name='imageDesc[2][en]', ng-model='user.images[2].desc.en')
+                        input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
+                        name='imageDesc[2][es]', ng-model='user.images[2].desc.es')
 
+                      .form-group(ng-class='{ "has-success": form.images.$valid && submitted,\
+                        "has-error": form.images.$invalid && submitted }')
+                        img.logo(src="{{user.images[3].paths.slim}}" )
                         input.form-control(type='file', name="images", ng-model="user.images")
-                        input.form-control(placeholder='Ejemplo: Restaurante Doña Chona', type='text',
-                        name='images[desc]', ng-model='user.images4.desc')
+                        input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
+                        name='imageDesc[3][en]', ng-model='user.images[3].desc.en')
+                        input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
+                        name='imageDesc[3][es]', ng-model='user.images[3].desc.es')
 
+                      .form-group(ng-class='{ "has-success": form.images.$valid && submitted,\
+                        "has-error": form.images.$invalid && submitted }')
+                        img.logo(src="{{user.images[4].paths.slim}}" )
                         input.form-control(type='file', name="images", ng-model="user.images")
-                        input.form-control(placeholder='Ejemplo: Nuestros Chefs', type='text',
-                        name='images[desc]', ng-model='user.images5.desc')
+                        input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
+                        name='imageDesc[4][en]', ng-model='user.images[4].desc.en')
+                        input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
+                        name='imageDesc[4][en]', ng-model='user.images[4].desc.es')
 
+                      .form-group(ng-class='{ "has-success": form.images.$valid && submitted,\
+                        "has-error": form.images.$invalid && submitted }')
+                        img.logo(src="{{user.images[5].paths.slim}}" )
                         input.form-control(type='file', name="images", ng-model="user.images")
-                        input.form-control(placeholder='Ejemplo: Comida Doña Chona', type='text',
-                        name='images[desc]', ng-model='user.images6.desc')
-
+                        input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
+                        name='imageDesc[5][en]', ng-model='user.images[5].desc.en')
+                        input.form-control(placeholder='Ejemplo: Los tacos doña chola', type='text',
+                        name='imageDesc[5][en]', ng-model='user.images[5].desc.es')
                         p.help-block(ng-show='form.images.$error.required && submitted')
-                            | Error de validación de campo
+                        | Error de validación de campo
 
                       h1 Social
 

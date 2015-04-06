@@ -48,22 +48,22 @@ exports.create = function (req, res, next) {
 
     // asigna la descripción a un array de imágenes
     if (req.files.images) {
-      if (req.body.images) {
-        imageDesc = req.body.images.desc;
+
+      if( !(req.files.images instanceof Array) ) {
+       req.files.images = [req.files.images];
       }
-      req.body.images = req.files.images;
-      if(!(req.body.images instanceof Array)) {
-        req.body.images = [req.body.images];
-      }
-      if ( !(imageDesc instanceof Array) ) {
-        imageDesc = [imageDesc];
-      }
-      for (var i = imageDesc.length - 1; i >= 0; i--) {
-        if (req.body.images[i]) {
-          req.body.images[i].desc = imageDesc[i];
+
+      if (req.body.imageDesc) {
+
+        if (!(req.body.imageDesc instanceof Array) ) {
+          req.body.imageDesc = [req.body.imageDesc];
+        }
+        // asigna descripción a cada una de las imagenes
+        for (var i = 0; i < req.files.images.length; i++) {
+          req.files.images[i].desc = req.body.imageDesc[i];
         }
       }
-      req.body.images = s3.uploadFile(req.body.images,'gallery');
+      req.body.images = s3.uploadFile(req.files.images,'gallery');
     }
   }
 
@@ -135,19 +135,18 @@ exports.destroy = function(req, res) {
  * Update user info
  */
 exports.update = function(req, res, next) {
+  console.log("Files");
+  console.log(req.files);
+  console.log("Body");
+  console.log(req.body);
   // hay una sospecha de los updates de array no funcionan
   var userId = req.params.id;
   var imageDesc = [];
   User.findById(userId, function (err, user) {
-
-    console.log(req.body);
     req.body.visibleEmail = req.body.visibleEmail || false;
     if (req.body.coords ) { req.body.coords = req.body.coords.split(','); }
     if (!req.body.images) { req.body.images = {}; }
 
-    var user = _.merge(user, req.body);
-
-    console.log(user);
     if (req.files) {
 
       if (req.files.logo) {
@@ -158,24 +157,38 @@ exports.update = function(req, res, next) {
 
       // asigna la descripción a un array de imágenes
       if (req.files.images) {
-        if (user.images != 'null') { s3.deleteFiles(user.images); }
-        imageDesc = req.body.images.desc || '';
+        console.log("user images des");
+        console.log(req.body.imageDesc);
+        if (!_.isEmpty(user.images) && user.images[0] !== null) {
+          s3.deleteFiles(user.images);
+          user.images = null;
+          delete user.images;
+        }
 
-        if( !(user.images instanceof Array) ) {
-          user.images = [user.images];
+
+        if( !(req.files.images instanceof Array) ) {
+         req.files.images = [req.files.images];
         }
-        if ( !(imageDesc instanceof Array)) {
-          imageDesc = [imageDesc];
-        }
-        for (var i = imageDesc.length - 1; i >= 0; i--) {
-          if (user.images[i]) {
-            user.images[i].desc = imageDesc[i];
+
+        if (req.body.imageDesc) {
+
+          if (!(req.body.imageDesc instanceof Array) ) {
+            req.body.imageDesc = [req.body.imageDesc];
+          }
+          // asigna descripción a cada una de las imagenes
+          for (var i = 0; i < req.files.images.length; i++) {
+            req.files.images[i].desc = req.body.imageDesc[i];
           }
         }
-        user.images = s3.uploadFile(req.files.images,'gallery');
+        req.body.images = s3.uploadFile(req.files.images,'gallery');
+        console.log("imagenes 2");
+        console.log(req.body.images);
       }
     }
 
+    user = _.merge(user, req.body);
+    console.log("imagenes saved");
+    console.log(user.images);
     user.save(function(err) {
       if (err) return validationError(res, err);
       res.json(200,{status:"OK"});

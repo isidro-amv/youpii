@@ -78,7 +78,7 @@
 
                       .form-group(ng-class='{ "has-success": form["fullTitle[es]"].$valid && submitted,\
                         "has-error": form["fullTitle[es]"].$invalid && submitted }')
-                        label Título completo Español
+                        label Promoción + Título Español
                         input.form-control(placeholder="Ejemplo: 2x1 en toda la verdura", type='text',
                         name='fullTitle[es]', ng-model='promo.fullTitle.es' )
                         p.help-block(ng-show='form["fullTitle[es]"].$error.required && submitted')
@@ -86,7 +86,7 @@
 
                       .form-group(ng-class='{ "has-success": form["fullTitle[en]"].$valid && submitted,\
                         "has-error": form["fullTitle[en]"].$invalid && submitted }')
-                        label Título completo Inglés
+                        label Promoción + Título Inglés
                         input.form-control(placeholder="Ejemplo: 2x1 all the vegetables", type='text',
                         name='fullTitle[en]', ng-model='promo.fullTitle.en')
                         p.help-block(ng-show='form["fullTitle[en]"].$error.required && submitted')
@@ -263,38 +263,38 @@
                       img( src="{{ promo.images[0].paths.small }}")
                       input.form-control(type='file', name="images")
                       input.form-control(placeholder='Ejemplo: The Chutneys', type='text',
-                      name='imagesdesc[en]', ng-model='promo.images[0].desc.en')
+                      name='imagesdesc[0][en]', ng-model='promo.images[0].desc.en')
                       input.form-control(placeholder='Ejemplo: Las salsas picantes', type='text',
-                      name='imagesdesc[es]', ng-model='promo.images[0].desc.es')
+                      name='imagesdesc[0][es]', ng-model='promo.images[0].desc.es')
 
 
                       img( src="{{ promo.images[1].paths.small }}")
                       input.form-control(type='file', name="images")
                       input.form-control(placeholder='Ejemplo: The entrance to the store Mrs. chona', type='text',
-                      name='imagesdesc[en]', ng-model='promo.images[1].desc.en')
+                      name='imagesdesc[1][en]', ng-model='promo.images[1].desc.en')
                       input.form-control(placeholder='Ejemplo: La entrada a la tienda doña chona', type='text',
-                      name='imagesdesc[es]', ng-model='promo.images[1].desc.es')
+                      name='imagesdesc[1][es]', ng-model='promo.images[1].desc.es')
 
                       img( src="{{ promo.images[2].paths.small }}")
                       input.form-control(type='file', name="images")
                       input.form-control(placeholder='Ejemplo: Mrs. Chona Restaurant', type='text',
-                      name='imagesdesc[en]', ng-model='promo.images[2].desc.en')
+                      name='imagesdesc[2][en]', ng-model='promo.images[2].desc.en')
                       input.form-control(placeholder='Ejemplo: Restaurante Doña Chona', type='text',
-                      name='imagesdesc[es]', ng-model='promo.images[2].desc.es')
+                      name='imagesdesc[2][es]', ng-model='promo.images[2].desc.es')
 
                       img( src="{{ promo.images[3].paths.small }}")
                       input.form-control(type='file', name="images")
                       input.form-control(placeholder='Ejemplo: Our Chefs', type='text',
-                      name='imagesdesc[en]', ng-model='promo.images[3].desc.en')
+                      name='imagesdesc[3][en]', ng-model='promo.images[3].desc.en')
                       input.form-control(placeholder='Ejemplo: Nuestros Chefs', type='text',
-                      name='imagesdesc[es]', ng-model='promo.images[3].desc.es')
+                      name='imagesdesc[3][es]', ng-model='promo.images[3].desc.es')
 
                       img( src="{{ promo.images[4].paths.small }}")
                       input.form-control(type='file', name="images")
                       input.form-control(placeholder='Ejemplo: Our Chefs', type='text',
-                      name='imagesdesc[en]', ng-model='promo.images[4].desc.en')
+                      name='imagesdesc[4][en]', ng-model='promo.images[4].desc.en')
                       input.form-control(placeholder='Ejemplo: Nuestros Chefs', type='text',
-                      name='imagesdesc[es]', ng-model='promo.images[4].desc.es')
+                      name='imagesdesc[4][es]', ng-model='promo.images[4].desc.es')
 
                       button.btn.btn-warning(type='reset') Reset Button
                       button.btn.btn-primary(type='submit') Submit Button
