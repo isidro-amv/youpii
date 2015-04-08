@@ -92,7 +92,8 @@ exports.show = function (req, res, next) {
     City.findById(user.city, function (err, city) {
       if (err) return next(err);
       var profile = user.profile;
-      profile.urlLoc = city.url+'/'+user.url
+      profile.cityName = city.name;
+      profile.urlLoc = city.url+'/'+user.url;
       res.json(profile);
     });
 
@@ -111,6 +112,7 @@ exports.showByUrl = function (req, res, next) {
     City.findById(user.city, function (err, city) {
       if (err) return next(err);
       var profile = user.profile;
+      profile.cityName = city.name;
       profile.urlLoc = city.url+'/'+user.url
       res.json(profile);
     });

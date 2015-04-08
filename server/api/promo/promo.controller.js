@@ -310,7 +310,7 @@ exports.showBySimilar = function(req, res) {
       // si no hay promociones o la cantidad es menor a 3
       if (!promos || promos.length < 3) {
         // busca promociones que tengan la misma categoría pero diferente id
-        Promo.find({category: promo.category})
+        Promo.find({category: { $in: [promo.category]}})
         .where('_id').ne(promo._id)
         .where('dateStart').lte( Date.now() )
         .where('dateEnd').gt( Date.now() )
@@ -419,7 +419,8 @@ exports.showByLatest = function(req, res) {
   skip = page * 8;
 
   Promo.find({$and:[
-      { dateStart: {$lte: Date.now()}}
+      { dateStart: {$lte: Date.now()}},
+      { dateEnd: {$gt: Date.now()}}
     ]},null,{skip: skip, limit: limit, sort: { dateStart: -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
