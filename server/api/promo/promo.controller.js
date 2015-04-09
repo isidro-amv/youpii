@@ -161,7 +161,9 @@ exports.update = function(req, res) {
       // si el usuario actual tienen elementos, eliminará los elementos y enlistará los elementos
       // para eliminarlos del S3 también enlistará los nuevos elmentos a subir
       if (req.files.images) {
-        s3.deleteFiles(promo.images);
+        if (!_.isEmpty(promo.images) && promo.images[0] !== null) {
+          s3.deleteFiles(promo.images);
+        }
         // si no es array de imágenes crea uno
         if (!(req.files.images instanceof Array) ) {
           req.files.images = [req.files.images];
@@ -300,6 +302,7 @@ exports.showBySimilar = function(req, res) {
   Promo.findById(req.params.id, function (err, promo) {
     if(err) { return handleError(res, err); }
     if(!promo) { return res.send(404); }
+
     // busca promociones que tenga el mismo dueño pero diferente id
     Promo.find({$and:[
       { owner: promo.owner },
@@ -310,7 +313,8 @@ exports.showBySimilar = function(req, res) {
       // si no hay promociones o la cantidad es menor a 3
       if (!promos || promos.length < 3) {
         // busca promociones que tengan la misma categoría pero diferente id
-        Promo.find({category: { $in: [promo.category]}})
+        Promo.find({category: { $in: promo.category }})
+        .where('category').in(promo.category)
         .where('_id').ne(promo._id)
         .where('dateStart').lte( Date.now() )
         .where('dateEnd').gt( Date.now() )
@@ -419,8 +423,7 @@ exports.showByLatest = function(req, res) {
   skip = page * 8;
 
   Promo.find({$and:[
-      { dateStart: {$lte: Date.now()}},
-      { dateEnd: {$gt: Date.now()}}
+      { dateStart: {$lte: Date.now()}}
     ]},null,{skip: skip, limit: limit, sort: { dateStart: -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }

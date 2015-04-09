@@ -93,7 +93,7 @@
                       .form-group(ng-class='{ "has-success": form.promoKind.$valid && submitted,\
                         "has-error": form.promoKind.$invalid && submitted }')
                         label Tipo de Promoción
-                        select.form-control(class="promoKind" , ng-model="promo.promoKind",
+                        select.form-control(type="text" class="promoKind", name="promoKind" ,ng-model="promo.promoKind",
                           ng-options="promoKind.title for promoKind in promoKinds")
                           option(value="") --- selecciona Tipo de promoción ----
                         p.help-block(ng-show='form.promoKind.$error.required && submitted')
@@ -138,7 +138,7 @@
                         label Categorías
                         select.form-control( type='text', name='category[0]', ng-model='promo.category[0]', required='')
                           option(value="") --- selecciona categoría ----
-                          option(value="{{category._id}}" ng-repeat="category in categories | orderBy:'name'") {{ category.name }}
+                          option(value="{{category._id}}" ng-repeat="category in categories | orderBy:'name'") {{ category.name.es }}
                         p.help-block(ng-show='form["category[0]"].$error.required && submitted')
                           | Error de validación de campo
 
@@ -147,7 +147,7 @@
                         label Sub Categoría
                         select.form-control(type='text', name='category[1]', ng-model='promo.category[1]')
                           option(value="") --- selecciona categoría ----
-                          option(value="{{category._id}}" ng-repeat="category in categories | orderBy:'name'") {{ category.name }}
+                          option(value="{{category._id}}" ng-repeat="category in categories | orderBy:'name'") {{ category.name.es }}
                         p.help-block(ng-show='form["category[1]"].$error.required && submitted')
                           | Error de validación de campo
 

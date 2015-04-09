@@ -23,17 +23,15 @@
                         th Título
                         th promo
                         th owner
-                        th Likes Ranking
                         th Editar
                     tbody
                       tr.gradeA.odd(ng-repeat="promo in promos")
                         td.sorting_1 {{ promo._id }}
-                        td {{ promo.title }}
-                        td {{ promo.promo }}
+                        td {{ promo.title.es }}
+                        td {{ promo.promo.es }}
                         td.center
                           a.btn.btn-large.btn-primary.btn-xs(href="/user/{{ promo.owner }}")
                             | {{ promo.owner }}
-                        td.center {{ promo.likes.count }}
                         td.center
                           a.btn.btn-large.btn-primary.btn-xs(href="/promo/{{ promo._id }}")
                             <i class="fa fa-angle-right fa-fw"></i>
