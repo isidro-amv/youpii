@@ -71,6 +71,9 @@ angular.module('youpiiBApp')
 
         formData.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
         formData.append('imagemainlCrop', App.dataURItoBlob($scope.imagemainlCropped), 'imagemainlCrop.png');
+        if ($(".promoKind option:selected" ).val()!=='') {
+          formData.append('promoKind', $scope.promoKinds[$(".promoKind option:selected" ).val()].id);
+        }
 
         window.alert('Subiendo promo...');
         App.sendRequest({

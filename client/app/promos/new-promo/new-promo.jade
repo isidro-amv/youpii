@@ -93,7 +93,7 @@
                       .form-group(ng-class='{ "has-success": form.promoKind.$valid && submitted,\
                         "has-error": form.promoKind.$invalid && submitted }')
                         label Tipo de Promoción
-                        select.form-control(type="text" class="promoKind", name="promoKind" ,ng-model="promo.promoKind",
+                        select.form-control(type="text" class="promoKind", ng-model="promo.promoKind",
                           ng-options="promoKind.title for promoKind in promoKinds")
                           option(value="") --- selecciona Tipo de promoción ----
                         p.help-block(ng-show='form.promoKind.$error.required && submitted')
