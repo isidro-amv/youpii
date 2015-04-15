@@ -260,7 +260,7 @@ exports.visited = function(req, res) {
       promo.likes.liked = promo.likes.liked+1;
     }
 
-    tenVisited = parseInt(promo.likes.visited / 10);
+    tenVisited = parseInt(promo.likes.visited / 2);
     promo.likes.average = parseInt(tenVisited+ promo.likes.liked);
 
     promo.save();
