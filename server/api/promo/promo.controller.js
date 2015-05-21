@@ -376,21 +376,20 @@ exports.showByTitle = function(req, res) {
 
 // Get items if the promo have title or promo with the parameters words
 exports.showByBestOfMonth = function(req, res) {
-  var page = parseInt(req.params.page);
+  var page = parseInt(req.params.page) || 0;
   var skip = 0;
   var limit = 8;
   var date = new Date();
   var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
   var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  var data = eval("(" + req.params.page + ")");
   var hideExpireds = {};
+  var populateOwner = { path:'' };
+  var apiVersion = parseFloat(req.query.v);
 
   // Cuando el objeto regrese distintos valores de la key 'plat' validar esta parte
-  if (typeof data == 'object') {
-    page = data.page;
+  if ( apiVersion > 1) {
     hideExpireds = { 'dateEnd': {'$gt': Date.now()}};
-  }else{
-    page = data;
+    populateOwner = { path: 'owner', select: '_id logo name' };
   }
 
   limit = limit * (page+1);
@@ -399,7 +398,9 @@ exports.showByBestOfMonth = function(req, res) {
   Promo.find({$and:[
       { dateStart: {$gte: firstDay}},
       { dateStart: {$lte: Date.now()}}, hideExpireds
-    ]},null,{skip: skip, limit: limit, sort: { 'likes.average': -1 }},function (err,search) {
+    ]},null,{skip: skip, limit: limit, sort: { 'likes.average': -1 }},null)
+  .populate(populateOwner)
+  .exec(function (err, search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
     return res.json(search);
@@ -428,15 +429,16 @@ exports.showByLatest = function(req, res) {
   var page = 0;
   var skip = 0;
   var limit = 8;
-  var data = eval("(" + req.params.page + ")");
+  var apiVersion = parseFloat(req.query.v);
   var hideExpireds = {};
+  var populateOwner = { path:'' };
+
+  console.log(apiVersion);
 
   // Cuando el objeto regrese distintos valores de la key 'plat' validar esta parte
-  if (typeof data == 'object') {
-    page = data.page;
+  if ( apiVersion > 1) {
     hideExpireds = { 'dateEnd': {'$gt': Date.now()}};
-  }else{
-    page = data;
+    populateOwner = { path: 'owner', select: '_id logo name' };
   }
 
   limit = limit * (page+1);
@@ -444,7 +446,9 @@ exports.showByLatest = function(req, res) {
 
   Promo.find({$and:[
       { dateStart: {$lte: Date.now()}}, hideExpireds
-    ]},null,{skip: skip, limit: limit, sort: { dateStart: -1 }},function (err,search) {
+    ]},null,{skip: skip, limit: limit, sort: { dateStart: -1 }},null)
+  .populate(populateOwner)
+  .exec(function (err, search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
     return res.json(search);
@@ -537,15 +541,14 @@ exports.showByCategory = function(req, res) {
   var skip = 0;
   var limit = 8;
   var page = 0;
-  var data = eval("(" + req.params.page + ")");
+  var apiVersion = parseFloat(req.query.v);
   var hideExpireds = {};
+  var populateOwner = { path:'' };
 
   // Cuando el objeto regrese distintos valores de la key 'plat' validar esta parte
-  if (typeof data == 'object') {
-    page = data.page;
+  if ( apiVersion > 1) {
     hideExpireds = { 'dateEnd': {'$gt': Date.now()}};
-  }else{
-    page = data;
+    populateOwner = { path: 'owner', select: '_id logo name' };
   }
 
   limit = limit * (page+1);
@@ -558,7 +561,9 @@ exports.showByCategory = function(req, res) {
     Promo.find({$and:[
         {category:{ $in: [category._id]}},
         { dateStart: {$lte: Date.now()}},hideExpireds,
-      ]}).skip(skip).limit(limit).exec(function (err,search) {
+      ]}).skip(skip).limit(limit)
+    .populate(populateOwner)
+    .exec(function (err,search) {
       if(err) { return handleError(res, err); }
       if(!search) { return res.send(404); }
       return res.json(search);
