@@ -382,13 +382,23 @@ exports.showByBestOfMonth = function(req, res) {
   var date = new Date();
   var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
   var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  var data = eval("(" + req.params.page + ")");
+  var hideExpireds = {};
+
+  // Cuando el objeto regrese distintos valores de la key 'plat' validar esta parte
+  if (typeof data == 'object') {
+    page = data.page;
+    hideExpireds = { 'dateEnd': {'$gt': Date.now()}};
+  }else{
+    page = data;
+  }
 
   limit = limit * (page+1);
   skip = page * 8;
 
   Promo.find({$and:[
       { dateStart: {$gte: firstDay}},
-      { dateStart: {$lte: Date.now()}}
+      { dateStart: {$lte: Date.now()}}, hideExpireds
     ]},null,{skip: skip, limit: limit, sort: { 'likes.average': -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
@@ -415,15 +425,25 @@ exports.showByBestEver = function(req, res) {
 
 // Get the latest items visibles to the users
 exports.showByLatest = function(req, res) {
-  var page = parseInt(req.params.page);
+  var page = 0;
   var skip = 0;
   var limit = 8;
+  var data = eval("(" + req.params.page + ")");
+  var hideExpireds = {};
+
+  // Cuando el objeto regrese distintos valores de la key 'plat' validar esta parte
+  if (typeof data == 'object') {
+    page = data.page;
+    hideExpireds = { 'dateEnd': {'$gt': Date.now()}};
+  }else{
+    page = data;
+  }
 
   limit = limit * (page+1);
   skip = page * 8;
 
   Promo.find({$and:[
-      { dateStart: {$lte: Date.now()}}
+      { dateStart: {$lte: Date.now()}}, hideExpireds
     ]},null,{skip: skip, limit: limit, sort: { dateStart: -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
@@ -514,9 +534,19 @@ exports.showByCity = function(req, res) {
 // Get the latest items visibles to the users
 exports.showByCategory = function(req, res) {
   var urlCategory = req.params.category;
-  var page = parseInt(req.params.page);
   var skip = 0;
   var limit = 8;
+  var page = 0;
+  var data = eval("(" + req.params.page + ")");
+  var hideExpireds = {};
+
+  // Cuando el objeto regrese distintos valores de la key 'plat' validar esta parte
+  if (typeof data == 'object') {
+    page = data.page;
+    hideExpireds = { 'dateEnd': {'$gt': Date.now()}};
+  }else{
+    page = data;
+  }
 
   limit = limit * (page+1);
   skip = page * 8;
@@ -527,7 +557,7 @@ exports.showByCategory = function(req, res) {
 
     Promo.find({$and:[
         {category:{ $in: [category._id]}},
-        { dateStart: {$lte: Date.now()}}
+        { dateStart: {$lte: Date.now()}},hideExpireds,
       ]}).skip(skip).limit(limit).exec(function (err,search) {
       if(err) { return handleError(res, err); }
       if(!search) { return res.send(404); }
