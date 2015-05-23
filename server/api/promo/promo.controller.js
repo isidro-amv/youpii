@@ -430,6 +430,7 @@ exports.showByLatest = function(req, res) {
   var skip = 0;
   var limit = 8;
   var apiVersion = parseFloat(req.query.v);
+  var page = parseInt(req.params.page) || 0;
   var hideExpireds = {};
   var populateOwner = { path:'' };
 
@@ -542,6 +543,7 @@ exports.showByCategory = function(req, res) {
   var limit = 8;
   var page = 0;
   var apiVersion = parseFloat(req.query.v);
+  var page = parseInt(req.params.page);
   var hideExpireds = {};
   var populateOwner = { path:'' };
 
