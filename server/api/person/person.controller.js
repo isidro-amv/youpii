@@ -20,6 +20,17 @@ exports.show = function(req, res) {
   });
 };
 
+exports.fb_connect = function  (req, res) {
+  var person = { name: 'paxo', code:'123 '};
+  console.log("Hola a todos");
+  console.log("query",req.query);
+  if (req.query.userID  =='0') {
+    return res.send(404);
+  }else{
+    return res.json(201, person);
+  }
+}
+
 // Creates a new person in the DB.
 exports.create = function(req, res) {
   Person.create(req.body, function(err, person) {
