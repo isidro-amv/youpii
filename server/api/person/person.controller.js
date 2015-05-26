@@ -21,9 +21,10 @@ exports.show = function(req, res) {
 };
 
 exports.fb_connect = function  (req, res) {
-  var person = { name: 'paxo', code:'123 '};
+  var person = { name: 'paxo', userID:'123 ', accessToken:'asdasd'};
   console.log("Hola a todos");
   console.log("query",req.query);
+
   if (req.query.userID  =='0') {
     return res.send(404);
   }else{
