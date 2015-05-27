@@ -4,11 +4,11 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var PersonSchema = new Schema({
-  name:               { type: String, required: true, trim: true },
+  name:               { type: String, trim: true },
   lastname:           { type: String, trim: true },
   second_lastname:    { type: String, trim: true},
   username:           { type: String, trim:true },
-  socketSid:                { type: String, default:'' },
+  socketSid:          { type: String, default:'' },
   picture:            {
                         name:     String,
                         encoding: String,
@@ -20,16 +20,20 @@ var PersonSchema = new Schema({
                         path_t:   String, // thumnail http location
                         kind:     String
                       },
+  preferences:         [{
+    id: Schema.Types.ObjectId,
+    title: String
+  }],
   notification_id:    { type: String },
-  password:           { type: String, required: true },
+  password:           { type: String },
   email:              { type: String, required: true, unique: true, trim:true },
   gender:             { type: String },
-  birth:              { type: Date, required: true},
+  birth:              { type: Date },
   history:            [ String ],
   language:           { type: String, default: 'es'},
   wants_notification: { type: Boolean, default: true },
-  point:              { type: [Number], index: '2d', required: true },
-  current_point:      { type: [Number], index: '2d', required: true },
+  point:              { type: [Number], index: '2d' },
+  current_point:      { type: [Number], index: '2d' },
   first_login:        { type: Date, default: Date.now },
   last_login:         { type: Date, default: Date.now },
   local            : {
