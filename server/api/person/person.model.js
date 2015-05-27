@@ -21,8 +21,7 @@ var PersonSchema = new Schema({
                         kind:     String
                       },
   preferences:         [{
-    id: Schema.Types.ObjectId,
-    title: String
+    title: { type: String}
   }],
   notification_id:    { type: String },
   password:           { type: String },
