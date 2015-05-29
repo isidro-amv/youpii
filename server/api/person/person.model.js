@@ -23,6 +23,7 @@ var PersonSchema = new Schema({
   preferences:         [{
     title: { type: String}
   }],
+  likes: [{ type: Schema.Types.ObjectId, ref:'Promo', unique: true, index: true }],
   notification_id:    { type: String },
   password:           { type: String },
   email:              { type: String, required: true, unique: true, trim:true },
@@ -59,4 +60,5 @@ var PersonSchema = new Schema({
   }
 });
 
+PersonSchema.set('versionKey', false);
 module.exports = mongoose.model('Person', PersonSchema);

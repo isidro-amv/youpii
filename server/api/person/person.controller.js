@@ -34,7 +34,7 @@ exports.fb_connect = function  (req, res) {
     console.log("data create",data);
     var person ={
       name: data.first_name,
-      last_name: data.last_name,
+      lastname: data.last_name,
       gender: data.gender,
       email: data.email,
       birth: data.birthday,
@@ -89,6 +89,35 @@ exports.fb_connect = function  (req, res) {
 
 }
 
+exports.notification = function (req, res) {
+  var gcm = require('node-gcm');
+  var notification_id = req.params.id;
+  var message = new gcm.Message({
+    collapseKey: 'demo',
+    delayWhileIdle: true,
+    timeToLive: 3,
+    data: {
+        message: 'Mensaje',
+        title: 'Esto es título',
+        msgcnt: 1
+    }
+  });
+
+  var sender = new gcm.Sender('AIzaSyDhFw0wvFLCKXAvVlttPMIHpxu7gA-x3bw');
+
+  sender.send(message, notification_id, 4, function (err, result) {
+      console.log("error",err);
+      console.log("resultado",result);
+      if (!err) {
+        res.status(200);
+        res.json('Parece bien :3');
+      }else{
+        res.status(500);
+        res.json('Error al enviar mensaje');
+      }
+  });
+}
+
 // Creates a new person in the DB.
 exports.create = function(req, res) {
   Person.create(req.body, function(err, person) {
@@ -99,12 +128,22 @@ exports.create = function(req, res) {
 
 // Updates an existing person in the DB.
 exports.update = function(req, res) {
+  console.log("req.body",req.body);
   if(req.body._id) { delete req.body._id; }
   Person.findById(req.params.id, function (err, person) {
+    console.log("err1",err);
+    console.log("person",person);
     if (err) { return handleError(res, err); }
     if(!person) { return res.send(404); }
+    if (req.body.preferences) {
+      person.preferences = req.body.preferences;
+      delete req.body.preferences;
+    }
     var updated = _.merge(person, req.body);
+
+    console.log('updated', person);
     updated.save(function (err) {
+      console.log("err2",err);
       if (err) { return handleError(res, err); }
       return res.json(200, person);
     });
