@@ -101,7 +101,7 @@ var PromoSchema = new Schema({
     es: [String]
   },
   homeDelivery: Boolean,
-  pack: { type: Schema.Types.ObjectId, ref: 'Pack', required:true },
+  pack: { type: String, required:false },
   category:  [{ type: Schema.Types.ObjectId, ref: 'Category' }],
   owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   currency: { type: String, enum: ['MXN','USD'], default: 'MXN' },

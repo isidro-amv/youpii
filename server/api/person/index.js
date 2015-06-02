@@ -7,6 +7,7 @@ var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/:id', controller.show);
+router.get('/:id/promos',controller.promos);
 router.get('/connect/:service', controller.fb_connect);
 router.get('/notifications/:id', controller.notification);
 

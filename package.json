@@ -26,7 +26,8 @@
     "gm": "~1.17.0",
     "multer": "~0.1.6",
     "forever": "~0.13.0",
-    "mongoose-text-search": "~0.0.2"
+    "mongoose-text-search": "~0.0.2",
+    "node-gcm": "~0.9.15"
   },
   "devDependencies": {
     "connect-livereload": "~0.4.0",
@@ -82,7 +83,8 @@
     "requirejs": "~2.1.11",
     "should": "~3.3.1",
     "supertest": "~0.11.0",
-    "time-grunt": "~0.3.1"
+    "time-grunt": "~0.3.1",
+    "node-gcm": "~0.9.15"
   },
   "engines": {
     "node": ">=0.10.0"

@@ -1,17 +1,16 @@
 #wrapper
   div(ng-include='"components/navbar/navbar.html"')
-  #page-wrapper(ng-controller="UsersCtrl")
+  #page-wrapper.pack(ng-controller="PersonCtrl")
     .row
       .col-lg-12.page-header
-          h1 Empresas
-          a.btn.btn-primary.new(href='/new-user') Nuevo Empresa
+          h1 Usuarios
         //
            /.col-lg-12
     .row
         .col-lg-12
             .panel.panel-default
               .panel-heading
-                | Empresas Más recientes - Total: {{ users.length }}
+                | Usuarios Más recientes - Total: {{ packs.length }}
               //
                  /.panel-heading
               .panel-body
@@ -20,21 +19,23 @@
                     thead
                       tr(role='row')
                         th Código
+                        th Foto
                         th Nombre
-                        th Encargado
-                        th Telefono
-                        th Email
+                        th Apellido
+                        th email
+                        th facebook_id
                         th Editar
                     tbody
-                      tr.gradeA.odd(ng-repeat="user in users")
-                        td.sorting_1 {{ user._id }}
-                        td {{ user.name }}
-                        td {{ user.contact.name }}
+                      tr.gradeA.odd(ng-repeat="person in persons")
+                        td.sorting_1 {{ person._id }}
                         td
-                          .div(ng-repeat="i in user.tel") {{ i }}
-                        td.center {{ user.email }}
+                          img( src="{{ person.picture.path }}")
+                        td {{ person.name }}
+                        td {{ person.lastname - person.second_lastname || '' }}
+                        td {{ person.email }}
+                        td {{ person.facebook.id }}
                         td.center
-                          a.btn.btn-large.btn-primary.btn-xs(href="/user/{{ user._id }}")
+                          a.btn.btn-large.btn-primary.btn-xs(href="/person/{{ person._id }}")
                             <i class="fa fa-angle-right fa-fw"></i>
                   .row
                 //

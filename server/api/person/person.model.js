@@ -24,6 +24,7 @@ var PersonSchema = new Schema({
     title: { type: String}
   }],
   likes: [{ type: Schema.Types.ObjectId, ref:'Promo', unique: true, index: true }],
+  promos: [{ type: Schema.Types.ObjectId, ref:'Promo', unique: true}],
   notification_id:    { type: String },
   password:           { type: String },
   email:              { type: String, required: true, unique: true, trim:true },

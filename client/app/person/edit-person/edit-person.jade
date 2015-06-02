@@ -1,0 +1,141 @@
+#wrapper
+  div(ng-include='"components/navbar/navbar.html"')
+  #page-wrapper.form-person(ng-controller="EditPersonCtrl")
+    .row
+        .col-lg-12.page-header
+            h1 Editar usuario
+            div.btn.btn-primary.new(ng-click="addPromo()") Agregar promoción
+          //
+             /.col-lg-12
+    .row
+        .col-lg-12
+            .panel.panel-default
+              .panel-heading
+                | Registro
+              .panel-body
+                .row
+                  form.form(name='form', ng-submit='update(form)', novalidate='', enctype="multipart/form-data")
+                    .col-lg-6
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Nombre del usuario
+                        input.form-control(placeholder="Ejemplo: El Sr. Carlos Slim", type='text',
+                        name='name', ng-model='person.name', readonly)
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Primer apellido
+                        input.form-control(placeholder="Ejemplo: Martinez", type='text',
+                        name='name', ng-model='person.lastname', readonly)
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Foto de perfil
+                        div
+                          img(src="{{ person.picture.path }}")
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Preferecias
+                        ul( ng-repeat="preference in person.preferences" )
+                          li{{ preference }}
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Promociones que le ha gustado
+                        ul( ng-repeat="like in person.likes")
+                          li {{ like }}
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Promociones
+                        ul( ng-repeat="promo in person.promos" )
+                          li
+                            a(href="promo/{{promo}}") {{ promo }}
+                            i.fa.fa-times.fa-fw(ng-click="deletePromo($index)")
+
+                      .form-group(ng-class='{ "has-success": form.notification_id.$valid && submitted,\
+                        "has-error": form.notification_id.$invalid && submitted }')
+                        label Id de notificación
+                        textarea.form-control(placeholder="Ejemplo: 234kw4AS3D3F",
+                        name='notification_id', ng-model='person.notification_id', readonly)
+                        p.help-block(ng-show='form.notification_id.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Email
+                        input.form-control(placeholder="Ejemplo: isidro@gmail.com", type='text',
+                        name='name', ng-model='person.email', readonly)
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Género
+                        input.form-control(placeholder="Ejemplo: male", type='text',
+                        name='name', ng-model='person.gender', readonly)
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Fecha de nacimiento
+                        input.form-control(placeholder="Ejemplo: 22/04/96", type='text',
+                        name='name', ng-model='person.birth', readonly)
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Coordenadas
+                        input.form-control(placeholder="Ejemplo: 22/04/96", type='text',
+                        name='name', value="{{person.current_point[0]}}, {{person.current_point[1]}}", readonly)
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Fecha de registro
+                        input.form-control(placeholder="Ejemplo: 22/04/96", type='text',
+                        name='name', ng-model='person.first_login', readonly)
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Última sessión
+                        input.form-control(placeholder="Ejemplo: 22/04/96", type='text',
+                        name='name', ng-model='person.last_login', readonly)
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Facebook Id
+                        input.form-control(placeholder="Ejemplo: 22/04/96", type='text',
+                        name='name', ng-model='person.facebook.id', readonly)
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group(ng-class='{ "has-success": form.name.$valid && submitted,\
+                        "has-error": form.name.$invalid && submitted }')
+                        label Facebook token
+                        input.form-control(placeholder="Ejemplo: 22/04/96", type='text',
+                        name='name', ng-model='person.facebook.token', readonly)
+                        p.help-block(ng-show='form.name.$error.required && submitted')
+                          | Error de validación de campo
+                //
+                   /.row (nested)
+              //
+                 /.panel-body
+            //
+               /.panel
+          //
+             /.col-lg-12
+
