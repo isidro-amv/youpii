@@ -100,6 +100,8 @@ var PromoSchema = new Schema({
     en: [String],
     es: [String]
   },
+  isPremium: Boolean,
+  code: String,
   homeDelivery: Boolean,
   pack: { type: String, required:false },
   category:  [{ type: Schema.Types.ObjectId, ref: 'Category' }],

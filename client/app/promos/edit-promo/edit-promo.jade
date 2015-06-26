@@ -17,6 +17,19 @@
                   form.form(name='form', ng-submit='update(form)', novalidate='', enctype="multipart/form-data")
                     .col-lg-6
 
+                      .form-group(ng-class='{ "has-success": form["code"].$valid && submitted,\
+                        "has-error": form["code"].$invalid && submitted }')
+                        label Código
+                        text-angular(ng-model="promo.code")
+                        textarea.form-control(placeholder="Ejemplo: E3KT01", type='text',
+                        name='code', ng-model='promo.code', required='', class="none")
+                        p.help-block(ng-show='form["code"].$error.required && submitted')
+                          | Error de validación de campo
+
+                      .form-group
+                        label ¿Es promoción premium?
+                        input.form-control(type='checkbox', name='isPremium', ng-model='promo.isPremium')
+
                       .form-group(ng-class='{ "has-success": form["title[es]"].$valid && submitted,\
                         "has-error": form["title[es]"].$invalid && submitted }')
                         label Título español

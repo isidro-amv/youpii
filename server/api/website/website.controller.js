@@ -8,9 +8,8 @@ var s3 = require(config.root+'/server/components/s3');
 
 // Get list of websites
 exports.index = function(req, res) {
-
-  Website.find(function (err, websites) {
-    var website = websites[0];
+  console.log("here is my website");
+  Website.findOne({},function (err, website) {
     if(err) { return handleError(res, err); }
 
     if (website.sections) {

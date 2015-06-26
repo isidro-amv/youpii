@@ -20,7 +20,7 @@ var PersonSchema = new Schema({
                         path_t:   String, // thumnail http location
                         kind:     String
                       },
-  preferences:         [{
+  preferences:        [{
     title: { type: String}
   }],
   likes: [{ type: Schema.Types.ObjectId, ref:'Promo', unique: true, index: true }],
@@ -37,6 +37,7 @@ var PersonSchema = new Schema({
   current_point:      { type: [Number], index: '2d' },
   first_login:        { type: Date, default: Date.now },
   last_login:         { type: Date, default: Date.now },
+  info:               { type: String },
   local            : {
       email        : String,
       password     : String,

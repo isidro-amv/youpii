@@ -38,8 +38,8 @@ exports.fb_connect = function  (req, res) {
       name: data.first_name,
       lastname: data.last_name,
       gender: data.gender,
-      email: data.email,
-      birth: data.birthday,
+      email: data.email || data.id+'@youpiipromos.com',
+      birth: data.birthday || '',
       picture: {
         path: data.picture.data.url
       },
@@ -105,8 +105,8 @@ exports.notification = function (req, res) {
     }
   });
 
-  var sender = new gcm.Sender('AIzaSyBMAp1zbWGp-Z1LM2UdiGxNSw6Te5oYSlg');
-
+  var sender = new gcm.Sender('AIzaSyAhM9Y5gWbNZXVec15lxPeBjcyxZVuZpFo');
+  console.log(notification_id);
   sender.send(message, [notification_id], 4, function (err, result) {
       console.log("error",err);
       console.log("resultado",result);

@@ -79,7 +79,6 @@ angular.module('youpiiBApp')
 
         var formData = new FormData($('.form')[0]);
         formData.append('owner', $scope.promo.owner._id);
-        formData.append('pack', $scope.promo.pack._id);
         if ($(".promoKind option:selected" ).val()!=='') {
           formData.append('promoKind', $scope.promoKinds[$(".promoKind option:selected" ).val()].id);
         }
@@ -95,6 +94,7 @@ angular.module('youpiiBApp')
           formData.append('imagemainCrop', App.dataURItoBlob($scope.imagemainCropped), 'imagemainCrop.png');
           formData.append('imagemainlCrop', App.dataURItoBlob($scope.imagemainlCropped), 'imagemainlCrop.png');
         }
+        console.log(formData);
         window.alert('Actualizando promo...');
         App.sendRequest({
           method: 'PUT',

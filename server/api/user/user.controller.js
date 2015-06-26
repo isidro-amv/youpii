@@ -1,7 +1,6 @@
 'use strict';
 
 var User = require('./user.model');
-var passport = require('passport');
 var config = require('../../config/environment');
 var City = require(config.root+'/server/api/city/city.model');
 var images = require(config.root+'/server/components/images');

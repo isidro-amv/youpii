@@ -27,12 +27,6 @@ exports.create = function(req, res) {
   promo.images = [];
   promo.url = {};
 
-  // se necesita elegir un paquete para la promoción
-  if (!req.body.pack) {
-    console.log("no se ha elegido un paquete");
-    res.send(500);
-  }
-
   if (promo.fullTitle) {
     if (promo.fullTitle.es) {
       promo.url.es = promo.fullTitle.es.toLowerCase();
@@ -51,10 +45,6 @@ exports.create = function(req, res) {
 
   Pack.findById(req.body.pack,function (err, pack) {
     if(err) { return handleError(res, err); }
-    if(!pack) {
-      console.log("No se encontró el paquete");
-      return res.send(404);
-    }
     if (req.body.category) {
       if (!(req.body.category instanceof Array)) {
         req.body.category = [req.body.category];
@@ -114,10 +104,6 @@ exports.create = function(req, res) {
     console.log("save this promos->",promo);
     User.findById( req.body.owner , function (err, user) {
       if(err) { return handleError(res, err); }
-      if (!user) {
-        console.log("No se encontró el paquete");
-        return res.send(404);
-      }
 
       promo.url.es = promo.url.es+'-en-'+user.url;
       promo.url.en = promo.url.en+'-in-'+user.url;
@@ -211,10 +197,6 @@ exports.update = function(req, res) {
 
     User.findById( req.body.owner , function (err, user) {
       if(err) { return handleError(res, err); }
-      if (!user) {
-        console.log("No se encontró el paquete");
-        return res.send(404);
-      }
 
       var updated = _.merge(promo, req.body);
       updated.save(function (err,p) {
@@ -280,6 +262,7 @@ exports.show = function(req, res) {
 
 // Get a single by unique url name
 exports.showByUrl = function(req, res) {
+  console.log("this is a test");
   if (!req.params.lang || !req.params.url) {
     return res.send(404);
   }
@@ -305,6 +288,7 @@ exports.showBySimilar = function(req, res) {
 
     // busca promociones que tenga el mismo dueño pero diferente id
     Promo.find({$and:[
+      { isPremium: {'$ne': false }},
       { owner: promo.owner },
       {_id: {'$ne': promo._id }},
       {dateStart: {$lte: Date.now()}},
@@ -363,7 +347,8 @@ exports.showByTitle = function(req, res) {
         { 'tags.en': { $in: wordsArr } },
         { 'tags.es': { $in: wordsArr } } ]
       },
-      { dateStart: {$lte: Date.now()}}]
+      { dateStart: {$lte: Date.now()}},
+      { isPremium: {$ne: false }}]
     },null,{skip: skip, limit: limit, sort: { dateStart: -1 }}, function (err, search) {
     console.log(err);
     console.log(search);
@@ -397,7 +382,9 @@ exports.showByBestOfMonth = function(req, res) {
 
   Promo.find({$and:[
       { dateStart: {$gte: firstDay}},
-      { dateStart: {$lte: Date.now()}}, hideExpireds
+      { dateStart: {$lte: Date.now()}},
+      hideExpireds,
+      { isPremium: {$ne: false }}
     ]},null,{skip: skip, limit: limit, sort: { 'likes.average': -1 }},null)
   .populate(populateOwner)
   .exec(function (err, search) {
@@ -416,7 +403,8 @@ exports.showByBestEver = function(req, res) {
   skip = page * 8;
 
   Promo.find({$and:[
-      { dateStart: {$lte: Date.now()}}
+      { dateStart: {$lte: Date.now()}},
+      { isPremium: {$ne: false }}
     ]},null,{skip: skip, limit: limit, sort: { 'likes.average': -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
@@ -446,7 +434,9 @@ exports.showByLatest = function(req, res) {
   skip = page * 8;
 
   Promo.find({$and:[
-      { dateStart: {$lte: Date.now()}}, hideExpireds
+      { dateStart: {$lte: Date.now()}},
+      hideExpireds,
+      { isPremium: {$ne: false }}
     ]},null,{skip: skip, limit: limit, sort: { dateStart: -1 }},null)
   .populate(populateOwner)
   .exec(function (err, search) {
@@ -514,7 +504,8 @@ exports.showByCity = function(req, res) {
     User.find({$and:[{city:city._id}]}).populate({path:'promos',
         match:{ $and:[
           { dateStart: {$lte: Date.now()}},
-          { dateEnd: {$gt: Date.now()}}
+          { dateEnd: {$gt: Date.now()}},
+          { isPremium: {$ne: false }}
         ]}}).skip(skip).limit(limit).exec(function (err,users) {
 
       var promos = [];
@@ -563,6 +554,7 @@ exports.showByCategory = function(req, res) {
     Promo.find({$and:[
         {category:{ $in: [category._id]}},
         { dateStart: {$lte: Date.now()}},hideExpireds,
+        { isPremium: {$ne: false }}
       ]}).skip(skip).limit(limit)
     .populate(populateOwner)
     .exec(function (err,search) {
@@ -595,7 +587,8 @@ exports.showByCityAndCategory = function(req, res) {
         match:{ $and:[
           { category:{ $in: [category._id]}},
           { dateStart: {$lte: Date.now()}},
-          { dateEnd: {$gt: Date.now()}}
+          { dateEnd: {$gt: Date.now()}},
+          { isPremium: {$ne: false }}
         ] }})
       .skip(skip).limit(limit).exec(function (err,search) {
         if(err) { return handleError(res, err); }
@@ -618,7 +611,8 @@ exports.showByCompany = function(req, res) {
 
   Promo.find({$and:[
       { dateStart: {$lte: Date.now()}},
-      { owner: owner }
+      { owner: owner },
+      { isPremium: {$ne: false }}
     ]},null,{skip: skip, limit: limit, sort: { dateStart: -1 }},function (err,search) {
     if(err) { return handleError(res, err); }
     if(!search) { return res.send(404); }
