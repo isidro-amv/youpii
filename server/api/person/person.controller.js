@@ -97,7 +97,7 @@ exports.notification = function (req, res) {
   var message = new gcm.Message({
     collapseKey: 'demo',
     delayWhileIdle: true,
-    timeToLive: 3,
+    timeToLive: 6000,
     data: {
         message: 'Mensaje',
         title: 'Esto es título',
@@ -145,7 +145,7 @@ exports.update = function(req, res) {
       var message = new gcm.Message({
         collapseKey: 'demo',
         delayWhileIdle: true,
-        timeToLive: 3,
+        timeToLive: 6000,
         data: {
           message: promoName +' - '+ promoTitle,
           title: 'Nueva promoción para '+person.name,
